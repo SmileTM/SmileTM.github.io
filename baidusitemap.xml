@@ -4,11 +4,28 @@
 
     
   <url>
-    <loc>http://yoursite.com/2016/11/15/hello-world/</loc>
-    <lastmod>2016-11-16T16:02:32.000Z</lastmod>
+    <loc>http://yoursite.com/2016/11/17/test/</loc>
+    <lastmod>2016-11-16T16:15:42.000Z</lastmod>
     <data>
         <display>
-        <title>hello world</title>
+        <title>test测试</title>
+        <pubTime>2016-11-16T16:07:59.000Z</pubTime>
+        
+        <tag>test</tag>
+         
+         
+           
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://yoursite.com/2016/11/15/hello-world/</loc>
+    <lastmod>2016-11-16T16:13:36.000Z</lastmod>
+    <data>
+        <display>
+        <title>Hello World</title>
         <pubTime>2016-11-15T04:46:45.000Z</pubTime>
         
         <tag>start</tag>
