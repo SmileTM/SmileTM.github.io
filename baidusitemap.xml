@@ -4,8 +4,25 @@
 
     
   <url>
+    <loc>http://yoursite.com/2016/11/18/markdown/</loc>
+    <lastmod>2016-11-17T17:05:47.000Z</lastmod>
+    <data>
+        <display>
+        <title>Markdown</title>
+        <pubTime>2016-11-17T16:37:14.000Z</pubTime>
+        
+        <tag>learn</tag>
+         
+         
+           
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
     <loc>http://yoursite.com/2016/11/15/hello-world/</loc>
-    <lastmod>2016-11-16T16:13:36.000Z</lastmod>
+    <lastmod>2016-11-17T16:31:23.000Z</lastmod>
     <data>
         <display>
         <title>Hello World</title>
