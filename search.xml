@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<search>
+  
+    
+    <entry>
+      <title><![CDATA[IntelliJ IDEA配置 Maven]]></title>
+      <url>%2F2016%2F11%2F19%2FIntelliJ%2F</url>
+      <content type="text"><![CDATA[最近在学习spring时遇到了利用IDEA2016搭建Maven环境时遇到了问题。在度娘的帮助下完美解决。 在此记录下，通过度娘找到的完美解决方法。 特别感谢该博主 使用IntelliJ IDEA开发SpringMVC网站]]></content>
+    </entry>
+
+    
+    <entry>
+      <title><![CDATA[Markdown]]></title>
+      <url>%2F2016%2F11%2F18%2Fmarkdown%2F</url>
+      <content type="text"><![CDATA[####引用 1 “&gt;” “&gt;”两种形式* 必须用在每次开始一行的头部才有效，且前后各一个空格“&gt;” ####代码高亮利用来123```swiftprint(&quot;Hello World!!&quot;) ####字体样式“强调”，“斜体“，“强调”，“强调” ####图片引用 1处写图片链接 ####网站引用STM]]></content>
+    </entry>
+
+    
+    <entry>
+      <title><![CDATA[Hello World]]></title>
+      <url>%2F2016%2F11%2F15%2Fhello-world%2F</url>
+      <content type="text"><![CDATA[123456#include &lt;stdio.h&gt;int main()&#123; printf("Hello World!!"); return 0;&#125; 12345public class Main()&#123; public static void main(String args[])&#123; System.out.println("Hello World!!"); &#125;&#125;]]></content>
+    </entry>
+
+    
+  
+  
+</search>
