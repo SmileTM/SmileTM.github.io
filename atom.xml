@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://yoursite.com/"/>
-  <updated>2016-11-19T07:48:03.000Z</updated>
+  <updated>2016-11-24T16:29:17.000Z</updated>
   <id>http://yoursite.com/</id>
   
   <author>
@@ -14,6 +14,48 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>设计模式 (一) ：抽象工厂模式</title>
+    <link href="http://yoursite.com/2016/11/24/DesignModel-1/"/>
+    <id>http://yoursite.com/2016/11/24/DesignModel-1/</id>
+    <published>2016-11-24T15:10:27.000Z</published>
+    <updated>2016-11-24T16:29:17.000Z</updated>
+    
+    <content type="html"><![CDATA[<p><strong>定义：</strong>为创建一组相关或相互依赖的对象提供一个接口，而且无需指定他们的具体类。</p>
+<p><strong>类型：</strong>创建类模式</p>
+<p><strong>抽象工厂模式与工厂方法模式的区别</strong></p>
+<p>抽象工厂模式是工厂方法模式的升级版本，他用来创建一组相关或者相互依赖的对象。他与工厂方法模式的区别就在于，工厂方法模式针对的是一个产品等级结构；而抽象工厂模式则是针对的多个产品等级结构。在编程中，通常一个产品结构，表现为一个接口或者抽象类，也就是说，工厂方法模式提供的所有产品都是衍生自同一个接口或抽象类，而抽象工厂模式所提供的产品则是衍生自不同的接口或抽象类。</p>
+<a id="more"></a>
+<p><strong>抽象工厂代码</strong></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">ICar</span> </span>&#123;</div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">ShowInfo</span><span class="params">()</span></span>;</div><div class="line">&#125;</div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ACar</span> <span class="keyword">implements</span> <span class="title">ICar</span> </span>&#123;</div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">ShowInfo</span><span class="params">()</span> </span>&#123;</div><div class="line">        System.out.println(<span class="string">"ACar"</span>);</div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">BCar</span> <span class="keyword">implements</span> <span class="title">ICar</span> </span>&#123;</div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">ShowInfo</span><span class="params">()</span> </span>&#123;</div><div class="line">        System.out.println(<span class="string">"BCar"</span>);</div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">CarFactory</span> <span class="keyword">implements</span> <span class="title">IFactory</span> </span>&#123;</div><div class="line">    <span class="meta">@Override</span></div><div class="line">    <span class="function"><span class="keyword">public</span> ACar <span class="title">creatCarA</span><span class="params">()</span> </span>&#123;</div><div class="line">        <span class="keyword">return</span> <span class="keyword">new</span> ACar();</div><div class="line">    &#125;</div><div class="line">    <span class="meta">@Override</span></div><div class="line">    <span class="function"><span class="keyword">public</span> BCar <span class="title">creatCarB</span><span class="params">()</span> </span>&#123;</div><div class="line">        <span class="keyword">return</span> <span class="keyword">new</span> BCar();</div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">IFactory</span> </span>&#123;</div><div class="line">    <span class="function"><span class="keyword">public</span> ACar <span class="title">creatCarA</span><span class="params">()</span></span>;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">public</span> BCar <span class="title">creatCarB</span><span class="params">()</span></span>;</div><div class="line">&#125;</div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Main</span> </span>&#123;</div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String args[])</span> </span>&#123;</div><div class="line">        IFactory iFactory = <span class="keyword">new</span> CarFactory();</div><div class="line">        iFactory.creatCarA().ShowInfo();</div><div class="line">        iFactory.creatCarB().ShowInfo();</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p><strong>代码类图</strong></p>
+<p><img src="/images/abstractFactory.png" alt="abstractFactory"></p>
+<p>通过上述代码，可以看出工厂与产品之间是高度解耦的，这大大降低了后期程序的维护，如果后期产品有新的变化，如ACar增加了一个新的方法，则只需要在相应的产品接口和相应的产品中进行修改即可，而并不需要修改工厂类。</p>
+<p><strong>抽象工厂模式的优点</strong></p>
+<p>抽象工厂模式除了具有工厂方法模式的优点外，最主要的优点就是可以在类的内部对产品族进行约束。所谓的产品族，一般或多或少的都存在一定的关联，抽象工厂模式就可以在类内部对产品族的关联关系进行定义和描述，而不必专门引入一个新的类来进行管理。 </p>
+<p><strong>抽象工厂模式的缺点</strong></p>
+<p>产品族的扩展将是一件十分费力的事情，假如产品族中需要增加一个新的产品，则几乎所有的工厂类都需要进行修改。所以使用抽象工厂模式时，对产品等级结构的划分是非常重要的。</p>
+<p><strong>适用场景</strong></p>
+<p>当需要创建的对象是一系列相互关联或相互依赖的产品族时，便可以使用抽象工厂模式。说的更明白一点，就是一个继承体系中，如果存在着多个等级结构（即存在着多个抽象类），并且分属各个等级结构中的实现类之间存在着一定的关联或者约束，就可以使用抽象工厂模式。假如各个等级结构中的实现类之间不存在关联或约束，则使用多个独立的工厂来对产品进行创建，则更合适一点。 </p>
+<p><strong>总结</strong></p>
+<p>无论是简单工厂模式，工厂方法模式，还是抽象工厂模式，他们都属于工厂模式，在形式和特点上也是极为相似的，他们的最终目的都是为了解耦。在使用时，我们不必去在意这个模式到底工厂方法模式还是抽象工厂模式，因为他们之间的演变常常是令人琢磨不透的。经常你会发现，明明使用的工厂方法模式，当新需求来临，稍加修改，加入了一个新方法后，由于类中的产品构成了不同等级结构中的产品族，它就变成抽象工厂模式了；而对于抽象工厂模式，当减少一个方法使的提供的产品不再构成产品族之后，它就演变成了工厂方法模式。</p>
+<p>所以，在使用工厂模式时，只需要关心降低耦合度的目的是否达到了。</p>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;&lt;strong&gt;定义：&lt;/strong&gt;为创建一组相关或相互依赖的对象提供一个接口，而且无需指定他们的具体类。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;类型：&lt;/strong&gt;创建类模式&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;抽象工厂模式与工厂方法模式的区别&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;抽象工厂模式是工厂方法模式的升级版本，他用来创建一组相关或者相互依赖的对象。他与工厂方法模式的区别就在于，工厂方法模式针对的是一个产品等级结构；而抽象工厂模式则是针对的多个产品等级结构。在编程中，通常一个产品结构，表现为一个接口或者抽象类，也就是说，工厂方法模式提供的所有产品都是衍生自同一个接口或抽象类，而抽象工厂模式所提供的产品则是衍生自不同的接口或抽象类。&lt;/p&gt;
+    
+    </summary>
+    
+    
+      <category term="设计模式" scheme="http://yoursite.com/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/"/>
+    
+  </entry>
   
   <entry>
     <title>IntelliJ IDEA配置 Maven</title>
