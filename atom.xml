@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://yoursite.com/"/>
-  <updated>2016-11-24T16:29:17.000Z</updated>
+  <updated>2016-11-26T16:10:04.000Z</updated>
   <id>http://yoursite.com/</id>
   
   <author>
@@ -14,6 +14,38 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>设计模式 (二) ：观察着模式</title>
+    <link href="http://yoursite.com/2016/11/26/DesignModel-2/"/>
+    <id>http://yoursite.com/2016/11/26/DesignModel-2/</id>
+    <published>2016-11-26T15:42:13.000Z</published>
+    <updated>2016-11-26T16:10:04.000Z</updated>
+    
+    <content type="html"><![CDATA[<p><strong>定义：</strong>定义对象间一种一对多的依赖关系，使得当每一个对象改变状态，则所有依赖于它的对象都会得到通知并自动更新。</p>
+<p><strong>类型：</strong>行为类模式</p>
+<a id="more"></a>
+<p><strong>观察者模式代码</strong></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">IObserver</span> </span>&#123;</div><div class="line">    <span class="function"><span class="keyword">void</span> <span class="title">update</span><span class="params">()</span></span>;</div><div class="line">&#125;</div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Observer1</span> <span class="keyword">implements</span> <span class="title">IObserver</span></span>&#123;                		<span class="comment">//观察者</span></div><div class="line">    <span class="meta">@Override</span></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">update</span><span class="params">()</span> </span>&#123;                              </div><div class="line">      	<span class="comment">//观察者做出相应的反应</span></div><div class="line">        System.out.println(<span class="string">"Observer1 has updated"</span>);</div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Observer2</span> <span class="keyword">implements</span> <span class="title">IObserver</span> </span>&#123;                		<span class="comment">//观察者</span></div><div class="line">    <span class="meta">@Override</span></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">update</span><span class="params">()</span> </span>&#123;                  </div><div class="line">       <span class="comment">//观察者做出相应的反应</span></div><div class="line">        System.out.println(<span class="string">"Observer2 has updated"</span>);</div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line"><span class="keyword">abstract</span> <span class="class"><span class="keyword">class</span> <span class="title">Target</span> </span>&#123;</div><div class="line">    <span class="keyword">private</span> ArrayList&lt;IObserver&gt; obs = <span class="keyword">new</span> ArrayList&lt;&gt;();     		<span class="comment">//创建一个观察者数组列表</span></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">addObserver</span><span class="params">(IObserver iObserver)</span> </span>&#123;</div><div class="line">      <span class="comment">//添加观察者</span></div><div class="line">        <span class="keyword">this</span>.obs.add(iObserver);</div><div class="line">    &#125;</div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">delObserver</span><span class="params">(IObserver iObserver)</span> </span>&#123;</div><div class="line">        <span class="keyword">this</span>.obs.remove(iObserver);</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">notifyObserver</span><span class="params">()</span> </span>&#123;        </div><div class="line">      <span class="comment">//通知观察者进行更新</span></div><div class="line">        <span class="keyword">for</span> (IObserver o : obs) &#123;</div><div class="line">            o.update();</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">abstract</span> <span class="keyword">void</span> <span class="title">doSomething</span><span class="params">()</span></span>;</div><div class="line">&#125;</div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ConcreteTarget</span> <span class="keyword">extends</span> <span class="title">Target</span> </span>&#123;       </div><div class="line">  		<span class="comment">//被观察者</span></div><div class="line">    <span class="meta">@Override</span></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">doSomething</span><span class="params">()</span> </span>&#123;</div><div class="line">        System.out.println(<span class="string">"Concrete is doing something"</span>);</div><div class="line">        <span class="keyword">this</span>.notifyObserver();</div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Main</span> </span>&#123;</div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String args[])</span> </span>&#123;</div><div class="line">        Target target = <span class="keyword">new</span> ConcreteTarget();</div><div class="line">        target.addObserver(<span class="keyword">new</span> Observer1());</div><div class="line">        target.addObserver(<span class="keyword">new</span> Observer2());</div><div class="line">        target.doSomething();</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p><strong>类图</strong></p>
+<p><img src="/images/observer.png" alt="observer"></p>
+<p>通过运行结果可以看到，我们只调用了Target的方法，但同时两个观察者的相关方法都被同时调用了。仔细看一下代码，其实很简单，无非就是在Target类中关联一下Observer类，并且在doSomething方法中遍历一下Observer的update方法就行了。</p>
+<p><strong>观察者模式的优点</strong></p>
+<p>观察者与被观察者之间是属于轻度的关联关系，并且是抽象耦合的，这样，对于两者来说都比较容易进行扩展。</p>
+<p>观察者模式是一种常用的触发机制，它形成一条触发链，依次对各个观察者的方法进行处理。但同时，这也算是观察者模式一个缺点，由于是链式触发，当观察者比较多的时候，性能问题是比较令人担忧的。并且，在链式结构中，比较容易出现循环引用的错误，造成系统假死。</p>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;&lt;strong&gt;定义：&lt;/strong&gt;定义对象间一种一对多的依赖关系，使得当每一个对象改变状态，则所有依赖于它的对象都会得到通知并自动更新。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;类型：&lt;/strong&gt;行为类模式&lt;/p&gt;
+    
+    </summary>
+    
+    
+      <category term="设计模式" scheme="http://yoursite.com/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/"/>
+    
+  </entry>
   
   <entry>
     <title>设计模式 (一) ：抽象工厂模式</title>
