@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://yoursite.com/"/>
-  <updated>2016-11-26T16:10:04.000Z</updated>
+  <updated>2016-11-26T16:13:06.000Z</updated>
   <id>http://yoursite.com/</id>
   
   <author>
@@ -16,11 +16,11 @@
   <generator uri="http://hexo.io/">Hexo</generator>
   
   <entry>
-    <title>设计模式 (二) ：观察着模式</title>
+    <title>设计模式 (二) ：观察者模式</title>
     <link href="http://yoursite.com/2016/11/26/DesignModel-2/"/>
     <id>http://yoursite.com/2016/11/26/DesignModel-2/</id>
     <published>2016-11-26T15:42:13.000Z</published>
-    <updated>2016-11-26T16:10:04.000Z</updated>
+    <updated>2016-11-26T16:13:06.000Z</updated>
     
     <content type="html"><![CDATA[<p><strong>定义：</strong>定义对象间一种一对多的依赖关系，使得当每一个对象改变状态，则所有依赖于它的对象都会得到通知并自动更新。</p>
 <p><strong>类型：</strong>行为类模式</p>
