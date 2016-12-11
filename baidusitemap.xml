@@ -4,14 +4,14 @@
 
     
   <url>
-    <loc>http://yoursite.com/2016/12/08/HibernateVSMybatis/</loc>
-    <lastmod>2016-12-07T16:45:22.000Z</lastmod>
+    <loc>http://yoursite.com/2016/12/03/IntelliJ-Hibernate/</loc>
+    <lastmod>2016-12-11T08:02:51.000Z</lastmod>
     <data>
         <display>
-        <title>Hibernate与Mybatis对比</title>
-        <pubTime>2016-12-07T16:43:14.000Z</pubTime>
+        <title>IntelliJ IDEA配置 Hibernate</title>
+        <pubTime>2016-12-02T16:02:19.000Z</pubTime>
         
-        <tag>JavaWeb</tag>
+        <tag>IntelliJ IDEA配置</tag>
          
          
            
@@ -21,14 +21,14 @@
 
     
   <url>
-    <loc>http://yoursite.com/2016/12/03/IntelliJ-Hibernate/</loc>
-    <lastmod>2016-12-03T00:42:26.000Z</lastmod>
+    <loc>http://yoursite.com/2016/12/08/HibernateVSMybatis/</loc>
+    <lastmod>2016-12-07T16:45:22.000Z</lastmod>
     <data>
         <display>
-        <title>IntelliJ IDEA配置 Hibernate</title>
-        <pubTime>2016-12-02T16:02:19.000Z</pubTime>
+        <title>Hibernate与Mybatis对比</title>
+        <pubTime>2016-12-07T16:43:14.000Z</pubTime>
         
-        <tag>IntelliJ IDEA配置</tag>
+        <tag>JavaWeb</tag>
          
          
            

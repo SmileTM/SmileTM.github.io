@@ -81,9 +81,9 @@
     <link href="http://yoursite.com/2016/12/03/IntelliJ-Hibernate/"/>
     <id>http://yoursite.com/2016/12/03/IntelliJ-Hibernate/</id>
     <published>2016-12-02T16:02:19.000Z</published>
-    <updated>2016-12-03T00:42:26.000Z</updated>
+    <updated>2016-12-11T08:02:51.000Z</updated>
     
-    <content type="html"><![CDATA[<p>由于最近在学习Hibernuanate时，特别是在Mac+idea16+Mysql网上的环境搭建教程比较少，另一个原因也是为了记录自己在建立Hibernate项目时所遇到的一系列问题，特此写下该文档来记录，方便自己和他人日后遇到同样的问题，能少走弯路。</p>
+    <content type="html"><![CDATA[<p>由于最近在学习Hibernate时，特别是在Mac+idea16+Mysql网上的环境搭建教程比较少，另一个原因也是为了记录自己在建立Hibernate项目时所遇到的一系列问题，特此写下该文档来记录，方便自己和他人日后遇到同样的问题，能少走弯路。</p>
 <a id="more"></a>
 <p>由于Maven有良好的仓库管理的优点，方便导入必要Jar包，也便于用户管理本地的Jar文件，因此此次简单项目的建立如图 新建Maven项目。</p>
 <p><img src="/images/Hibernate/Hibernate1.png" alt="Hibernate1"></p>
@@ -118,6 +118,7 @@
 <p>因此我们先建立数据库。</p>
 <p>如下图设置</p>
 <p><img src="/images/Hibernate/Hibernate9.png" alt="Hibernate9"></p>
+<p><img src="/images/Hibernate/Hibernate10.png" alt="Hibernate10"></p>
 <p><img src="/images/Hibernate/Hibernate11.png" alt="Hibernate11"></p>
 <p><img src="/images/Hibernate/Hibernate12.png" alt="Hibernate12"></p>
 <p>建立连接后，可以如图会显示该数据库中的表项目。</p>
@@ -151,7 +152,7 @@
     
     <summary type="html">
     
-      &lt;p&gt;由于最近在学习Hibernuanate时，特别是在Mac+idea16+Mysql网上的环境搭建教程比较少，另一个原因也是为了记录自己在建立Hibernate项目时所遇到的一系列问题，特此写下该文档来记录，方便自己和他人日后遇到同样的问题，能少走弯路。&lt;/p&gt;
+      &lt;p&gt;由于最近在学习Hibernate时，特别是在Mac+idea16+Mysql网上的环境搭建教程比较少，另一个原因也是为了记录自己在建立Hibernate项目时所遇到的一系列问题，特此写下该文档来记录，方便自己和他人日后遇到同样的问题，能少走弯路。&lt;/p&gt;
     
     </summary>
     
