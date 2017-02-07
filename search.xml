@@ -5,7 +5,7 @@
     <entry>
       <title><![CDATA[Python3学习笔记]]></title>
       <url>%2F2017%2F02%2F07%2FPython3%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%2F</url>
-      <content type="text"></content>
+      <content type="text"><![CDATA[1234567891011121314151617181920212223242526272829# 匿名函数def build_return_lambda(x, y): return lambda: x ** 2 + y ** 2def build_return(x, y): def g(): return x ** 2 + y ** 2 return gf = build_return_lambda(2, 2)print(f())def build_return_lambda2(): return lambda x, y: x ** 2 + y ** 2def build_return1(): def g(x, y): return x ** 2 + y ** 2 return gf = build_return_lambda2()print(f(2, 2))]]></content>
     </entry>
 
     
