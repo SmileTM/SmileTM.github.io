@@ -5,7 +5,7 @@
     <entry>
       <title><![CDATA[Python3学习笔记]]></title>
       <url>%2F2017%2F02%2F07%2FPython3%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%2F</url>
-      <content type="text"><![CDATA[1234567891011121314151617181920212223242526272829# 匿名函数def build_return_lambda(x, y): return lambda: x ** 2 + y ** 2def build_return(x, y): def g(): return x ** 2 + y ** 2 return gf = build_return_lambda(2, 2)print(f())def build_return_lambda2(): return lambda x, y: x ** 2 + y ** 2def build_return1(): def g(x, y): return x ** 2 + y ** 2 return gf = build_return_lambda2()print(f(2, 2))]]></content>
+      <content type="text"><![CDATA[返回函数与匿名函数：以下是两种相同作用的两个函数，一个是利用lambda表达式，一个没有，可以看出lambda的简洁之处。 通过下面代码一与代码二的对比，可以看出： 当返回lambda表达式为无参数时，其式中的x,y为外部变量，其具体数据由外部的所给定的x,y所决定，如代码一 代码一： 1234567891011def build_return_lambda(x, y): return lambda: x ** 2 + y ** 2def build_return(x, y): def g(): return x ** 2 + y ** 2 return gf = build_return_lambda(2, 2)print(f()) 当返回的lambda表达式为有参时，则由用户输入的决定 代码二： 1234567891011def build_return_lambda2(): return lambda x, y: x ** 2 + y ** 2def build_return1(): def g(x, y): return x ** 2 + y ** 2 return gf = build_return_lambda2()print(f(2, 2))]]></content>
     </entry>
 
     
