@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://yoursite.com/"/>
-  <updated>2017-03-23T11:21:10.000Z</updated>
+  <updated>2017-03-23T11:47:02.000Z</updated>
   <id>http://yoursite.com/</id>
   
   <author>
@@ -20,23 +20,45 @@
     <link href="http://yoursite.com/2017/03/23/Linux%E5%91%BD%E4%BB%A4/"/>
     <id>http://yoursite.com/2017/03/23/Linux命令/</id>
     <published>2017-03-23T11:14:03.000Z</published>
-    <updated>2017-03-23T11:21:10.000Z</updated>
+    <updated>2017-03-23T11:47:02.000Z</updated>
     
-    <content type="html"><![CDATA[<table><tr><td bgcolor="grey">背景色是：orange</td></tr></table>
+    <content type="html"><![CDATA[<table><tr><td bgcolor="grey">Linux ln命令 (Link)</td></tr></table>
 
-<table><tr><td bgcolor="red">背景色是：orange</td></tr></table>
-
-<table><tr><td bgcolor="gray">背景色是：orange</td></tr></table>
-
+<ul>
+<li>ln -s abc cde 建立abc的软连接 </li>
+<li>ln abc cde 建立硬连接(不可以对文件夹进行硬连接)</li>
+</ul>
+<blockquote>
+<p>abc 为源文件 ，cde为目标指向文件，既就是建立cde -&gt; abc</p>
+</blockquote>
+<h3 id="软链接与硬链接的区别-："><a href="#软链接与硬链接的区别-：" class="headerlink" title="软链接与硬链接的区别 ："></a><strong>软链接与硬链接的区别 ：</strong></h3><p><strong>Linux 软连接与硬连接</strong></p>
+<p>对于一个文件来说，有唯一的索引接点与之对应，而对于一个索引接点号，却可以有多个文件名与之对应。因此，在磁盘上的同一个文件可以通过不同的路径去访问该文件。注意在Linux下是一切皆文件的啊，文件夹、新加的硬盘 …都可以看着文件来处理的啊。</p>
+<p>连接有软连接和硬连接(hard link)之分的，软连接(symbolic link)又叫符号连接。符号连接相当于Windows下的快捷方式。</p>
+<p>不可以对文件夹建立硬连接的，我们通常用的还是软连接比较多。</p>
+<p>eg:</p>
+<p><strong>ln -s source dist        # 建立软连接</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">ln -s /my/abc/ /my/cde/</div></pre></td></tr></table></figure>
+<p>注意后面的“/” 是将目录里所有的文件链接过去，必须加上，否则，建立的目录显示颜色异常，还不能正常访问，如cd 进不去</p>
+<p><strong>ln source dist            # 建立硬连接</strong></p>
+<p>软链接实际上只是一段文字，里面包含着它所指向的文件的名字，系统看到软链接后自动跳到对应的文件位置处进行处理；相反，硬联接为文件开设一个新的目录项，硬链接与文件原有的名字是平权的，在Linux看来它们是等价的。由于这个原因，硬链接不能连接两个不同文件系统上的文件。</p>
+<ul>
+<li>软连接可以 跨文件系统 ，硬连接不可以 。实践的方法就是用共享文件把windows下的 aa.txt文本文档连接到linux下/root目录 下 bb,cc . ln -s aa.txt /root/bb 连接成功 。ln aa.txt /root/bb 失败 。</li>
+<li>关于节点的问题 。硬连接不管有多少个，都指向的是同一个I节点，会把 结点连接数增加，只要结点的连接数不是 0，文件就一直存在，不管你删除的是源文件还是 连接的文件 。只要有一个存在 ，文件就 存在 （其实也不分什么源文件连接文件的 ，因为他们指向都是同一个节点）。 当你修改源文件或者连接文件任何一个的时候 ，其他的文件都会做同步的修改。软链接不直接使用i节点号作为文件指针,而是使用文件路径名作为指针。所以 删除连接文件 对源文件无影响，但是删除源文件，连接文件就会找不到要指向的文件 。软链接有自己的inode,并在磁盘上有一小片空间存放路径名.</li>
+<li>软连接可以对一个不存在的文件名进行连接 。</li>
+<li>软连接可以对目录进行连接。</li>
+</ul>
+<blockquote>
+<p>备注：节点 :它是<a href="https://m.baidu.com/s?word=UNIX&amp;from=1011904q&amp;fenlei=mv6quAkxIv-1ufKYIHdsIHDsnj0Yr0K15H79nhD1nyRvnvPBnADLmWR0mv4YUWYknj0sPj9xuZPs0ZNzUjdCIZwsrBtEILILQhkGUMN3pywWQhPEUiqnpy4dXatznjDYQHDzQ1DknH0dPB4CIAY" target="_blank" rel="external">UNIX</a>内部用于描述文件特性的数据结构.我们通常称I节点为文件索引结点(信息结点).i节点含有关于文件的大部分的重要信息,包括文件数据块在磁盘上的地址.每一个I节点有它自己的标志号,我们称为<a href="https://m.baidu.com/s?word=%E6%96%87%E4%BB%B6%E9%A1%BA%E5%BA%8F&amp;from=1011904q&amp;fenlei=mv6quAkxIv-1ufKYIHdsIHDsnj0Yr0K15H79nhD1nyRvnvPBnADLmWR0mv4YUWYknj0sPj9xuZPs0ZNzUjdCIZwsrBtEILILQhkGUMN3pywWQhPEUiqnpy4dXatznjDYQHDzQ1DknH0dPB4CIAY" target="_blank" rel="external">文件顺序</a>号.节点包含的信息 1.文件类型 2.文件属主关系 3.文件的访问权限 4.文件的时间截.</p>
+</blockquote>
 ]]></content>
     
     <summary type="html">
     
-      &lt;table&gt;&lt;tr&gt;&lt;td bgcolor=&quot;grey&quot;&gt;背景色是：orange&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+      &lt;table&gt;&lt;tr&gt;&lt;td bgcolor=&quot;grey&quot;&gt;Linux ln命令 (Link)&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 
-&lt;table&gt;&lt;tr&gt;&lt;td bgcolor=&quot;red&quot;&gt;背景色是：orange&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
-
-&lt;table&gt;&lt;tr&gt;&lt;td bgco
+&lt;ul&gt;
+&lt;li&gt;ln -s abc cde 建立abc的软连接 &lt;/li&gt;
+&lt;li&gt;ln abc cde 建立硬连接(不可以对文件夹进行硬连接)
     
     </summary>
     
