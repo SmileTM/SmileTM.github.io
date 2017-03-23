@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://yoursite.com/"/>
-  <updated>2017-02-07T14:31:23.000Z</updated>
+  <updated>2017-03-23T11:18:19.000Z</updated>
   <id>http://yoursite.com/</id>
   
   <author>
@@ -14,6 +14,30 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>Linux命令</title>
+    <link href="http://yoursite.com/2017/03/23/Linux%E5%91%BD%E4%BB%A4/"/>
+    <id>http://yoursite.com/2017/03/23/Linux命令/</id>
+    <published>2017-03-23T11:14:03.000Z</published>
+    <updated>2017-03-23T11:18:19.000Z</updated>
+    
+    <content type="html"><![CDATA[<table><tr><td bgcolor="orange">背景色是：orange</td></tr></table>
+
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;table&gt;&lt;tr&gt;&lt;td bgcolor=&quot;orange&quot;&gt;背景色是：orange&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+
+
+    
+    </summary>
+    
+    
+      <category term="Linux命令" scheme="http://yoursite.com/tags/Linux%E5%91%BD%E4%BB%A4/"/>
+    
+  </entry>
   
   <entry>
     <title>Python3学习笔记</title>
