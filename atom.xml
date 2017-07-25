@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://yoursite.com/"/>
-  <updated>2017-03-23T11:56:22.000Z</updated>
+  <updated>2017-07-25T07:21:23.000Z</updated>
   <id>http://yoursite.com/</id>
   
   <author>
@@ -14,6 +14,47 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>IntelliJ IDEA配置 Maven+Struts2</title>
+    <link href="http://yoursite.com/2017/07/25/IntelliJ-Struts/"/>
+    <id>http://yoursite.com/2017/07/25/IntelliJ-Struts/</id>
+    <published>2017-07-25T06:51:59.000Z</published>
+    <updated>2017-07-25T07:21:23.000Z</updated>
+    
+    <content type="html"><![CDATA[<p>在IDEA中 利用Maven 来构造Struts2的配置环境。</p>
+<p>由于，大多数都使用的是Eclipse or MyEclipse，而IDEA的 环境配置教程相对较少，也为了自己日后使用方便，在此简单讲解下如何利用IDEA配置 Maven+Struts2。</p>
+<a id="more"></a>
+<p>一、首先如图新建项目，在此可以构建Maven项目、也可以不构建，我们选择后者。<img src="/images/Struts/Struts2-1.png" alt="Struts2-1"></p>
+<p><img src="/images/Struts/Struts2-2.png" alt="Struts2-2"></p>
+<p>什么都不选 一路Next。</p>
+<p>二、在新建的项目中 添加框架Add Farmework Support 在里面选中Maven。然后Next。</p>
+<p><img src="/images/Struts/Struts2-3.png" alt="Struts2-3"></p>
+<p>在添加Maven后，在其pom.xml中添加Struts2相关的jar包。</p>
+<p><img src="/images/Struts/Struts2-4.png" alt="Struts2-4"></p>
+<p>三、在选中项目，添加Struts2框架，由于已通过Maven导入了Struts2的核心包，IDEA会自动识别。</p>
+<p><img src="/images/Struts/Struts2-5.png" alt="Struts2-5"></p>
+<p>添加后，在目录中将struts.xml移动到resources中去，若不移动，项目会无法识别在struts中设置的映射关系。</p>
+<p><img src="/images/Struts/Struts2-6.png" alt="Struts2-6"></p>
+<p>到这里基本的环境就已经搭建好了。</p>
+<p>但还有一点点小问题。 </p>
+<p>由于搭建使用的是Struts2-2.5 版本 版本过高，IDEA中默认生成的配置web.xml中写的是org.apache.struts2.dispatcher.ng.filter.StrutsPrepareAndExecuteFilter,，在这里会报错如下图所示。</p>
+<p><img src="/images/Struts/Struts2-7.png" alt="Struts2-7"></p>
+<p>在Struts2高版本中 通过查看jar包发现 官方将filter-class 的路径改为了org.apache.struts2.dispatcher.filter.StrutsPrepareAndExecuteFilter，因此只需将中间的ng删去即可。</p>
+<p><img src="/images/Struts/Struts2-8.png" alt="Struts2-8"></p>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;在IDEA中 利用Maven 来构造Struts2的配置环境。&lt;/p&gt;
+&lt;p&gt;由于，大多数都使用的是Eclipse or MyEclipse，而IDEA的 环境配置教程相对较少，也为了自己日后使用方便，在此简单讲解下如何利用IDEA配置 Maven+Struts2。&lt;/p&gt;
+    
+    </summary>
+    
+    
+      <category term="IntelliJ IDEA配置" scheme="http://yoursite.com/tags/IntelliJ-IDEA%E9%85%8D%E7%BD%AE/"/>
+    
+  </entry>
   
   <entry>
     <title>Linux命令</title>
