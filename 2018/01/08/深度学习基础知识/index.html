@@ -92,18 +92,18 @@
 
 
 
-<meta name="description" content="NG深度学习中用到的函数sigmoid函数$\text{For } x \in \mathbb{R}^n \text{,     } sigmoid(x) = sigmoid\begin{pmatrix}    x_1  \    x_2  \    …  \    x_n  \\end{pmatrix} = \begin{pmatrix}    \frac{1}{1+e^{-x_1}}  \">
+<meta name="description" content="NG深度学习中用到的函数 sigmoid函数 $$\text{For } x \in \mathbb{R}^n \text{,     } sigmoid(x) = sigmoid\begin{pmatrix}    x_1  \    x_2  \    …  \    x_n  \\end{pmatrix} = \begin{pmatrix}    \frac{1}{1+e^{-x_1}}">
 <meta name="keywords" content="DeepLearning">
 <meta property="og:type" content="article">
 <meta property="og:title" content="深度学习基础知识">
 <meta property="og:url" content="http://yoursite.com/2018/01/08/深度学习基础知识/index.html">
 <meta property="og:site_name" content="SmileTM博客">
-<meta property="og:description" content="NG深度学习中用到的函数sigmoid函数$\text{For } x \in \mathbb{R}^n \text{,     } sigmoid(x) = sigmoid\begin{pmatrix}    x_1  \    x_2  \    …  \    x_n  \\end{pmatrix} = \begin{pmatrix}    \frac{1}{1+e^{-x_1}}  \">
+<meta property="og:description" content="NG深度学习中用到的函数 sigmoid函数 $$\text{For } x \in \mathbb{R}^n \text{,     } sigmoid(x) = sigmoid\begin{pmatrix}    x_1  \    x_2  \    …  \    x_n  \\end{pmatrix} = \begin{pmatrix}    \frac{1}{1+e^{-x_1}}">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-01-08T14:08:00.458Z">
+<meta property="og:updated_time" content="2018-01-08T15:35:56.429Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="深度学习基础知识">
-<meta name="twitter:description" content="NG深度学习中用到的函数sigmoid函数$\text{For } x \in \mathbb{R}^n \text{,     } sigmoid(x) = sigmoid\begin{pmatrix}    x_1  \    x_2  \    …  \    x_n  \\end{pmatrix} = \begin{pmatrix}    \frac{1}{1+e^{-x_1}}  \">
+<meta name="twitter:description" content="NG深度学习中用到的函数 sigmoid函数 $$\text{For } x \in \mathbb{R}^n \text{,     } sigmoid(x) = sigmoid\begin{pmatrix}    x_1  \    x_2  \    …  \    x_n  \\end{pmatrix} = \begin{pmatrix}    \frac{1}{1+e^{-x_1}}">
 
 
 
@@ -331,39 +331,45 @@
       
 
       
-        <h3 id="NG深度学习中用到的函数"><a href="#NG深度学习中用到的函数" class="headerlink" title="NG深度学习中用到的函数"></a>NG深度学习中用到的函数</h3><h5 id="sigmoid函数"><a href="#sigmoid函数" class="headerlink" title="sigmoid函数"></a><em>sigmoid</em>函数</h5><p>$<br>\text{For } x \in \mathbb{R}^n \text{,     } sigmoid(x) = sigmoid\begin{pmatrix}<br>    x_1  \<br>    x_2  \<br>    …  \<br>    x_n  \<br>\end{pmatrix} = \begin{pmatrix}<br>    \frac{1}{1+e^{-x_1}}  \<br>    \frac{1}{1+e^{-x_2}}  \<br>    …  \<br>    \frac{1}{1+e^{-x_n}}  \<br>\end{pmatrix}\tag{1}<br>$</p>
-<p>python代码实现：</p>
+        <h3 id="NG深度学习中用到的函数"><a href="#NG深度学习中用到的函数" class="headerlink" title="NG深度学习中用到的函数"></a>NG深度学习中用到的函数</h3><p> <strong><em>sigmoid</em>函数</strong></p>
+<p>$$<br>\text{For } x \in \mathbb{R}^n \text{,     } sigmoid(x) = sigmoid\begin{pmatrix}<br>    x_1  \<br>    x_2  \<br>    …  \<br>    x_n  \<br>\end{pmatrix} = \begin{pmatrix}<br>    \frac{1}{1+e^{-x_1}}  \<br>    \frac{1}{1+e^{-x_2}}  \<br>    …  \<br>    \frac{1}{1+e^{-x_n}}  \<br>\end{pmatrix}\tag{1}<br>$$</p>
+<p> python代码实现：</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">sigmoid</span><span class="params">(x)</span>:</span></div><div class="line">  s = <span class="number">1</span> / (<span class="number">1</span> + np.exp(-x))</div><div class="line">  <span class="keyword">return</span> s</div></pre></td></tr></table></figure>
-<h5 id="Sigmoid-gradient"><a href="#Sigmoid-gradient" class="headerlink" title="Sigmoid gradient"></a>Sigmoid gradient</h5><p>经过dS = ds/dx的求导运算发现dS = s*(1-s)<br>$$<br>sigmoid_derivative(x) = \sigma’(x) = \sigma(x) (1 - \sigma(x))\tag{2}<br>$$</p>
+<p><strong>Sigmoid gradient(梯度，求导)</strong></p>
+<p>经过dS = ds/dx的求导运算发现dS = s*(1-s)<br>$$<br>sigmoid_derivative(x) = \sigma’(x) = \sigma(x) (1 - \sigma(x))\tag{2}<br>$$</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">sigmoid_derivative</span><span class="params">(x)</span>:</span></div><div class="line">  s = sigmoid(x)</div><div class="line">  ds = s*(<span class="number">1</span>-s)</div><div class="line">  <span class="keyword">return</span> ds</div></pre></td></tr></table></figure>
 <a id="more"></a>
-<h5 id="image2vector函数"><a href="#image2vector函数" class="headerlink" title="image2vector函数"></a><strong>image2vector函数</strong></h5><p>For example, in computer science, an image is represented by a 3D array of shape (length,height,depth=3). However, when you read an image as the input of an algorithm you convert it to a vector of shape (length∗height∗3,1). In other words, you “unroll”, or reshape, the 3D array into a 1D vector.</p>
+<p><strong>image2vector函数</strong></p>
+<p>For example, in computer science, an image is represented by a 3D array of shape (length,height,depth=3). However, when you read an image as the input of an algorithm you convert it to a vector of shape (length∗height∗3,1). In other words, you “unroll”, or reshape, the 3D array into a 1D vector.</p>
 <p>将image矩阵转换为1个向量</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">images2vector</span><span class="params">(image)</span>:</span></div><div class="line">    v = image.reshape(image.shape[<span class="number">0</span>]*image.shape[<span class="number">1</span>]*image.shape[<span class="number">2</span>],<span class="number">1</span>)</div><div class="line">    <span class="keyword">return</span> v</div><div class="line"><span class="comment"># 3*3*2 维矩阵  相当于 image中的 hight*width*rgb(图片中像素点由r，g，b三个组成)=3*2*3 </span></div><div class="line">image = np.array([[[<span class="number">0.67826139</span>, <span class="number">0.29380381</span>],</div><div class="line">                   [<span class="number">0.90714982</span>, <span class="number">0.52835647</span>],</div><div class="line">                   [<span class="number">0.4215251</span>, <span class="number">0.45017551</span>]],</div><div class="line"></div><div class="line">                  [[<span class="number">0.92814219</span>, <span class="number">0.96677647</span>],</div><div class="line">                   [<span class="number">0.85304703</span>, <span class="number">0.52351845</span>],</div><div class="line">                   [<span class="number">0.19981397</span>, <span class="number">0.27417313</span>]],</div><div class="line"></div><div class="line">                  [[<span class="number">0.60659855</span>, <span class="number">0.00533165</span>],</div><div class="line">                   [<span class="number">0.10820313</span>, <span class="number">0.49978937</span>],</div><div class="line">                   [<span class="number">0.34144279</span>, <span class="number">0.94630077</span>]]])</div><div class="line">v  = image2vector(image)</div><div class="line"></div><div class="line">print(<span class="string">'v.shape: '</span>+str(v.shape))</div><div class="line">print(<span class="string">'image2vector(image):'</span>)</div><div class="line">print(v)</div><div class="line">print(<span class="string">'\n'</span>)</div><div class="line">print(v.T)</div></pre></td></tr></table></figure>
 <p>输出：</p>
 <p>v.shape: (18, 1)<br>image2vector(image):<br>[[0.67826139]<br> [0.29380381]<br> [0.90714982]<br> [0.52835647]<br> [0.4215251 ]<br> [0.45017551]<br> [0.92814219]<br> [0.96677647]<br> [0.85304703]<br> [0.52351845]<br> [0.19981397]<br> [0.27417313]<br> [0.60659855]<br> [0.00533165]<br> [0.10820313]<br> [0.49978937]<br> [0.34144279]<br> [0.94630077]]</p>
 <p>[[0.67826139 0.29380381 0.90714982 0.52835647 0.4215251  0.45017551<br>  0.92814219 0.96677647 0.85304703 0.52351845 0.19981397 0.27417313<br>  0.60659855 0.00533165 0.10820313 0.49978937 0.34144279 0.94630077]]</p>
-<h5 id="Normalizing-rows-单位化行向量"><a href="#Normalizing-rows-单位化行向量" class="headerlink" title="Normalizing rows (单位化行向量)"></a>Normalizing rows (单位化行向量)</h5><p>Another common technique we use in Machine Learning and Deep Learning is to normalize our data. It often leads to a better performance because gradient descent converges faster after normalization. Here, by normalization we mean changing x to x∥x∥ (dividing each row vector of x by its norm).<br>$$<br>\frac{x}{| x|}<br>$$<br>For example, if<br>$$<br>x =<br>\begin{bmatrix}<br>    0 &amp; 3 &amp; 4 \<br>    2 &amp; 6 &amp; 4 \<br>\end{bmatrix}\tag{3}<br>$$<br>then<br>$$<br>| x| = np.linalg.norm(x, axis = 1, keepdims = True) = \begin{bmatrix}<br>    5 \<br>    \sqrt{56} \<br>\end{bmatrix}\tag{4}<br>$$<br>and<br>$$<br>x_normalized = \frac{x}{| x|} = \begin{bmatrix}<br>    0 &amp; \frac{3}{5} &amp; \frac{4}{5} \<br>    \frac{2}{\sqrt{56}} &amp; \frac{6}{\sqrt{56}} &amp; \frac{4}{\sqrt{56}} \<br>\end{bmatrix}\tag{5}<br>$$<br>Note that you can divide matrices of different sizes and it works fine: this is called broadcasting and you’re going to learn about it in part 5.</p>
+<p> Normalizing rows (单位化行向量)</p>
+<p>Another common technique we use in Machine Learning and Deep Learning is to normalize our data. It often leads to a better performance because gradient descent converges faster after normalization. Here, by normalization we mean changing x to x∥x∥ (dividing each row vector of x by its norm).<br>$$<br>\frac{x}{| x|}<br>$$<br>For example, if<br>$$<br>x =<br>\begin{bmatrix}<br>    0 &amp; 3 &amp; 4 \<br>    2 &amp; 6 &amp; 4 \<br>\end{bmatrix}\tag{3}<br>$$<br>then<br>$$<br>| x| = np.linalg.norm(x, axis = 1, keepdims = True) = \begin{bmatrix}<br>    5 \<br>    \sqrt{56} \<br>\end{bmatrix}\tag{4}<br>$$<br>and<br>$$<br>x_normalized = \frac{x}{| x|} = \begin{bmatrix}<br>    0 &amp; \frac{3}{5} &amp; \frac{4}{5} \<br>    \frac{2}{\sqrt{56}} &amp; \frac{6}{\sqrt{56}} &amp; \frac{4}{\sqrt{56}} \<br>\end{bmatrix}\tag{5}<br>$$<br>Note that you can divide matrices of different sizes and it works fine: this is called broadcasting and you’re going to learn about it in part 5.</p>
 <p><strong>Exercise</strong>: Implement normalizeRows() to normalize the rows of a matrix. After applying this function to an input matrix x, each row of x should be a vector of unit length (meaning length 1).</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># 将矩阵中的 横向量 单位化</span></div><div class="line"></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">normalizeRows</span><span class="params">(x)</span>:</span></div><div class="line">    x_norm = np.linalg.norm(x, axis=<span class="number">1</span>, keepdims=<span class="keyword">True</span>)  <span class="comment"># keeding = True 代表计算后维度不变，axis=1 代表矩阵按行相加，axis=0代表按列相加</span></div><div class="line">    x = x / x_norm</div><div class="line">    <span class="keyword">return</span> x</div><div class="line"></div><div class="line">a = np.array([[<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>], </div><div class="line">              [<span class="number">3</span>, <span class="number">4</span>, <span class="number">0</span>],</div><div class="line">              [<span class="number">2</span>, <span class="number">2</span>, <span class="number">2</span>]])</div><div class="line"></div><div class="line">print(normalizeRows(a))</div></pre></td></tr></table></figure>
 <p>输出：</p>
 <p>[[0.26726124 0.53452248 0.80178373]<br> [0.6        0.8        0.        ]<br> [0.57735027 0.57735027 0.57735027]]</p>
-<h5 id="Implement-the-L1-and-L2-loss-functions（损失函数）"><a href="#Implement-the-L1-and-L2-loss-functions（损失函数）" class="headerlink" title="Implement the L1 and L2 loss functions（损失函数）"></a>Implement the L1 and L2 loss functions（损失函数）</h5><p>$$<br>\begin{align<em>} &amp; L<em>1(\hat{y}, y) = \sum</em>{i=0}^m|y^{(i)} - \hat{y}^{(i)}| \end{align</em>}\tag{6}<br>$$</p>
+<p> Implement the L1 and L2 loss functions（损失函数）<br>$$<br>\begin{align<em>} &amp; L<em>1(\hat{y}, y) = \sum</em>{i=0}^m|y^{(i)} - \hat{y}^{(i)}| \end{align</em>}\tag{6}<br>$$</p>
 <p>$$<br>\begin{align<em>} &amp; L<em>2(\hat{y},y) = \sum</em>{i=0}^m(y^{(i)} - \hat{y}^{(i)})^2 \end{align</em>}\tag{7}<br>$$</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">L1</span><span class="params">(yhat, y)</span>:</span></div><div class="line">    loss = np.sum(abs(yhat - y))</div><div class="line">    <span class="keyword">return</span> loss</div><div class="line"></div><div class="line"></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">L2</span><span class="params">(yhat, y)</span>:</span></div><div class="line">    loss = np.dot(yhat - y, (yhat - y).T)</div><div class="line">    <span class="keyword">return</span> loss</div></pre></td></tr></table></figure>
 <h3 id="常用的一些基本数学知识"><a href="#常用的一些基本数学知识" class="headerlink" title="常用的一些基本数学知识"></a>常用的一些基本数学知识</h3><blockquote>
 <p><a href="https://www.cnblogs.com/steven-yang/p/6348112.html" target="_blank" rel="noopener">机器学习中的基本数学知识</a></p>
 <p><a href="http://lixingcong.github.io/2016/04/04/LaTex-intro/" target="_blank" rel="noopener">LaTex数学公式语法</a></p>
 </blockquote>
-<h5 id="矩阵內积"><a href="#矩阵內积" class="headerlink" title="矩阵內积"></a>矩阵內积</h5><p>就是简单的矩阵相乘 ab</p>
+<p><strong>矩阵內积</strong> dot</p>
+<p>就是简单的矩阵相乘 ab</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</div><div class="line">a = np.array([[<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>],</div><div class="line">             [<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>],</div><div class="line">             [<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>]])</div><div class="line">b = np.array([[<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>],</div><div class="line">             [<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>],</div><div class="line">             [<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>]])</div><div class="line">c = np.dot(a,b)</div><div class="line">print(c)</div></pre></td></tr></table></figure>
 <p>输出：</p>
 <p>[[ 6 12 18]<br> [ 6 12 18]<br> [ 6 12 18]]</p>
-<h5 id="矩阵外积"><a href="#矩阵外积" class="headerlink" title="矩阵外积"></a>矩阵外积</h5><p>$$<br>x\oplus y=\begin{bmatrix}x<em>1&amp;…&amp;x</em>{1n}\<br>x<em>2 &amp;…&amp;x</em>{2n}\<br>\dots&amp;\dots&amp;\dots\<br>x_m&amp;\dots&amp;x{mn}<br>\end{bmatrix}\begin{bmatrix}y<em>1&amp;…&amp;y</em>{1q}\<br>y<em>2 &amp;\dots&amp;y</em>{2q}\<br>\dots&amp;\dots&amp;\dots\<br>y<em>p&amp;\dots&amp;y</em>{pq}<br>\end{bmatrix}<br>\<br>=\begin{bmatrix}x_1y<em>1&amp;\dots&amp;x</em>{1}y_{1q}&amp;x_1y_2&amp;\dots&amp;x<em>1y</em>{pq}\<br>\dots&amp;\dots&amp;\dots&amp;\dots&amp;\dots&amp;\dots\<br>x_{1n}y<em>1&amp;\dots&amp;x</em>{1n}y<em>{1q}&amp;x</em>{1n}y<em>2&amp;\dots&amp;x</em>{1n}y_{pq}\<br>x_2y<em>1&amp;\dots&amp;x</em>{1}y_{1q}&amp;x_2y_2&amp;\dots&amp;x<em>2y</em>{pq}\<br>\dots&amp;\dots&amp;\dots&amp;\dots&amp;\dots&amp;\dots\<br>x_{mn}y<em>1&amp;\dots&amp;x</em>{mn}y<em>{1q}&amp;x</em>{mn}y<em>2&amp;\dots&amp;x</em>{mn}y_{pq}\<br>\end{bmatrix}\tag{8}<br>$$</p>
+<p><strong>矩阵外积</strong> outer<br>$$<br>x\oplus y=\begin{bmatrix}x<em>1&amp;…&amp;x</em>{1n}\<br>x<em>2 &amp;…&amp;x</em>{2n}\<br>\dots&amp;\dots&amp;\dots\<br>x_m&amp;\dots&amp;x{mn}<br>\end{bmatrix}\begin{bmatrix}y<em>1&amp;…&amp;y</em>{1q}\<br>y<em>2 &amp;\dots&amp;y</em>{2q}\<br>\dots&amp;\dots&amp;\dots\<br>y<em>p&amp;\dots&amp;y</em>{pq}<br>\end{bmatrix}<br>\<br>=\begin{bmatrix}x_1y<em>1&amp;\dots&amp;x</em>{1}y_{1q}&amp;x_1y_2&amp;\dots&amp;x<em>1y</em>{pq}\<br>\dots&amp;\dots&amp;\dots&amp;\dots&amp;\dots&amp;\dots\<br>x_{1n}y<em>1&amp;\dots&amp;x</em>{1n}y<em>{1q}&amp;x</em>{1n}y<em>2&amp;\dots&amp;x</em>{1n}y_{pq}\<br>x_2y<em>1&amp;\dots&amp;x</em>{1}y_{1q}&amp;x_2y_2&amp;\dots&amp;x<em>2y</em>{pq}\<br>\dots&amp;\dots&amp;\dots&amp;\dots&amp;\dots&amp;\dots\<br>x_{mn}y<em>1&amp;\dots&amp;x</em>{mn}y<em>{1q}&amp;x</em>{mn}y<em>2&amp;\dots&amp;x</em>{mn}y_{pq}\<br>\end{bmatrix}\tag{8}<br>$$</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># 矩阵的 外积 np.outer</span></div><div class="line">a = np.array([[<span class="number">1</span>,<span class="number">2</span>],</div><div class="line">              [<span class="number">3</span>,<span class="number">4</span>],</div><div class="line">              [<span class="number">5</span>,<span class="number">6</span>]])</div><div class="line">b = np.array([[<span class="number">1</span>,<span class="number">2</span>],</div><div class="line">              [<span class="number">1</span>,<span class="number">2</span>],</div><div class="line">              [<span class="number">1</span>,<span class="number">2</span>]])</div><div class="line">print(np.outer(a,b))</div></pre></td></tr></table></figure>
 <p>输出：</p>
 <p>[[ 1  2  1  2  1  2]<br> [ 2  4  2  4  2  4]<br> [ 3  6  3  6  3  6]<br> [ 4  8  4  8  4  8]<br> [ 5 10  5 10  5 10]<br> [ 6 12  6 12  6 12]]</p>
-<h5 id="矩阵元素积"><a href="#矩阵元素积" class="headerlink" title="矩阵元素积"></a>矩阵元素积</h5><p>根据python的广播特性 </p>
+<p><strong>矩阵元素积</strong> elementwise</p>
+<p>根据python的广播特性 </p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</div><div class="line">a = np.array([[<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>],</div><div class="line">             [<span class="number">2</span>,<span class="number">2</span>,<span class="number">2</span>],</div><div class="line">             [<span class="number">3</span>,<span class="number">3</span>,<span class="number">3</span>]])</div><div class="line">b = np.array([[<span class="number">1</span>],</div><div class="line">             [<span class="number">2</span>],</div><div class="line">             [<span class="number">3</span>]])</div><div class="line">c = a*b 	<span class="comment"># 或者用c = np.multiply(a,b)</span></div><div class="line">print(c)</div></pre></td></tr></table></figure>
 <p>输出：</p>
 <p>[[1 2 3]<br> [4 4 4]<br> [9 9 9]]</p>
@@ -404,6 +410,10 @@
           </div>
 
           <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/01/08/text/" rel="prev" title="text">
+                text <i class="fa fa-chevron-right"></i>
+              </a>
             
           </div>
         </div>
@@ -475,7 +485,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">11</span>
+              <span class="site-state-item-count">12</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>
@@ -546,7 +556,7 @@
               
             
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#NG深度学习中用到的函数"><span class="nav-number">1.</span> <span class="nav-text">NG深度学习中用到的函数</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#sigmoid函数"><span class="nav-number">1.0.1.</span> <span class="nav-text">sigmoid函数</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Sigmoid-gradient"><span class="nav-number">1.0.2.</span> <span class="nav-text">Sigmoid gradient</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#image2vector函数"><span class="nav-number">1.0.3.</span> <span class="nav-text">image2vector函数</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Normalizing-rows-单位化行向量"><span class="nav-number">1.0.4.</span> <span class="nav-text">Normalizing rows (单位化行向量)</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Implement-the-L1-and-L2-loss-functions（损失函数）"><span class="nav-number">1.0.5.</span> <span class="nav-text">Implement the L1 and L2 loss functions（损失函数）</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#常用的一些基本数学知识"><span class="nav-number">2.</span> <span class="nav-text">常用的一些基本数学知识</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#矩阵內积"><span class="nav-number">2.0.1.</span> <span class="nav-text">矩阵內积</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#矩阵外积"><span class="nav-number">2.0.2.</span> <span class="nav-text">矩阵外积</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#矩阵元素积"><span class="nav-number">2.0.3.</span> <span class="nav-text">矩阵元素积</span></a></li></ol></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#NG深度学习中用到的函数"><span class="nav-number">1.</span> <span class="nav-text">NG深度学习中用到的函数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#常用的一些基本数学知识"><span class="nav-number">2.</span> <span class="nav-text">常用的一些基本数学知识</span></a></li></ol></div>
             
           </div>
         </section>
@@ -816,7 +826,7 @@
     });
   </script><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
 <script type="text/x-mathjax-config">
-  MathJax.Hub.Config({"tex2jax":{"inlineMath":[["$","$"],["\\(","\\)"]],"skipTags":["script","noscript","style","textarea","pre","code"],"processEscapes":true},"TeX":{"equationNumbers":{"autoNumber":"AMS"}}});
+  MathJax.Hub.Config("");
 </script>
 
 <script type="text/x-mathjax-config">
@@ -828,7 +838,7 @@
   });
 </script>
 
-<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js">
+<script type="text/javascript" src="custom_mathjax_source">
 </script>
 <!-- End: Injected MathJax -->
 <!-- hexo-inject:end -->
