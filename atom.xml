@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://yoursite.com/"/>
-  <updated>2018-01-08T13:38:16.259Z</updated>
+  <updated>2018-01-08T14:08:00.458Z</updated>
   <id>http://yoursite.com/</id>
   
   <author>
@@ -20,9 +20,9 @@
     <link href="http://yoursite.com/2018/01/08/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/"/>
     <id>http://yoursite.com/2018/01/08/深度学习基础知识/</id>
     <published>2018-01-08T07:54:18.000Z</published>
-    <updated>2018-01-08T13:38:16.259Z</updated>
+    <updated>2018-01-08T14:08:00.458Z</updated>
     
-    <content type="html"><![CDATA[<h3 id="NG深度学习中用到的函数"><a href="#NG深度学习中用到的函数" class="headerlink" title="NG深度学习中用到的函数"></a>NG深度学习中用到的函数</h3><h5 id="sigmoid函数"><a href="#sigmoid函数" class="headerlink" title="sigmoid函数"></a><em>sigmoid</em>函数</h5><p>$$<br>\text{For } x \in \mathbb{R}^n \text{,     } sigmoid(x) = sigmoid\begin{pmatrix}<br>    x_1  \<br>    x_2  \<br>    …  \<br>    x_n  \<br>\end{pmatrix} = \begin{pmatrix}<br>    \frac{1}{1+e^{-x_1}}  \<br>    \frac{1}{1+e^{-x_2}}  \<br>    …  \<br>    \frac{1}{1+e^{-x_n}}  \<br>\end{pmatrix}\tag{1}<br>$$</p>
+    <content type="html"><![CDATA[<h3 id="NG深度学习中用到的函数"><a href="#NG深度学习中用到的函数" class="headerlink" title="NG深度学习中用到的函数"></a>NG深度学习中用到的函数</h3><h5 id="sigmoid函数"><a href="#sigmoid函数" class="headerlink" title="sigmoid函数"></a><em>sigmoid</em>函数</h5><p>$<br>\text{For } x \in \mathbb{R}^n \text{,     } sigmoid(x) = sigmoid\begin{pmatrix}<br>    x_1  \<br>    x_2  \<br>    …  \<br>    x_n  \<br>\end{pmatrix} = \begin{pmatrix}<br>    \frac{1}{1+e^{-x_1}}  \<br>    \frac{1}{1+e^{-x_2}}  \<br>    …  \<br>    \frac{1}{1+e^{-x_n}}  \<br>\end{pmatrix}\tag{1}<br>$</p>
 <p>python代码实现：</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">sigmoid</span><span class="params">(x)</span>:</span></div><div class="line">  s = <span class="number">1</span> / (<span class="number">1</span> + np.exp(-x))</div><div class="line">  <span class="keyword">return</span> s</div></pre></td></tr></table></figure>
 <h5 id="Sigmoid-gradient"><a href="#Sigmoid-gradient" class="headerlink" title="Sigmoid gradient"></a>Sigmoid gradient</h5><p>经过dS = ds/dx的求导运算发现dS = s*(1-s)<br>$$<br>sigmoid_derivative(x) = \sigma’(x) = \sigma(x) (1 - \sigma(x))\tag{2}<br>$$</p>
@@ -62,7 +62,7 @@
     
     <summary type="html">
     
-      &lt;h3 id=&quot;NG深度学习中用到的函数&quot;&gt;&lt;a href=&quot;#NG深度学习中用到的函数&quot; class=&quot;headerlink&quot; title=&quot;NG深度学习中用到的函数&quot;&gt;&lt;/a&gt;NG深度学习中用到的函数&lt;/h3&gt;&lt;h5 id=&quot;sigmoid函数&quot;&gt;&lt;a href=&quot;#sigmoid函数&quot; class=&quot;headerlink&quot; title=&quot;sigmoid函数&quot;&gt;&lt;/a&gt;&lt;em&gt;sigmoid&lt;/em&gt;函数&lt;/h5&gt;&lt;p&gt;$$&lt;br&gt;\text{For } x \in \mathbb{R}^n \text{,     } sigmoid(x) = sigmoid\begin{pmatrix}&lt;br&gt;    x_1  \&lt;br&gt;    x_2  \&lt;br&gt;    …  \&lt;br&gt;    x_n  \&lt;br&gt;\end{pmatrix} = \begin{pmatrix}&lt;br&gt;    \frac{1}{1+e^{-x_1}}  \&lt;br&gt;    \frac{1}{1+e^{-x_2}}  \&lt;br&gt;    …  \&lt;br&gt;    \frac{1}{1+e^{-x_n}}  \&lt;br&gt;\end{pmatrix}\tag{1}&lt;br&gt;$$&lt;/p&gt;
+      &lt;h3 id=&quot;NG深度学习中用到的函数&quot;&gt;&lt;a href=&quot;#NG深度学习中用到的函数&quot; class=&quot;headerlink&quot; title=&quot;NG深度学习中用到的函数&quot;&gt;&lt;/a&gt;NG深度学习中用到的函数&lt;/h3&gt;&lt;h5 id=&quot;sigmoid函数&quot;&gt;&lt;a href=&quot;#sigmoid函数&quot; class=&quot;headerlink&quot; title=&quot;sigmoid函数&quot;&gt;&lt;/a&gt;&lt;em&gt;sigmoid&lt;/em&gt;函数&lt;/h5&gt;&lt;p&gt;$&lt;br&gt;\text{For } x \in \mathbb{R}^n \text{,     } sigmoid(x) = sigmoid\begin{pmatrix}&lt;br&gt;    x_1  \&lt;br&gt;    x_2  \&lt;br&gt;    …  \&lt;br&gt;    x_n  \&lt;br&gt;\end{pmatrix} = \begin{pmatrix}&lt;br&gt;    \frac{1}{1+e^{-x_1}}  \&lt;br&gt;    \frac{1}{1+e^{-x_2}}  \&lt;br&gt;    …  \&lt;br&gt;    \frac{1}{1+e^{-x_n}}  \&lt;br&gt;\end{pmatrix}\tag{1}&lt;br&gt;$&lt;/p&gt;
 &lt;p&gt;python代码实现：&lt;/p&gt;
 &lt;figure class=&quot;highlight python&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;1&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;2&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;3&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;4&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;import&lt;/span&gt; numpy &lt;span class=&quot;keyword&quot;&gt;as&lt;/span&gt; np&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;&lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;title&quot;&gt;sigmoid&lt;/span&gt;&lt;span class=&quot;params&quot;&gt;(x)&lt;/span&gt;:&lt;/span&gt;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;  s = &lt;span class=&quot;number&quot;&gt;1&lt;/span&gt; / (&lt;span class=&quot;number&quot;&gt;1&lt;/span&gt; + np.exp(-x))&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;  &lt;span class=&quot;keyword&quot;&gt;return&lt;/span&gt; s&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
 &lt;h5 id=&quot;Sigmoid-gradient&quot;&gt;&lt;a href=&quot;#Sigmoid-gradient&quot; class=&quot;headerlink&quot; title=&quot;Sigmoid gradient&quot;&gt;&lt;/a&gt;Sigmoid gradient&lt;/h5&gt;&lt;p&gt;经过dS = ds/dx的求导运算发现dS = s*(1-s)&lt;br&gt;$$&lt;br&gt;sigmoid_derivative(x) = \sigma’(x) = \sigma(x) (1 - \sigma(x))\tag{2}&lt;br&gt;$$&lt;/p&gt;
