@@ -4,7 +4,7 @@
     
     <entry>
       <title><![CDATA[Hexo+NexT+LaTex配置]]></title>
-      <url>%2F2018%2F01%2F09%2Fhexo-mathjax%E9%85%8D%E7%BD%AE%2F</url>
+      <url>%2F2018%2F01%2F09%2FHexo%2BNexT%2BLaTex%E9%85%8D%E7%BD%AE%2F</url>
       <content type="text"><![CDATA[在Hexo博客中书写LaTex公式时遇到渲染问题，一开始无法识别LaTex公式，然后就是无法正常渲染矩阵。 结合网上不清晰的教程，得出结论要在Hexo上渲染LaTex，要通过MathJax来渲染，摸索了一晚，终于成功了。 现给出解决方案 第一步： 打开Hexo目录中Themes主题中的_config.yml配置文件，我用的是NexT主题，路径为/Hexo/themes/next/_config.yml 该配置文件中有自带的MathJax开关 大概在225行左右，然后将其修改为下面代码。 我就是 这个开关没找到 直接在文件最后 添加，结果无效。就这个问题困扰了几个小时。 1234# MathJax Supportmathjax: enable: true cdn: //cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML 修改完成后，试着重启Hexo,并启动本地服务查看 123hexo cleanhexo ghexo ser 第二步： 你会发现，有些LaTex公式正常渲染，有些却不能，特别是矩阵 都默认一行显示，经过一番折腾 发现是默认渲染器与LaTex公式的代码冲突，我们应该更换渲染器即可： 12npm uninstall hexo-renderer-markednpm install hexo-renderer-kramed --save 修改完后，再试着重新部署，LaTex完美渲染。 大功告成。]]></content>
     </entry>
 
