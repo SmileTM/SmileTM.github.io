@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://yoursite.com/"/>
-  <updated>2018-01-09T03:56:36.330Z</updated>
+  <updated>2018-01-09T03:58:41.491Z</updated>
   <id>http://yoursite.com/</id>
   
   <author>
@@ -20,7 +20,7 @@
     <link href="http://yoursite.com/2018/01/09/Hexo+NexT+LaTex%E9%85%8D%E7%BD%AE/"/>
     <id>http://yoursite.com/2018/01/09/Hexo+NexT+LaTex配置/</id>
     <published>2018-01-09T03:24:59.000Z</published>
-    <updated>2018-01-09T03:56:36.330Z</updated>
+    <updated>2018-01-09T03:58:41.491Z</updated>
     
     <content type="html"><![CDATA[<p>在Hexo博客中书写LaTex公式时遇到渲染问题，一开始无法识别LaTex公式，然后就是无法正常渲染矩阵。</p>
 <p>结合网上不清晰的教程，得出结论要在Hexo上渲染LaTex，要通过MathJax来渲染，摸索了一晚，终于成功了。</p>
