@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://yoursite.com/"/>
-  <updated>2018-01-17T11:06:39.709Z</updated>
+  <updated>2018-01-17T11:09:48.285Z</updated>
   <id>http://yoursite.com/</id>
   
   <author>
@@ -20,9 +20,9 @@
     <link href="http://yoursite.com/2018/01/17/%E5%9F%BA%E4%BA%8ERRT%E7%AE%97%E6%B3%95%E7%9A%84%E8%B7%AF%E5%BE%84%E4%BB%BF%E7%9C%9F/"/>
     <id>http://yoursite.com/2018/01/17/基于RRT算法的路径仿真/</id>
     <published>2018-01-17T10:56:32.000Z</published>
-    <updated>2018-01-17T11:06:39.709Z</updated>
+    <updated>2018-01-17T11:09:48.285Z</updated>
     
-    <content type="html"><![CDATA[<h2 id="Ros-基于RRT算法的路径仿真"><a href="#Ros-基于RRT算法的路径仿真" class="headerlink" title="Ros 基于RRT算法的路径仿真"></a>Ros 基于RRT算法的路径仿真</h2><p>最近，在做毕业设计，有关Ros这方面的。于是，利用空余时间，简单的探索了一下。</p>
+    <content type="html"><![CDATA[<p>最近，在做毕业设计，有关Ros这方面的。于是，利用空余时间，简单的探索了一下。</p>
 <p>环境Ubuntu 16.04 LTS + ROS  kinetic</p>
 <p>首先为catkin创建一个工作空间</p>
 <p>如果已装好了catkin，并且初始化好了变量环境，且创建好了工作空间，则该步骤可以跳过。</p>
@@ -59,7 +59,7 @@
     
     <summary type="html">
     
-      &lt;h2 id=&quot;Ros-基于RRT算法的路径仿真&quot;&gt;&lt;a href=&quot;#Ros-基于RRT算法的路径仿真&quot; class=&quot;headerlink&quot; title=&quot;Ros 基于RRT算法的路径仿真&quot;&gt;&lt;/a&gt;Ros 基于RRT算法的路径仿真&lt;/h2&gt;&lt;p&gt;最近，在做毕业设计，有关Ros这方面的。于是，利用空余时间，简单的探索了一下。&lt;/p&gt;
+      &lt;p&gt;最近，在做毕业设计，有关Ros这方面的。于是，利用空余时间，简单的探索了一下。&lt;/p&gt;
 &lt;p&gt;环境Ubuntu 16.04 LTS + ROS  kinetic&lt;/p&gt;
 &lt;p&gt;首先为catkin创建一个工作空间&lt;/p&gt;
 &lt;p&gt;如果已装好了catkin，并且初始化好了变量环境，且创建好了工作空间，则该步骤可以跳过。&lt;/p&gt;
