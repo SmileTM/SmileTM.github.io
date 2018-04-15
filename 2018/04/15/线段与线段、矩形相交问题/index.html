@@ -103,7 +103,7 @@
 <meta property="og:image" content="http://yoursite.com/images/Intersect/1.png">
 <meta property="og:image" content="http://yoursite.com/images/Intersect/2.png">
 <meta property="og:image" content="http://yoursite.com/images/Intersect/3.png">
-<meta property="og:updated_time" content="2018-04-15T15:02:58.112Z">
+<meta property="og:updated_time" content="2018-04-15T15:05:27.168Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="线段与线段、矩形相交问题">
 <meta name="twitter:description" content="图形学问题最近在做毕设时，遇到 判断线段是否经过矩形障碍物的图形学问题。 为了解决这一问题，我们先看看 如何判断两线段是否相交 线段与线段是否相交具体解决办法大致可以分为两个步骤。 a.快速排斥实验 若以该线段为对角线的矩形A与该障碍物矩形B不重合，则显然这两线段不相交。 但，若矩形A与矩形B重合，则并不一定代表这两线段相交。">
@@ -340,9 +340,9 @@
 <p>如果两线段相交，则线段AB的两端点必然在线段CD两侧，同时线段CD的两端点也必然在线段AB的两侧。</p>
 <p><img src="/images/Intersect/2.png" alt="2"></p>
 <p>因此我们 可以通过叉积来判断 ABMC=AB x AC，ABMD=AB x AD</p>
-<p>若ABMC <em> ABMD &lt;  0, 则代表CD在AB <em>*直线</em></em> 的异侧。</p>
+<p>若ABMC * ABMD &lt;  0, 则代表CD在AB <b>直线</b> 的异侧。</p>
 <p>接下来还应该判断 CDMA = CD x CA， CDMB = CD x CB。</p>
-<p>若CDMA <em> CDMB &lt; 0, 则代表AB在CD <em>*直线</em></em> 的异侧。</p>
+<p>若CDMA * CDMB &lt; 0, 则代表AB在CD <b>直线</b> 的异侧。</p>
 <p>因此，若满足ABMC · ABMD &lt;  0 且 CDMA · CDMB &lt; 0 则 则这两线段必相交，否则不相交。</p>
 <figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">struct</span> node  </div><div class="line">&#123;  </div><div class="line">    <span class="keyword">double</span> x,y;  </div><div class="line">&#125;;    </div><div class="line"><span class="function"><span class="keyword">double</span> <span class="title">Cross_Prouct</span><span class="params">(node A,node B,node C)</span>       <span class="comment">//  计算BA叉乘CA；  </span></span></div><div class="line">&#123;  </div><div class="line">    <span class="keyword">return</span> (B.x-A.x)*(C.y-A.y)-(B.y-A.y)*(C.x-A.x);   <span class="comment">//向量叉积运算  </span></div><div class="line">&#125;  </div><div class="line"><span class="function"><span class="keyword">bool</span> <span class="title">Intersect</span><span class="params">(node A,node B,node C,node D)</span>     <span class="comment">//  通过叉乘判断线段是否相交；  </span></span></div><div class="line">&#123;  </div><div class="line">    <span class="keyword">if</span>(min(A.x,B.x)&lt;=max(C.x,D.x)&amp;&amp;         <span class="comment">//  快速排斥实验；  </span></div><div class="line">       min(C.x,D.x)&lt;=max(A.x,B.x)&amp;&amp;  </div><div class="line">       min(A.y,B.y)&lt;=max(C.y,D.y)&amp;&amp;  </div><div class="line">       min(C.y,D.y)&lt;=max(A.y,B.y)&amp;&amp;  </div><div class="line">       Cross_Prouct(A,B,C)*Cross_Prouct(A,B,D)&lt;<span class="number">0</span>&amp;&amp;      <span class="comment">//  跨立实验；  </span></div><div class="line">       Cross_Prouct(C,D,A)*Cross_Prouct(C,D,B)&lt;<span class="number">0</span>)       <span class="comment">//  叉乘异号表示在两侧；  </span></div><div class="line">       <span class="keyword">return</span> <span class="literal">true</span>;  </div><div class="line">    <span class="keyword">else</span> <span class="keyword">return</span> <span class="literal">false</span>;  </div><div class="line">&#125;</div></pre></td></tr></table></figure>
 <p>当然判断可以直接从b开始，a只是起简单快速判断的作用。</p>
