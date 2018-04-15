@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://yoursite.com/"/>
-  <updated>2018-01-26T14:03:47.522Z</updated>
+  <updated>2018-04-15T14:44:24.834Z</updated>
   <id>http://yoursite.com/</id>
   
   <author>
@@ -16,31 +16,55 @@
   <generator uri="http://hexo.io/">Hexo</generator>
   
   <entry>
-    <title>test</title>
-    <link href="http://yoursite.com/2018/01/26/test/"/>
-    <id>http://yoursite.com/2018/01/26/test/</id>
-    <published>2018-01-26T14:01:51.000Z</published>
-    <updated>2018-01-26T14:03:47.522Z</updated>
+    <title>线段与线段、矩形相交问题</title>
+    <link href="http://yoursite.com/2018/04/15/%E7%BA%BF%E6%AE%B5%E4%B8%8E%E7%BA%BF%E6%AE%B5%E3%80%81%E7%9F%A9%E5%BD%A2%E7%9B%B8%E4%BA%A4%E9%97%AE%E9%A2%98/"/>
+    <id>http://yoursite.com/2018/04/15/线段与线段、矩形相交问题/</id>
+    <published>2018-04-15T14:39:25.000Z</published>
+    <updated>2018-04-15T14:44:24.834Z</updated>
     
-    <content type="html"><![CDATA[<center>
-<video width="620" height="440" src="/images/test.mp4" type="video/mp4" controls>
-</video>
-</center>
-
-<p><a href="/images/test.mp4">test.mp4</a></p>
+    <content type="html"><![CDATA[<h2 id="图形学问题"><a href="#图形学问题" class="headerlink" title="图形学问题"></a>图形学问题</h2><p>最近在做毕设时，遇到 判断线段是否经过矩形障碍物的图形学问题。</p>
+<p>为了解决这一问题，我们先看看 如何判断两线段是否相交</p>
+<h3 id="线段与线段是否相交"><a href="#线段与线段是否相交" class="headerlink" title="线段与线段是否相交"></a>线段与线段是否相交</h3><p>具体解决办法大致可以分为两个步骤。</p>
+<p><strong>a.快速排斥实验</strong></p>
+<p>若以该线段为对角线的矩形A与该障碍物矩形B不重合，则显然这两线段不相交。</p>
+<p>但，若矩形A与矩形B重合，则并不一定代表这两线段相交。</p>
+<p><img src="/images/Intersect/1.png" alt="1"></p>
+<a id="more"></a>
+<p><strong>b.跨立实验</strong></p>
+<p>如果两线段相交，则线段AB的两端点必然在线段CD两侧，同时线段CD的两端点也必然在线段AB的两侧。</p>
+<p><img src="/images/Intersect/2.png" alt="2"></p>
+<p>因此我们 可以通过叉积来判断 ABMC=AB x AC，ABMD=AB x AD</p>
+<p>若ABMC <em> ABMD &lt;  0, 则代表CD在AB<em>*直线</em></em>的异侧。</p>
+<p>接下来还应该判断 CDMA = CD x CA， CDMB = CD x CB。</p>
+<p>若CDMA <em> CDMB &lt; 0, 则代表AB在CD<em>*直线</em></em>的异侧。</p>
+<p>因此，若满足ABMC <em> ABMD &lt;  0 且 CDMA </em> CDMB &lt; 0 则 则这两线段必相交，否则不相交。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">struct</span> node  </div><div class="line">&#123;  </div><div class="line">    <span class="keyword">double</span> x,y;  </div><div class="line">&#125;;    </div><div class="line"><span class="function"><span class="keyword">double</span> <span class="title">Cross_Prouct</span><span class="params">(node A,node B,node C)</span>       <span class="comment">//  计算BA叉乘CA；  </span></span></div><div class="line">&#123;  </div><div class="line">    <span class="keyword">return</span> (B.x-A.x)*(C.y-A.y)-(B.y-A.y)*(C.x-A.x);   <span class="comment">//向量叉积运算  </span></div><div class="line">&#125;  </div><div class="line"><span class="function"><span class="keyword">bool</span> <span class="title">Intersect</span><span class="params">(node A,node B,node C,node D)</span>     <span class="comment">//  通过叉乘判断线段是否相交；  </span></span></div><div class="line">&#123;  </div><div class="line">    <span class="keyword">if</span>(min(A.x,B.x)&lt;=max(C.x,D.x)&amp;&amp;         <span class="comment">//  快速排斥实验；  </span></div><div class="line">       min(C.x,D.x)&lt;=max(A.x,B.x)&amp;&amp;  </div><div class="line">       min(A.y,B.y)&lt;=max(C.y,D.y)&amp;&amp;  </div><div class="line">       min(C.y,D.y)&lt;=max(A.y,B.y)&amp;&amp;  </div><div class="line">       Cross_Prouct(A,B,C)*Cross_Prouct(A,B,D)&lt;<span class="number">0</span>&amp;&amp;      <span class="comment">//  跨立实验；  </span></div><div class="line">       Cross_Prouct(C,D,A)*Cross_Prouct(C,D,B)&lt;<span class="number">0</span>)       <span class="comment">//  叉乘异号表示在两侧；  </span></div><div class="line">       <span class="keyword">return</span> <span class="literal">true</span>;  </div><div class="line">    <span class="keyword">else</span> <span class="keyword">return</span> <span class="literal">false</span>;  </div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>当然判断可以直接从b开始，a只是起简单快速判断的作用。</p>
+<h3 id="线段与矩形是否相交"><a href="#线段与矩形是否相交" class="headerlink" title="线段与矩形是否相交"></a>线段与矩形是否相交</h3><p>探索完了两线段是否相交的问题，我们开始步入正题，来看看怎么判断线段是否与矩形相交。</p>
+<p><strong>a.判断线段两端点是否有一个端点或两端点都在矩形中，若有则相交，否则进入b判断。</strong></p>
+<p><img src="/images/Intersect/3.png" alt="3"></p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//A,C为对角线的两点</span></div><div class="line"><span class="function"><span class="keyword">bool</span> <span class="title">checkIfOutsideobstacles</span><span class="params">(node A, node C, nade M)</span> </span>&#123;</div><div class="line">    <span class="keyword">if</span>(min(A.x, C.x) &lt;= M.x &amp;&amp; M.x &lt;= max(A.x, C.x) &amp;&amp; min(A.y, C.y) &lt;= M.y &amp;&amp; M.y &lt;= max(A.y, C.y))&#123;</div><div class="line">        <span class="keyword">return</span> <span class="literal">false</span>;</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">return</span> <span class="literal">true</span>;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>经过a判断排除后，代表线段两端点都在矩形外。</p>
+<p>再介绍b判断前，先介绍下，若一线段端点都在矩形外，且该线段与矩形相交，那么该线段必然与该矩形中的某一条对角线相交。 因此，又回到开始判断两线段是否相交上面。</p>
+<p><strong>b. 分别判断该线段是否与矩形的两条对角线是否相交，若都不相交，则代表该线段与矩形不相交，否则 相交。</strong></p>
+<p>另外补充：</p>
+<p><a href="http://dev.gameres.com/Program/Abstract/Geometry.htm#凸包的求法" target="_blank" rel="noopener"><strong>一些常用的计算几何算法概览</strong></a></p>
 ]]></content>
     
     <summary type="html">
     
-      &lt;center&gt;
-&lt;video width=&quot;620&quot; height=&quot;440&quot; src=&quot;/images/test.mp4&quot; type=&quot;video/mp4&quot; controls&gt;
-&lt;/video&gt;
-&lt;/center&gt;
-
-&lt;p&gt;&lt;a href=&quot;/images/test.mp4&quot;
+      &lt;h2 id=&quot;图形学问题&quot;&gt;&lt;a href=&quot;#图形学问题&quot; class=&quot;headerlink&quot; title=&quot;图形学问题&quot;&gt;&lt;/a&gt;图形学问题&lt;/h2&gt;&lt;p&gt;最近在做毕设时，遇到 判断线段是否经过矩形障碍物的图形学问题。&lt;/p&gt;
+&lt;p&gt;为了解决这一问题，我们先看看 如何判断两线段是否相交&lt;/p&gt;
+&lt;h3 id=&quot;线段与线段是否相交&quot;&gt;&lt;a href=&quot;#线段与线段是否相交&quot; class=&quot;headerlink&quot; title=&quot;线段与线段是否相交&quot;&gt;&lt;/a&gt;线段与线段是否相交&lt;/h3&gt;&lt;p&gt;具体解决办法大致可以分为两个步骤。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;a.快速排斥实验&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;若以该线段为对角线的矩形A与该障碍物矩形B不重合，则显然这两线段不相交。&lt;/p&gt;
+&lt;p&gt;但，若矩形A与矩形B重合，则并不一定代表这两线段相交。&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;/images/Intersect/1.png&quot; alt=&quot;1&quot;&gt;&lt;/p&gt;
     
     </summary>
     
+    
+      <category term="几何算法" scheme="http://yoursite.com/tags/%E5%87%A0%E4%BD%95%E7%AE%97%E6%B3%95/"/>
     
   </entry>
   
