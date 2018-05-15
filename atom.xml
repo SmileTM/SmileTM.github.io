@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://yoursite.com/"/>
-  <updated>2018-05-15T08:31:24.203Z</updated>
+  <updated>2018-04-15T15:07:11.161Z</updated>
   <id>http://yoursite.com/</id>
   
   <author>
@@ -14,30 +14,6 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
-  
-  <entry>
-    <title>text</title>
-    <link href="http://yoursite.com/2018/05/15/text/"/>
-    <id>http://yoursite.com/2018/05/15/text/</id>
-    <published>2018-05-15T08:30:48.000Z</published>
-    <updated>2018-05-15T08:31:24.203Z</updated>
-    
-    <content type="html"><![CDATA[<ul>
-<li>推荐大家一个靠谱的论文检测平台。重复的部分有详细出处以及具体修改意见，能直接在文章上做修改，全部改完一键下载就搞定了。</li>
-<li>怕麻烦的话，还能用它自带的降重功能。哦对了，他们现在正在做毕业季活动， 赠送很多免费字数，可以说是十分划算了！地址是：<a href="http://www.paperpass.com/" target="_blank" rel="noopener">http://www.paperpass.com/</a></li>
-</ul>
-]]></content>
-    
-    <summary type="html">
-    
-      &lt;ul&gt;
-&lt;li&gt;推荐大家一个靠谱的论文检测平台。重复的部分有详细出处以及具体修改意见，能直接在文章上做修改，全部改完一键下载就搞定了。&lt;/li&gt;
-&lt;li&gt;怕麻烦的话，还能用它自带的降重功能。哦对了，他们现在正在做毕业季活动， 赠送很多免费字数，可以说是十分划算了！地址是：&lt;a 
-    
-    </summary>
-    
-    
-  </entry>
   
   <entry>
     <title>线段与线段、矩形相交问题</title>
