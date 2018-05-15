@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://yoursite.com/"/>
-  <updated>2018-04-15T15:05:27.168Z</updated>
+  <updated>2018-05-15T08:31:24.203Z</updated>
   <id>http://yoursite.com/</id>
   
   <author>
@@ -16,11 +16,35 @@
   <generator uri="http://hexo.io/">Hexo</generator>
   
   <entry>
+    <title>text</title>
+    <link href="http://yoursite.com/2018/05/15/text/"/>
+    <id>http://yoursite.com/2018/05/15/text/</id>
+    <published>2018-05-15T08:30:48.000Z</published>
+    <updated>2018-05-15T08:31:24.203Z</updated>
+    
+    <content type="html"><![CDATA[<ul>
+<li>推荐大家一个靠谱的论文检测平台。重复的部分有详细出处以及具体修改意见，能直接在文章上做修改，全部改完一键下载就搞定了。</li>
+<li>怕麻烦的话，还能用它自带的降重功能。哦对了，他们现在正在做毕业季活动， 赠送很多免费字数，可以说是十分划算了！地址是：<a href="http://www.paperpass.com/" target="_blank" rel="noopener">http://www.paperpass.com/</a></li>
+</ul>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;ul&gt;
+&lt;li&gt;推荐大家一个靠谱的论文检测平台。重复的部分有详细出处以及具体修改意见，能直接在文章上做修改，全部改完一键下载就搞定了。&lt;/li&gt;
+&lt;li&gt;怕麻烦的话，还能用它自带的降重功能。哦对了，他们现在正在做毕业季活动， 赠送很多免费字数，可以说是十分划算了！地址是：&lt;a 
+    
+    </summary>
+    
+    
+  </entry>
+  
+  <entry>
     <title>线段与线段、矩形相交问题</title>
     <link href="http://yoursite.com/2018/04/15/%E7%BA%BF%E6%AE%B5%E4%B8%8E%E7%BA%BF%E6%AE%B5%E3%80%81%E7%9F%A9%E5%BD%A2%E7%9B%B8%E4%BA%A4%E9%97%AE%E9%A2%98/"/>
     <id>http://yoursite.com/2018/04/15/线段与线段、矩形相交问题/</id>
     <published>2018-04-15T14:39:25.000Z</published>
-    <updated>2018-04-15T15:05:27.168Z</updated>
+    <updated>2018-04-15T15:07:11.161Z</updated>
     
     <content type="html"><![CDATA[<h2 id="图形学问题"><a href="#图形学问题" class="headerlink" title="图形学问题"></a>图形学问题</h2><p>最近在做毕设时，遇到 判断线段是否经过矩形障碍物的图形学问题。</p>
 <p>为了解决这一问题，我们先看看 如何判断两线段是否相交</p>
