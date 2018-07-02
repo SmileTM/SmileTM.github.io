@@ -3,13 +3,6 @@
   
     
     <entry>
-      <title><![CDATA[aaa]]></title>
-      <url>%2F2018%2F05%2F24%2Faaa%2F</url>
-      <content type="text"><![CDATA[推荐大家一个靠谱的论文检测平台。重复的部分有详细出处以及具体修改意见，能直接在文章上做修改，全部改完一键下载就搞定了。怕麻烦的话，还能用它自带的降重功能。哦对了，他们现在正在做毕业季活动， 赠送很多免费字数，可以说是十分划算了！地址是：http://www.paperpass.com/提交链接]]></content>
-    </entry>
-
-    
-    <entry>
       <title><![CDATA[线段与线段、矩形相交问题]]></title>
       <url>%2F2018%2F04%2F15%2F%E7%BA%BF%E6%AE%B5%E4%B8%8E%E7%BA%BF%E6%AE%B5%E3%80%81%E7%9F%A9%E5%BD%A2%E7%9B%B8%E4%BA%A4%E9%97%AE%E9%A2%98%2F</url>
       <content type="text"><![CDATA[图形学问题最近在做毕设时，遇到 判断线段是否经过矩形障碍物的图形学问题。 为了解决这一问题，我们先看看 如何判断两线段是否相交 线段与线段是否相交具体解决办法大致可以分为两个步骤。 a.快速排斥实验 若以该线段为对角线的矩形A与该障碍物矩形B不重合，则显然这两线段不相交。 但，若矩形A与矩形B重合，则并不一定代表这两线段相交。 b.跨立实验 如果两线段相交，则线段AB的两端点必然在线段CD两侧，同时线段CD的两端点也必然在线段AB的两侧。 因此我们 可以通过叉积来判断 ABMC=AB x AC，ABMD=AB x AD 若ABMC * ABMD &lt; 0, 则代表CD在AB 直线 的异侧。 接下来还应该判断 CDMA = CD x CA， CDMB = CD x CB。 若CDMA * CDMB &lt; 0, 则代表AB在CD 直线 的异侧。 因此，若满足ABMC · ABMD &lt; 0 且 CDMA · CDMB &lt; 0 则 则这两线段必相交，否则不相交。 12345678910111213141516171819struct node &#123; double x,y; &#125;; double Cross_Prouct(node A,node B,node C) // 计算BA叉乘CA； &#123; return (B.x-A.x)*(C.y-A.y)-(B.y-A.y)*(C.x-A.x); //向量叉积运算 &#125; bool Intersect(node A,node B,node C,node D) // 通过叉乘判断线段是否相交； &#123; if(min(A.x,B.x)&lt;=max(C.x,D.x)&amp;&amp; // 快速排斥实验； min(C.x,D.x)&lt;=max(A.x,B.x)&amp;&amp; min(A.y,B.y)&lt;=max(C.y,D.y)&amp;&amp; min(C.y,D.y)&lt;=max(A.y,B.y)&amp;&amp; Cross_Prouct(A,B,C)*Cross_Prouct(A,B,D)&lt;0&amp;&amp; // 跨立实验； Cross_Prouct(C,D,A)*Cross_Prouct(C,D,B)&lt;0) // 叉乘异号表示在两侧； return true; else return false; &#125; 当然判断可以直接从b开始，a只是起简单快速判断的作用。 线段与矩形是否相交探索完了两线段是否相交的问题，我们开始步入正题，来看看怎么判断线段是否与矩形相交。 a.判断线段两端点是否有一个端点或两端点都在矩形中，若有则相交，否则进入b判断。 1234567//A,C为对角线的两点bool checkIfOutsideobstacles(node A, node C, nade M) &#123; if(min(A.x, C.x) &lt;= M.x &amp;&amp; M.x &lt;= max(A.x, C.x) &amp;&amp; min(A.y, C.y) &lt;= M.y &amp;&amp; M.y &lt;= max(A.y, C.y))&#123; return false; &#125; return true;&#125; 经过a判断排除后，代表线段两端点都在矩形外。 再介绍b判断前，先介绍下，若一线段端点都在矩形外，且该线段与矩形相交，那么该线段必然与该矩形中的某一条对角线相交。 因此，又回到开始判断两线段是否相交上面。 b. 分别判断该线段是否与矩形的两条对角线是否相交，若都不相交，则代表该线段与矩形不相交，否则 相交。 另外补充： 一些常用的计算几何算法概览]]></content>
