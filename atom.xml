@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://yoursite.com/"/>
-  <updated>2019-09-05T16:04:27.817Z</updated>
+  <updated>2019-09-12T07:18:22.852Z</updated>
   <id>http://yoursite.com/</id>
   
   <author>
@@ -20,7 +20,7 @@
     <link href="http://yoursite.com/2019/08/26/Bert/"/>
     <id>http://yoursite.com/2019/08/26/Bert/</id>
     <published>2019-08-26T15:10:32.000Z</published>
-    <updated>2019-09-05T16:04:27.817Z</updated>
+    <updated>2019-09-12T07:18:22.852Z</updated>
     
     <content type="html"><![CDATA[<p>Bert全名Bidirectional Encoder Representations from Transformers. 顾名思义，Bert最关键的在于Transformer. </p>
 <p>Transformer是谷歌大脑在2017年底发表的论文<strong>attention is all you need</strong>中所提出的seq2seq模型. 现在已经取得了大范围的应用和扩展, 而BERT就是从transformer中衍生出来的预训练语言模型，Bert主要用到了Transformer的encoder部分. Transformer的具体介绍 在后面transformer_model 部分会详细介绍。</p>
@@ -56,7 +56,7 @@ softmax函数\sigma (\mathbf {z} )_{i}={\frac {e^{z_{i}}}{\sum _{j=1}^{K}e^{z_{j
 <h2 id="transformer-model"><a href="#transformer-model" class="headerlink" title="transformer_model"></a>transformer_model</h2><p>下图为Transformer Block 的示意图：</p>
 <p><img src="/images/Bert/bert4.jpg" alt="bert4"></p>
 <ol>
-<li>positional encodingpositional encoding, 即<strong>位置嵌入</strong>(或位置编码)</li>
+<li>positional encoding  即<strong>位置嵌入</strong>(或位置编码), 但在这里positional encoding 与Transformer 原论文中不同，这里是通过学习得到的，而原论文中是通过三角函数的周期关系得到</li>
 <li>self attention mechanismself attention mechanism, <strong>自注意力机制</strong>;</li>
 <li>Layer NormalizationLayer Normalization和残差连接.</li>
 <li>FeedForwardFeedForward, 其实就是两层线性映射并用激活函数激活, 比如说ReLUReLU:</li>
