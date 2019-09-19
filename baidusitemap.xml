@@ -4,8 +4,42 @@
 
     
   <url>
+    <loc>http://yoursite.com/2019/09/19/tf-ImageDataGenerator/</loc>
+    <lastmod>2019-09-19T13:31:40.678Z</lastmod>
+    <data>
+        <display>
+        <title>tf_ImageDataGenerator</title>
+        <pubTime>2019-09-19T13:19:54.000Z</pubTime>
+        
+        <tag>Tensorflow</tag>
+         
+         
+           
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://yoursite.com/2019/09/18/Tricks/</loc>
+    <lastmod>2019-09-18T02:33:30.429Z</lastmod>
+    <data>
+        <display>
+        <title>Tricks</title>
+        <pubTime>2019-09-18T02:24:08.000Z</pubTime>
+        
+        <tag>Tricks</tag>
+         
+         
+           
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
     <loc>http://yoursite.com/2019/08/26/Bert/</loc>
-    <lastmod>2019-09-12T07:23:02.048Z</lastmod>
+    <lastmod>2019-09-12T07:23:02.049Z</lastmod>
     <data>
         <display>
         <title>Bert</title>
@@ -22,7 +56,7 @@
     
   <url>
     <loc>http://yoursite.com/2018/04/15/%E7%BA%BF%E6%AE%B5%E4%B8%8E%E7%BA%BF%E6%AE%B5%E3%80%81%E7%9F%A9%E5%BD%A2%E7%9B%B8%E4%BA%A4%E9%97%AE%E9%A2%98/</loc>
-    <lastmod>2018-04-15T15:07:11.161Z</lastmod>
+    <lastmod>2018-04-15T15:07:11.162Z</lastmod>
     <data>
         <display>
         <title>线段与线段、矩形相交问题</title>
@@ -74,7 +108,7 @@
     
   <url>
     <loc>http://yoursite.com/2018/01/08/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/</loc>
-    <lastmod>2018-01-09T03:50:57.931Z</lastmod>
+    <lastmod>2018-01-09T03:50:57.932Z</lastmod>
     <data>
         <display>
         <title>深度学习基础知识</title>

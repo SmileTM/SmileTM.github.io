@@ -1,0 +1,816 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion">
+<head>
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic|h1:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Tensorflow," />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="SmileTM博客" type="application/atom+xml" />
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.1" />
+
+
+
+
+
+
+<meta name="description" content="ImageDataGenerator本文章介绍了，直接通过Tensorflow 的ImageDataGenerator 来直接根据相应文件所在的标签目录 进行加载数据，并自动根据文件夹名字 进行自动分类，避免了人工进行标注。">
+<meta name="keywords" content="Tensorflow">
+<meta property="og:type" content="article">
+<meta property="og:title" content="tf_ImageDataGenerator">
+<meta property="og:url" content="http://yoursite.com/2019/09/19/tf-ImageDataGenerator/index.html">
+<meta property="og:site_name" content="SmileTM博客">
+<meta property="og:description" content="ImageDataGenerator本文章介绍了，直接通过Tensorflow 的ImageDataGenerator 来直接根据相应文件所在的标签目录 进行加载数据，并自动根据文件夹名字 进行自动分类，避免了人工进行标注。">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://yoursite.com/images/tf_ImageGenerator/cov2d.png">
+<meta property="og:image" content="http://yoursite.com/images/tf_ImageGenerator/max_pooling.png">
+<meta property="og:updated_time" content="2019-09-19T13:31:40.678Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="tf_ImageDataGenerator">
+<meta name="twitter:description" content="ImageDataGenerator本文章介绍了，直接通过Tensorflow 的ImageDataGenerator 来直接根据相应文件所在的标签目录 进行加载数据，并自动根据文件夹名字 进行自动分类，避免了人工进行标注。">
+<meta name="twitter:image" content="http://yoursite.com/images/tf_ImageGenerator/cov2d.png">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Muse',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 0,
+      author: '博主'
+    }
+  };
+</script>
+
+  <title> tf_ImageDataGenerator | SmileTM博客 </title><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">SmileTM博客</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle">_________Smile  To  Me</p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="#" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup">
+ <span class="search-icon fa fa-search"></span>
+ <input type="text" id="local-search-input">
+ <div id="local-search-result"></div>
+ <span class="popup-btn-close">close</span>
+</div>
+
+
+    </div>
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+           
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                tf_ImageDataGenerator
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2019-09-19T21:19:54+08:00" content="2019-09-19">
+              2019-09-19
+            </time>
+          </span>
+
+          
+
+          
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="ImageDataGenerator"><a href="#ImageDataGenerator" class="headerlink" title="ImageDataGenerator"></a>ImageDataGenerator</h1><p>本文章介绍了，直接通过Tensorflow 的ImageDataGenerator 来直接根据相应文件所在的标签目录 进行加载数据，并自动根据文件夹名字 进行自动分类，避免了人工进行标注。</p>
+<a id="more"></a>
+<p>对文件进行读取，并通过zip 进行解压，解压到指定文件夹。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">import</span> os</div><div class="line"><span class="keyword">import</span> zipfile</div><div class="line"></div><div class="line"><span class="comment"># 指定训练集zip的位置</span></div><div class="line">local_zip = <span class="string">'/tmp/horse-or-human.zip'</span></div><div class="line"><span class="comment"># 对zip压缩包进行读取</span></div><div class="line">zip_ref = zipfile.ZipFile(local_zip, <span class="string">'r'</span>)</div><div class="line"><span class="comment"># 解压到指定目录</span></div><div class="line">zip_ref.extractall(<span class="string">'/tmp/horse-or-human'</span>)</div><div class="line"><span class="comment"># 指定 验证集zip的位置</span></div><div class="line">local_zip = <span class="string">'/tmp/validation-horse-or-human.zip'</span></div><div class="line">zip_ref = zipfile.ZipFile(local_zip, <span class="string">'r'</span>)</div><div class="line">zip_ref.extractall(<span class="string">'/tmp/validation-horse-or-human'</span>)</div><div class="line"><span class="comment"># 关闭zip进程流 释放资源</span></div><div class="line">zip_ref.close()</div></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># Directory with our training horse pictures</span></div><div class="line"><span class="comment"># horse 训练集目录</span></div><div class="line">train_horse_dir = os.path.join(<span class="string">'/tmp/horse-or-human/horses'</span>)</div><div class="line"></div><div class="line"><span class="comment"># Directory with our training human pictures</span></div><div class="line"><span class="comment"># human 训练集目录</span></div><div class="line">train_human_dir = os.path.join(<span class="string">'/tmp/horse-or-human/humans'</span>)</div><div class="line"></div><div class="line"><span class="comment"># Directory with our training horse pictures</span></div><div class="line"><span class="comment"># 设置验证集目录</span></div><div class="line">validation_horse_dir = os.path.join(<span class="string">'/tmp/validation-horse-or-human/horses'</span>)</div><div class="line"></div><div class="line"><span class="comment"># Directory with our training human pictures</span></div><div class="line">validation_human_dir = os.path.join(<span class="string">'/tmp/validation-horse-or-human/humans'</span>)</div></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">train_horse_names = os.listdir(train_horse_dir)</div><div class="line">print(train_horse_names[:<span class="number">10</span>])</div><div class="line"></div><div class="line">train_human_names = os.listdir(train_human_dir)</div><div class="line">print(train_human_names[:<span class="number">10</span>])</div><div class="line"></div><div class="line">validation_horse_hames = os.listdir(validation_horse_dir)</div><div class="line">print(validation_horse_hames[:<span class="number">10</span>])</div><div class="line"></div><div class="line">validation_human_names = os.listdir(validation_human_dir)</div><div class="line">print(validation_human_names[:<span class="number">10</span>])</div></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">train_horse_names = os.listdir(train_horse_dir)</div><div class="line">print(train_horse_names[:<span class="number">10</span>])</div><div class="line"></div><div class="line">train_human_names = os.listdir(train_human_dir)</div><div class="line">print(train_human_names[:<span class="number">10</span>])</div><div class="line"></div><div class="line">validation_horse_hames = os.listdir(validation_horse_dir)</div><div class="line">print(validation_horse_hames[:<span class="number">10</span>])</div><div class="line"></div><div class="line">validation_human_names = os.listdir(validation_human_dir)</div><div class="line">print(validation_human_names[:<span class="number">10</span>])</div></pre></td></tr></table></figure>
+<p>列出各目录下的 文件名称</p>
+<p>[‘horse34-7.png’, ‘horse21-9.png’, ‘horse02-5.png’, ‘horse01-8.png’, ‘horse36-0.png’, ‘horse25-7.png’, ‘horse42-1.png’, ‘horse02-1.png’, ‘horse36-5.png’, ‘horse19-0.png’]<br>[‘human08-12.png’, ‘human14-08.png’, ‘human04-04.png’, ‘human03-27.png’, ‘human15-17.png’, ‘human02-00.png’, ‘human17-06.png’, ‘human04-29.png’, ‘human13-19.png’, ‘human05-00.png’]</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">%matplotlib inline</div><div class="line"></div><div class="line"><span class="keyword">import</span> matplotlib.pyplot <span class="keyword">as</span> plt</div><div class="line"><span class="keyword">import</span> matplotlib.image <span class="keyword">as</span> mpimg</div><div class="line"></div><div class="line"><span class="comment"># Parameters for our graph; we'll output images in a 4x4 configuration</span></div><div class="line">nrows = <span class="number">4</span> <span class="comment"># 设置plt幕布 行</span></div><div class="line">ncols = <span class="number">4</span> <span class="comment"># 设置plt幕布 列</span></div><div class="line"></div><div class="line"><span class="comment"># Index for iterating over images</span></div><div class="line">pic_index = <span class="number">0</span></div></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># Set up matplotlib fig, and size it to fit 4x4 pics</span></div><div class="line">fig = plt.gcf()</div><div class="line">fig.set_size_inches(ncols * <span class="number">4</span>, nrows * <span class="number">4</span>)</div><div class="line"></div><div class="line">pic_index += <span class="number">8</span></div><div class="line">next_horse_pix = [os.path.join(train_horse_dir, fname) </div><div class="line">                <span class="keyword">for</span> fname <span class="keyword">in</span> train_horse_names[pic_index<span class="number">-8</span>:pic_index]]</div><div class="line">next_human_pix = [os.path.join(train_human_dir, fname) </div><div class="line">                <span class="keyword">for</span> fname <span class="keyword">in</span> train_human_names[pic_index<span class="number">-8</span>:pic_index]]</div><div class="line"></div><div class="line"><span class="keyword">for</span> i, img_path <span class="keyword">in</span> enumerate(next_horse_pix+next_human_pix):</div><div class="line">  <span class="comment"># Set up subplot; subplot indices start at 1</span></div><div class="line">  sp = plt.subplot(nrows, ncols, i + <span class="number">1</span>)</div><div class="line">  sp.axis(<span class="string">'Off'</span>) <span class="comment"># Don't show axes (or gridlines)</span></div><div class="line"></div><div class="line">  img = mpimg.imread(img_path)</div><div class="line">  plt.imshow(img)</div><div class="line"></div><div class="line">plt.show()</div></pre></td></tr></table></figure>
+<p>模型架构的搭建</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">import</span> tensorflow <span class="keyword">as</span> tf</div><div class="line"></div><div class="line">model = tf.keras.models.Sequential([</div><div class="line">    <span class="comment"># Note the input shape is the desired size of the image 300x300 with 3 bytes color</span></div><div class="line">    <span class="comment"># This is the first convolution</span></div><div class="line">    tf.keras.layers.Conv2D(<span class="number">16</span>, (<span class="number">3</span>,<span class="number">3</span>), activation=<span class="string">'relu'</span>, input_shape=(<span class="number">300</span>, <span class="number">300</span>, <span class="number">3</span>)),</div><div class="line">    tf.keras.layers.MaxPooling2D(<span class="number">2</span>, <span class="number">2</span>),</div><div class="line">    <span class="comment"># The second convolution</span></div><div class="line">    tf.keras.layers.Conv2D(<span class="number">32</span>, (<span class="number">3</span>,<span class="number">3</span>), activation=<span class="string">'relu'</span>),</div><div class="line">    tf.keras.layers.MaxPooling2D(<span class="number">2</span>,<span class="number">2</span>),</div><div class="line">    <span class="comment"># The third convolution</span></div><div class="line">    tf.keras.layers.Conv2D(<span class="number">64</span>, (<span class="number">3</span>,<span class="number">3</span>), activation=<span class="string">'relu'</span>),</div><div class="line">    tf.keras.layers.MaxPooling2D(<span class="number">2</span>,<span class="number">2</span>),</div><div class="line">    <span class="comment"># The fourth convolution</span></div><div class="line">    tf.keras.layers.Conv2D(<span class="number">64</span>, (<span class="number">3</span>,<span class="number">3</span>), activation=<span class="string">'relu'</span>),</div><div class="line">    tf.keras.layers.MaxPooling2D(<span class="number">2</span>,<span class="number">2</span>),</div><div class="line">    <span class="comment"># The fifth convolution</span></div><div class="line">    tf.keras.layers.Conv2D(<span class="number">64</span>, (<span class="number">3</span>,<span class="number">3</span>), activation=<span class="string">'relu'</span>),</div><div class="line">    tf.keras.layers.MaxPooling2D(<span class="number">2</span>,<span class="number">2</span>),</div><div class="line">    <span class="comment"># Flatten the results to feed into a DNN</span></div><div class="line">    tf.keras.layers.Flatten(),</div><div class="line">    <span class="comment"># 512 neuron hidden layer</span></div><div class="line">    tf.keras.layers.Dense(<span class="number">512</span>, activation=<span class="string">'relu'</span>),</div><div class="line">    <span class="comment"># Only 1 output neuron. It will contain a value from 0-1 where 0 for 1 class ('horses') and 1 for the other ('humans')</span></div><div class="line">    tf.keras.layers.Dense(<span class="number">1</span>, activation=<span class="string">'sigmoid'</span>)</div><div class="line">])</div><div class="line"></div><div class="line"><span class="comment"># 输出 模型各层参数的大概</span></div><div class="line">model.summary()</div></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">from</span> tensorflow.keras.optimizers <span class="keyword">import</span> RMSprop</div><div class="line"><span class="comment"># 模型编译，指定loss损失函数，metrics评估标准 以及optimizer优化器</span></div><div class="line">model.compile(loss=<span class="string">'binary_crossentropy'</span>,</div><div class="line">              optimizer=RMSprop(lr=<span class="number">0.001</span>),</div><div class="line">              metrics=[<span class="string">'acc'</span>])</div></pre></td></tr></table></figure>
+<p>创建ImageDataGenerator</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">from</span> tensorflow.keras.preprocessing.image <span class="keyword">import</span> ImageDataGenerator</div><div class="line"></div><div class="line"><span class="comment"># All images will be rescaled by 1./255</span></div><div class="line"><span class="comment"># 利用ImageDataGenerator rescale 对读取图像进行正则化 归1</span></div><div class="line">train_datagen = ImageDataGenerator(rescale=<span class="number">1</span>/<span class="number">255</span>)</div><div class="line">validation_datagen = ImageDataGenerator(rescale=<span class="number">1</span>/<span class="number">255</span>)</div><div class="line"></div><div class="line"><span class="comment"># Flow training images in batches of 128 using train_datagen generator</span></div><div class="line"><span class="comment"># 创建训练样本生成器 ，指定训练目录，目录下不同image存放在 不同的 指定文件夹，并更具指定文件夹 自动设置label。</span></div><div class="line"><span class="comment"># 并通过设置target_size,在读取文件时 自动将image的shape 进行转换</span></div><div class="line">train_generator = train_datagen.flow_from_directory(</div><div class="line">        <span class="string">'/tmp/horse-or-human/'</span>,  <span class="comment"># This is the source directory for training images</span></div><div class="line">        target_size=(<span class="number">300</span>, <span class="number">300</span>),  <span class="comment"># All images will be resized to 150x150</span></div><div class="line">        batch_size=<span class="number">128</span>,</div><div class="line">        <span class="comment"># Since we use binary_crossentropy loss, we need binary labels</span></div><div class="line">        class_mode=<span class="string">'binary'</span>)</div><div class="line"></div><div class="line"><span class="comment"># Flow training images in batches of 128 using train_datagen generator</span></div><div class="line">validation_generator = validation_datagen.flow_from_directory(</div><div class="line">        <span class="string">'/tmp/validation-horse-or-human/'</span>,  <span class="comment"># This is the source directory for training images</span></div><div class="line">        target_size=(<span class="number">300</span>, <span class="number">300</span>),  <span class="comment"># All images will be resized to 150x150</span></div><div class="line">        batch_size=<span class="number">32</span>,</div><div class="line">        <span class="comment"># Since we use binary_crossentropy loss, we need binary labels</span></div><div class="line">        class_mode=<span class="string">'binary'</span>)</div></pre></td></tr></table></figure>
+<p>若使用Generator，则应使用model.fit_generator 进行训练</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">history = model.fit_generator(</div><div class="line">      train_generator,</div><div class="line">      steps_per_epoch=<span class="number">8</span>,  </div><div class="line">      epochs=<span class="number">15</span>,</div><div class="line">      verbose=<span class="number">1</span>,</div><div class="line">      validation_data = validation_generator,</div><div class="line">      validation_steps=<span class="number">8</span>)</div></pre></td></tr></table></figure>
+<p>steps_per_epoch 根据样本数n，batch_size 来确定，告诉模型经过多少step 才代表一个batch为结束。</p>
+<p>steps_per_epoch = n / batch_size</p>
+<p>verbose = 0 时 模型训练时 只输出结果</p>
+<p>verbose = 1 时 模型训练时 控制台不会出现进度条</p>
+<p>verbose = 2 时 模型训练时 控制台出现进度条</p>
+<p>图片特征提取处理</p>
+<p>展示 卷积层Cov，最大池化层MaxPooling，各filter所提取的图片特征</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</div><div class="line"><span class="keyword">import</span> random</div><div class="line"><span class="keyword">from</span> tensorflow.keras.preprocessing.image <span class="keyword">import</span> img_to_array, load_img</div><div class="line"></div><div class="line"><span class="comment"># Let's define a new Model that will take an image as input, and will output</span></div><div class="line"><span class="comment"># intermediate representations for all layers in the previous model after</span></div><div class="line"><span class="comment"># the first.</span></div><div class="line">successive_outputs = [layer.output <span class="keyword">for</span> layer <span class="keyword">in</span> model.layers[<span class="number">1</span>:]]</div><div class="line"><span class="comment">#visualization_model = Model(img_input, successive_outputs)</span></div><div class="line">visualization_model = tf.keras.models.Model(inputs = model.input, outputs = successive_outputs)</div><div class="line"><span class="comment"># Let's prepare a random input image from the training set.</span></div><div class="line">horse_img_files = [os.path.join(train_horse_dir, f) <span class="keyword">for</span> f <span class="keyword">in</span> train_horse_names]</div><div class="line">human_img_files = [os.path.join(train_human_dir, f) <span class="keyword">for</span> f <span class="keyword">in</span> train_human_names]</div><div class="line">img_path = random.choice(horse_img_files + human_img_files)</div><div class="line"></div><div class="line">img = load_img(img_path, target_size=(<span class="number">300</span>, <span class="number">300</span>))  <span class="comment"># this is a PIL image</span></div><div class="line">x = img_to_array(img)  <span class="comment"># Numpy array with shape (150, 150, 3)</span></div><div class="line">x = x.reshape((<span class="number">1</span>,) + x.shape)  <span class="comment"># Numpy array with shape (1, 150, 150, 3)</span></div><div class="line"></div><div class="line"><span class="comment"># Rescale by 1/255</span></div><div class="line">x /= <span class="number">255</span></div><div class="line"></div><div class="line"><span class="comment"># Let's run our image through our network, thus obtaining all</span></div><div class="line"><span class="comment"># intermediate representations for this image.</span></div><div class="line">successive_feature_maps = visualization_model.predict(x)</div><div class="line"></div><div class="line"><span class="comment"># These are the names of the layers, so can have them as part of our plot</span></div><div class="line">layer_names = [layer.name <span class="keyword">for</span> layer <span class="keyword">in</span> model.layers]</div><div class="line"></div><div class="line"><span class="comment"># Now let's display our representations</span></div><div class="line"><span class="keyword">for</span> layer_name, feature_map <span class="keyword">in</span> zip(layer_names, successive_feature_maps):</div><div class="line">  <span class="keyword">if</span> len(feature_map.shape) == <span class="number">4</span>:</div><div class="line">    <span class="comment"># Just do this for the conv / maxpool layers, not the fully-connected layers</span></div><div class="line">    n_features = feature_map.shape[<span class="number">-1</span>]  <span class="comment"># number of features in feature map</span></div><div class="line">    <span class="comment"># The feature map has shape (1, size, size, n_features)</span></div><div class="line">    size = feature_map.shape[<span class="number">1</span>]</div><div class="line">    <span class="comment"># We will tile our images in this matrix</span></div><div class="line">    display_grid = np.zeros((size, size * n_features))</div><div class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(n_features):</div><div class="line">      <span class="comment"># Postprocess the feature to make it visually palatable</span></div><div class="line">      x = feature_map[<span class="number">0</span>, :, :, i]</div><div class="line">      x -= x.mean()</div><div class="line">      x /= x.std()</div><div class="line">      x *= <span class="number">64</span></div><div class="line">      x += <span class="number">128</span></div><div class="line">      x = np.clip(x, <span class="number">0</span>, <span class="number">255</span>).astype(<span class="string">'uint8'</span>)</div><div class="line">      <span class="comment"># We'll tile each filter into this big horizontal grid</span></div><div class="line">      display_grid[:, i * size : (i + <span class="number">1</span>) * size] = x</div><div class="line">    <span class="comment"># Display the grid</span></div><div class="line">    scale = <span class="number">20.</span> / n_features</div><div class="line">    plt.figure(figsize=(scale * n_features, scale))</div><div class="line">    plt.title(layer_name)</div><div class="line">    plt.grid(<span class="keyword">False</span>)</div><div class="line">    plt.imshow(display_grid, aspect=<span class="string">'auto'</span>, cmap=<span class="string">'viridis'</span>)![download](/Users/lollipop/Desktop/download.png)</div></pre></td></tr></table></figure>
+<p>特征filter 只展示顶上两个</p>
+<p><img src="/images/tf_ImageGenerator/cov2d.png" alt="cov2d"></p>
+<p><img src="/images/tf_ImageGenerator/max_pooling.png" alt="max_pooling"></p>
+
+      
+    </div>
+
+    <div>
+      
+        
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Tensorflow/" rel="tag">#Tensorflow</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/09/18/Tricks/" rel="next" title="Tricks">
+                <i class="fa fa-chevron-left"></i> Tricks
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+	  </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avatar.png"
+               alt="_________Smile  To  Me" />
+          <p class="site-author-name" itemprop="name">_________Smile  To  Me</p>
+          <p class="site-description motion-element" itemprop="description">________Talk is cheap，show me the code！！！</p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">17</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">14</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+          <div class="feed-link motion-element">
+            <a href="/atom.xml" rel="alternate">
+              <i class="fa fa-rss"></i>
+              RSS
+            </a>
+          </div>
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/smiletm" target="_blank" title="SmileTM">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  SmileTM
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+          <div class="links-of-blogroll motion-element links-of-blogroll-inline">
+            <div class="links-of-blogroll-title">
+              <i class="fa  fa-fw fa-globe"></i>
+              友情链接
+            </div>
+            <ul class="links-of-blogroll-list">
+              
+                <li class="links-of-blogroll-item">
+                  <a href="http://s-tm.cn" title="S-TM" target="_blank">S-TM</a>
+                </li>
+              
+            </ul>
+          </div>
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#ImageDataGenerator"><span class="nav-number">1.</span> <span class="nav-text">ImageDataGenerator</span></a></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">_________Smile  To  Me</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="http://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Muse
+  </a>
+</div>
+
+<div>
+<a href="http://www.miitbeian.gov.cn/state/outPortal/loginPortal.action">鄂ICP备17018036号-1</a>
+</div>
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.1"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+  
+  
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length == 0) {
+       search_path = "search.xml";
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    function proceedsearch() {
+      $("body").append('<div class="popoverlay">').css('overflow', 'hidden');
+      $('.popup').toggle();
+
+    }
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+    'use strict';
+    $.ajax({
+        url: path,
+        dataType: "xml",
+        async: true,
+        success: function( xmlResponse ) {
+            // get the contents from search data
+            isfetched = true;
+            $('.popup').detach().appendTo('.header-inner');
+            var datas = $( "entry", xmlResponse ).map(function() {
+                return {
+                    title: $( "title", this ).text(),
+                    content: $("content",this).text(),
+                    url: $( "url" , this).text()
+                };
+            }).get();
+            var $input = document.getElementById(search_id);
+            var $resultContent = document.getElementById(content_id);
+            $input.addEventListener('input', function(){
+                var matchcounts = 0;
+                var str='<ul class=\"search-result-list\">';                
+                var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+                $resultContent.innerHTML = "";
+                if (this.value.trim().length > 1) {
+                // perform local searching
+                datas.forEach(function(data) {
+                    var isMatch = true;
+                    var content_index = [];
+                    var data_title = data.title.trim().toLowerCase();
+                    var data_content = data.content.trim().replace(/<[^>]+>/g,"").toLowerCase();
+                    var data_url = data.url;
+                    var index_title = -1;
+                    var index_content = -1;
+                    var first_occur = -1;
+                    // only match artiles with not empty titles and contents
+                    if(data_title != '' && data_content != '') {
+                        keywords.forEach(function(keyword, i) {
+                            index_title = data_title.indexOf(keyword);
+                            index_content = data_content.indexOf(keyword);
+                            if( index_title < 0 && index_content < 0 ){
+                                isMatch = false;
+                            } else {
+                                if (index_content < 0) {
+                                    index_content = 0;
+                                }
+                                if (i == 0) {
+                                    first_occur = index_content;
+                                }
+                            }
+                        });
+                    }
+                    // show search results
+                    if (isMatch) {
+                        matchcounts += 1;
+                        str += "<li><a href='"+ data_url +"' class='search-result-title'>"+ data_title +"</a>";
+                        var content = data.content.trim().replace(/<[^>]+>/g,"");
+                        if (first_occur >= 0) {
+                            // cut out 100 characters
+                            var start = first_occur - 20;
+                            var end = first_occur + 80;
+                            if(start < 0){
+                                start = 0;
+                            }
+                            if(start == 0){
+                                end = 50;
+                            }
+                            if(end > content.length){
+                                end = content.length;
+                            }
+                            var match_content = content.substring(start, end);
+                            // highlight all keywords
+                            keywords.forEach(function(keyword){
+                                var regS = new RegExp(keyword, "gi");
+                                match_content = match_content.replace(regS, "<b class=\"search-keyword\">"+keyword+"</b>");
+                            });
+                            
+                            str += "<p class=\"search-result\">" + match_content +"...</p>"
+                        }
+                        str += "</li>";
+                    }
+                })};
+                str += "</ul>";
+                if (matchcounts == 0) { str = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>' }
+                if (keywords == "") { str = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>' }
+                $resultContent.innerHTML = str;
+            });
+            proceedsearch();
+        }
+    });}
+
+    // handle and trigger popup window;
+    $('.popup-trigger').mousedown(function(e) {
+      e.stopPropagation();
+      if (isfetched == false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+
+    });
+
+    $('.popup-btn-close').click(function(e){
+      $('.popup').hide();
+      $(".popoverlay").remove();
+      $('body').css('overflow', '');
+    });
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+  </script>
+
+  
+  <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+        processEscapes: true,
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+  </script>
+
+  <script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+      var all = MathJax.Hub.getAllJax(), i;
+      for (i=0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';
+      }
+    });
+  </script>
+  <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+
+
+  
+
+  
+
+</body>
+</html>
