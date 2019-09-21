@@ -74,7 +74,7 @@
 <link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="Hexo, NexT" />
+  <meta name="keywords" content="tensorflow," />
 
 
 
@@ -92,16 +92,18 @@
 
 
 
-<meta name="description" content="________Talk is cheap，show me the code！！！">
-<meta property="og:type" content="website">
-<meta property="og:title" content="SmileTM博客">
-<meta property="og:url" content="http://yoursite.com/tags/Python3/index.html">
+<meta name="description" content="1234567891011121314151617181920212223242526272829303132333435import tensorflow as tfimport numpy as npimport pandas as pdfrom tensorflow.keras.preprocessing.text import Tokenizerfrom tensorflow.keras.">
+<meta name="keywords" content="tensorflow">
+<meta property="og:type" content="article">
+<meta property="og:title" content="tf文本处理">
+<meta property="og:url" content="http://yoursite.com/2019/09/21/tf文本处理/index.html">
 <meta property="og:site_name" content="SmileTM博客">
-<meta property="og:description" content="________Talk is cheap，show me the code！！！">
+<meta property="og:description" content="1234567891011121314151617181920212223242526272829303132333435import tensorflow as tfimport numpy as npimport pandas as pdfrom tensorflow.keras.preprocessing.text import Tokenizerfrom tensorflow.keras.">
 <meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2019-09-21T12:41:23.402Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="SmileTM博客">
-<meta name="twitter:description" content="________Talk is cheap，show me the code！！！">
+<meta name="twitter:title" content="tf文本处理">
+<meta name="twitter:description" content="1234567891011121314151617181920212223242526272829303132333435import tensorflow as tfimport numpy as npimport pandas as pdfrom tensorflow.keras.preprocessing.text import Tokenizerfrom tensorflow.keras.">
 
 
 
@@ -119,7 +121,7 @@
   };
 </script>
 
-  <title> 标签: Python3 | SmileTM博客 </title><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+  <title> tf文本处理 | SmileTM博客 </title><!-- hexo-inject:begin --><!-- hexo-inject:end -->
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
@@ -140,7 +142,7 @@
     
   
 
-  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="container one-collumn sidebar-position-left  ">
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="container one-collumn sidebar-position-left page-post-detail ">
     <div class="headband"></div>
 
     <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
@@ -261,46 +263,123 @@
           <div id="content" class="content">
            
 
-  <div id="posts" class="posts-collapse">
-    <div class="collection-title">
-      <h2 >
-        Python3
-        <small>标签</small>
-      </h2>
-    </div>
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
 
     
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                tf文本处理
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2019-09-21T20:40:41+08:00" content="2019-09-21">
+              2019-09-21
+            </time>
+          </span>
+
+          
+
+          
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
       
 
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
+      
+        <figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">import</span> tensorflow <span class="keyword">as</span> tf</div><div class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</div><div class="line"><span class="keyword">import</span> pandas <span class="keyword">as</span> pd</div><div class="line"><span class="keyword">from</span> tensorflow.keras.preprocessing.text <span class="keyword">import</span> Tokenizer</div><div class="line"><span class="keyword">from</span> tensorflow.keras.preprocessing.sequence <span class="keyword">import</span> pad_sequences</div><div class="line"></div><div class="line"><span class="comment"># 利用pandas 读取csv文件数据</span></div><div class="line">data = pd.read_csv(<span class="string">'./bbc-text.csv'</span>)</div><div class="line"><span class="comment"># 将data转换为numpy数据</span></div><div class="line">data = data.to_numpy()</div><div class="line"><span class="comment"># 对数据进行提取</span></div><div class="line">labels = data[:, <span class="number">0</span>]</div><div class="line">sentences = data[:, <span class="number">1</span>]</div><div class="line"><span class="comment"># 创建分词器</span></div><div class="line"></div><div class="line"><span class="comment"># 这里设置分词器容量为100， 若超过100 则剩余的用&lt;oov&gt; 表示</span></div><div class="line"><span class="comment"># stokenizer = Tokenizer(100,oov_token='&lt;oov&gt;')</span></div><div class="line"></div><div class="line">stokenizer = Tokenizer()</div><div class="line">stokenizer.fit_on_texts(sentences)</div><div class="line"></div><div class="line"><span class="comment"># 输出词 词索引</span></div><div class="line">word_index = stokenizer.word_index</div><div class="line">print(word_index)</div><div class="line"></div><div class="line"><span class="comment"># 将文本转换为相应的 序列</span></div><div class="line">sequences = stokenizer.texts_to_sequences(sentences)</div><div class="line">print(sequences[<span class="number">0</span>])</div><div class="line"></div><div class="line"><span class="comment"># 将小于指定长度的文本序列进行 0 填充，默认为前面填充,可用参数有padding = ‘post’/'pre'，truncating = 'post'/'pre'</span></div><div class="line"><span class="comment"># pad_sequences(sequences, padding=None,truncating=None)</span></div><div class="line">padded = pad_sequences(sequences)</div><div class="line"></div><div class="line"></div><div class="line">print(padded[<span class="number">0</span>])</div></pre></td></tr></table></figure>
+<p>输出：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line">举例</div><div class="line">sentences = [<span class="string">'i love you'</span>,<span class="string">'do you have money'</span>, <span class="string">'i like running'</span>]</div><div class="line"></div><div class="line">word_index</div><div class="line">&#123;<span class="string">'i'</span>: <span class="number">1</span>, <span class="string">'you'</span>: <span class="number">2</span>, <span class="string">'love'</span>: <span class="number">3</span>, <span class="string">'do'</span>: <span class="number">4</span>, <span class="string">'have'</span>: <span class="number">5</span>, <span class="string">'money'</span>: <span class="number">6</span>, <span class="string">'like'</span>: <span class="number">7</span>, <span class="string">'running'</span>: <span class="number">8</span>&#125;</div><div class="line"></div><div class="line">sequences</div><div class="line">[[<span class="number">1</span>, <span class="number">3</span>, <span class="number">2</span>], [<span class="number">4</span>, <span class="number">2</span>, <span class="number">5</span>, <span class="number">6</span>], [<span class="number">1</span>, <span class="number">7</span>, <span class="number">8</span>]]</div><div class="line"></div><div class="line">padded    默认以最长句子为Maxlen  ，在序列前面填充</div><div class="line">[[<span class="number">0</span> <span class="number">1</span> <span class="number">3</span> <span class="number">2</span>]</div><div class="line"> [<span class="number">4</span> <span class="number">2</span> <span class="number">5</span> <span class="number">6</span>]</div><div class="line"> [<span class="number">0</span> <span class="number">1</span> <span class="number">7</span> <span class="number">8</span>]]</div></pre></td></tr></table></figure>
 
-      <h1 class="post-title">
+      
+    </div>
+
+    <div>
+      
         
-            <a class="post-title-link" href="/2017/02/07/Python3学习笔记/" itemprop="url">
-              
-                <span itemprop="name">Python3学习笔记</span>
-              
-            </a>
+      
+    </div>
+
+    <div>
+      
         
-      </h1>
 
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2017-02-07T22:04:47+08:00"
-              content="2017-02-07" >
-          02-07
-        </time>
-      </div>
+      
+    </div>
 
-    </header>
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/tensorflow/" rel="tag">#tensorflow</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/09/19/tf-ImageDataGenerator/" rel="next" title="tf_ImageDataGenerator">
+                <i class="fa fa-chevron-left"></i> tf_ImageDataGenerator
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
   </article>
 
 
-    
-  </div>
 
-  
+    <div class="post-spread">
+      
+    </div>
+  </div>
 
 
 	  </div>
@@ -308,6 +387,10 @@
 
 
           
+  <div class="comments" id="comments">
+    
+  </div>
+
 
         </div>
         
@@ -327,8 +410,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
 
-      <section class="site-overview sidebar-panel  sidebar-panel-active ">
+      <section class="site-overview sidebar-panel ">
         <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
           <img class="site-author-image" itemprop="image"
                src="/images/avatar.png"
@@ -403,6 +495,17 @@
 
       </section>
 
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <p class="post-toc-empty">此文章未包含目录</p>
+            
+          </div>
+        </section>
       
 
     </div>
@@ -503,6 +606,10 @@
   
 
   
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.1"></script>
+
+
 
   
 
