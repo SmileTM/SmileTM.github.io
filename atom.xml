@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://yoursite.com/"/>
-  <updated>2019-09-22T12:46:05.200Z</updated>
+  <updated>2019-09-28T02:34:00.614Z</updated>
   <id>http://yoursite.com/</id>
   
   <author>
@@ -14,6 +14,95 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>那些年走过的坑-tf2_gpu安装</title>
+    <link href="http://yoursite.com/2019/09/28/%E9%82%A3%E4%BA%9B%E5%B9%B4%E8%B5%B0%E8%BF%87%E7%9A%84%E5%9D%91-tf2-gpu%E5%AE%89%E8%A3%85/"/>
+    <id>http://yoursite.com/2019/09/28/那些年走过的坑-tf2-gpu安装/</id>
+    <published>2019-09-28T02:20:02.000Z</published>
+    <updated>2019-09-28T02:34:00.614Z</updated>
+    
+    <content type="html"><![CDATA[<p>Tensorflow-gpu 的安装的复杂早有耳闻，以前一直用的都是cpu版，一直通过conda一键安装，过于安逸。</p>
+<p>哎，欠的账始终是要还的。</p>
+<p>最近，接触到实验室服务器后，开始捣鼓Tensoflow2.0-gpu，才发现各种神坑。<br>首先因为学校服务器都是共享的无法获取root权限，导致无法更新显卡驱动，使得cuda10 ，无法安装。于是只能安装cuda9 。然后问题来了，google只提供了tensorflow2.0-gpu cuda10的版本。通过Google发现有人也提了这个问题<a href="https://github.com/tensorflow/tensorflow/issues/26418" target="_blank" rel="noopener">How to install tensorflow2.0 in cuda9? #26418</a> 。问题中的解决方案是 通过Tensoflow2.0的源码 在cuda9上重新编译就行了。因为Google提供的是基于cuda10编译的，并不能找到cuda9。</p>
+<p>好了，有了解决方案本以为会很容易，结果又碰见权限问题。因为没有root权限，开始安装bazel编译工具时碰见了麻烦。记得以前看conda list时看见过bazel，于是Google了发现conda确实可绕过 root权限 进行bazel的安装 而且conda还会自动的帮你把bazel所需的 jdk一起安装，真的安逸。本以为会很顺利，结果编译了30分钟后，开始报错，提示该环境下没有找到keras-preprocessing ,keras-applications,numpy。（通过conda专门搭建的编译环境一时疏忽，只安装了bazel，别的都忘了安。）QAQ 白瞎了30分钟。</p>
+<p>所有依赖的包安装好后，重新开始编译，32线程开工，花了大约1个小时。</p>
+<a id="more"></a>
+<h1 id="配置"><a href="#配置" class="headerlink" title="配置"></a>配置</h1><ul>
+<li>Ubuntu 16.04</li>
+<li>GPU：Tesla M40（驱动387.26）</li>
+<li>cuda 9.0</li>
+<li>cudnn 7.6.0</li>
+<li>conda</li>
+</ul>
+<h1 id="前期准备"><a href="#前期准备" class="headerlink" title="前期准备"></a>前期准备</h1><p>刚开始开始拿到服务器，居然连conda都没安，然后给服务器安上了conda。（conda一定要安， 后面可以通过conda绕过root权限）。</p>
+<p>接下来就是根据GPU的驱动安装cuna和cudnn。 由于没有root权限 无法升级显卡驱动，只能安装对应驱动版本的cuda和cudnn。</p>
+<p>显卡驱动版本可以通过nvidia-smi进行查看。</p>
+<p><img src="/images/那些年走过的坑/tf2_gpu安装1.png" alt="tf2_gpu安装1"></p>
+<p>cuda，cudnn安装好后，就可以利用conda来创建 编译环境了。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">conda create -n mk</div></pre></td></tr></table></figure>
+<p>创建编译环境mk。</p>
+<p>在mk环境中，安装</p>
+<ul>
+<li><p>pip</p>
+</li>
+<li><p>six </p>
+</li>
+<li><p>numpy </p>
+</li>
+<li><p>wheel</p>
+</li>
+<li><p>setuptools</p>
+</li>
+<li><p>mock future&gt;=0.17.1</p>
+</li>
+<li><p>keras_applications==1.0.6</p>
+</li>
+<li><p>keras_preprocessing==1.0.5</p>
+</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">conda install pip six numpy wheel setuptools mock future&gt;=0.17.1</div><div class="line">conda install keras_applications==1.0.6</div><div class="line">conda install keras_preprocessing==1.0.5</div></pre></td></tr></table></figure>
+<p>可能keras_applications和keras_preprocessing 在conda中并没有，这时我们可以通过pip进行安装。</p>
+<p>开始就是这两个忘记安装了，导致百花30分钟QAQ。</p>
+<h1 id="克隆TensorFlow代码库"><a href="#克隆TensorFlow代码库" class="headerlink" title="克隆TensorFlow代码库"></a>克隆TensorFlow代码库</h1><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">git <span class="built_in">clone</span> https://github.com/tensorflow/tensorflow.git</div><div class="line"><span class="built_in">cd</span> tensorflow</div></pre></td></tr></table></figure>
+<p>由于代码库默认的分支为<strong>master</strong>。通过，下面代码进行分支切换。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">git checkout r2.0   <span class="comment">#要编译的是tf2.0 所以切换到r2.0 版本</span></div></pre></td></tr></table></figure>
+<h1 id="编译配置"><a href="#编译配置" class="headerlink" title="编译配置"></a>编译配置</h1><p>启动编译配置</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">./configure</div></pre></td></tr></table></figure>
+<p>由于实验室服务器是共享，有别的用户开始在usr/local 下安装过cuda 导致编译程序会自动优先默认识别usr/local目录下的cuda。但由于每个用户安装的cuda版本不同，并且又没有权限去修改usr/local下cuda的指向，我们可以在配置好configure后，在tensorflow目录下修改<strong>.tf_configure.bazelrc</strong>文件.。</p>
+<p>将文件中的cuda指定到 特定cuda版本的位置即可</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">build --action_env CUDA_TOOLKIT_PATH=&quot;/disk1/lx/cuda&quot;</div></pre></td></tr></table></figure>
+<h1 id="Bazel-build"><a href="#Bazel-build" class="headerlink" title="Bazel build"></a>Bazel build</h1><p>一切准备就绪，就可以开始编译了。编译有两种，一种是仅支持cpu，另一种是支持gpu，需要哪个就用那个命令。</p>
+<h2 id="仅支持-CPU"><a href="#仅支持-CPU" class="headerlink" title="仅支持 CPU"></a>仅支持 CPU</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">bazel build --config=opt //tensorflow/tools/pip_package:build_pip_package</div></pre></td></tr></table></figure>
+<h2 id="GPU-支持"><a href="#GPU-支持" class="headerlink" title="GPU 支持"></a>GPU 支持</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">bazel build --config=opt --config=cuda //tensorflow/tools/pip_package:build_pip_package</div></pre></td></tr></table></figure>
+<p><strong>编译前一定要通过conda list，pip list 来查看 前期准备 中 提到的依赖包是否全部安装。</strong></p>
+<p>在32线程全开，经过漫长一个小时等待，终于编译完成了QAQ。</p>
+<p>编译完成后<code>会创建一个名为</code>build_pip_package` 的可执行文件</p>
+<p>再通过该命令进行编译，编译后会在/disk1/lx下产生一个.whl的软件包。</p>
+<p>该命令后面的 /disk1/lx 可以自行修改指定文件夹</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">./bazel-bin/tensorflow/tools/pip_package/build_pip_package /disk1/lx</div></pre></td></tr></table></figure>
+<h1 id="pip-安装"><a href="#pip-安装" class="headerlink" title="pip 安装"></a>pip 安装</h1><p>得到了.whl文件后</p>
+<p>通过pip执行安装</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">pip install tensorflow-2.0.0-cp37-cp37m-linux_x86_64.whl</div></pre></td></tr></table></figure>
+<h1 id="python环境测试"><a href="#python环境测试" class="headerlink" title="python环境测试"></a>python环境测试</h1><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">import</span> tensorflow <span class="keyword">as</span> tf</div><div class="line">print(tf.__versiong__)</div><div class="line">print(tf.test.is_gpu_available())</div></pre></td></tr></table></figure>
+<p><img src="/images/那些年走过的坑/tf2_gpu安装2.png" alt="tf2_gpu安装2"></p>
+<p>看见True 就代表成功了。</p>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;Tensorflow-gpu 的安装的复杂早有耳闻，以前一直用的都是cpu版，一直通过conda一键安装，过于安逸。&lt;/p&gt;
+&lt;p&gt;哎，欠的账始终是要还的。&lt;/p&gt;
+&lt;p&gt;最近，接触到实验室服务器后，开始捣鼓Tensoflow2.0-gpu，才发现各种神坑。&lt;br&gt;首先因为学校服务器都是共享的无法获取root权限，导致无法更新显卡驱动，使得cuda10 ，无法安装。于是只能安装cuda9 。然后问题来了，google只提供了tensorflow2.0-gpu cuda10的版本。通过Google发现有人也提了这个问题&lt;a href=&quot;https://github.com/tensorflow/tensorflow/issues/26418&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;How to install tensorflow2.0 in cuda9? #26418&lt;/a&gt; 。问题中的解决方案是 通过Tensoflow2.0的源码 在cuda9上重新编译就行了。因为Google提供的是基于cuda10编译的，并不能找到cuda9。&lt;/p&gt;
+&lt;p&gt;好了，有了解决方案本以为会很容易，结果又碰见权限问题。因为没有root权限，开始安装bazel编译工具时碰见了麻烦。记得以前看conda list时看见过bazel，于是Google了发现conda确实可绕过 root权限 进行bazel的安装 而且conda还会自动的帮你把bazel所需的 jdk一起安装，真的安逸。本以为会很顺利，结果编译了30分钟后，开始报错，提示该环境下没有找到keras-preprocessing ,keras-applications,numpy。（通过conda专门搭建的编译环境一时疏忽，只安装了bazel，别的都忘了安。）QAQ 白瞎了30分钟。&lt;/p&gt;
+&lt;p&gt;所有依赖的包安装好后，重新开始编译，32线程开工，花了大约1个小时。&lt;/p&gt;
+    
+    </summary>
+    
+    
+      <category term="TensorFlow" scheme="http://yoursite.com/tags/TensorFlow/"/>
+    
+  </entry>
   
   <entry>
     <title>Custom layers</title>

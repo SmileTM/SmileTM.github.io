@@ -74,7 +74,7 @@
 <link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="设计模式," />
+  <meta name="keywords" content="TensorFlow," />
 
 
 
@@ -92,20 +92,21 @@
 
 
 
-<meta name="description" content="定义：定义对象间一种一对多的依赖关系，使得当每一个对象改变状态，则所有依赖于它的对象都会得到通知并自动更新。 类型：行为类模式">
-<meta name="keywords" content="设计模式">
+<meta name="description" content="Tensorflow-gpu 的安装的复杂早有耳闻，以前一直用的都是cpu版，一直通过conda一键安装，过于安逸。 哎，欠的账始终是要还的。 最近，接触到实验室服务器后，开始捣鼓Tensoflow2.0-gpu，才发现各种神坑。首先因为学校服务器都是共享的无法获取root权限，导致无法更新显卡驱动，使得cuda10 ，无法安装。于是只能安装cuda9 。然后问题来了，google只提供了tens">
+<meta name="keywords" content="TensorFlow">
 <meta property="og:type" content="article">
-<meta property="og:title" content="设计模式 (二) ：观察者模式">
-<meta property="og:url" content="http://yoursite.com/2016/11/26/DesignModel-2/index.html">
+<meta property="og:title" content="那些年走过的坑-tf2_gpu安装">
+<meta property="og:url" content="http://yoursite.com/2019/09/28/那些年走过的坑-tf2-gpu安装/index.html">
 <meta property="og:site_name" content="SmileTM博客">
-<meta property="og:description" content="定义：定义对象间一种一对多的依赖关系，使得当每一个对象改变状态，则所有依赖于它的对象都会得到通知并自动更新。 类型：行为类模式">
+<meta property="og:description" content="Tensorflow-gpu 的安装的复杂早有耳闻，以前一直用的都是cpu版，一直通过conda一键安装，过于安逸。 哎，欠的账始终是要还的。 最近，接触到实验室服务器后，开始捣鼓Tensoflow2.0-gpu，才发现各种神坑。首先因为学校服务器都是共享的无法获取root权限，导致无法更新显卡驱动，使得cuda10 ，无法安装。于是只能安装cuda9 。然后问题来了，google只提供了tens">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="http://yoursite.com/images/observer.png">
-<meta property="og:updated_time" content="2016-11-26T16:13:06.000Z">
+<meta property="og:image" content="http://yoursite.com/images/那些年走过的坑/tf2_gpu安装1.png">
+<meta property="og:image" content="http://yoursite.com/images/那些年走过的坑/tf2_gpu安装2.png">
+<meta property="og:updated_time" content="2019-09-28T02:34:00.614Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="设计模式 (二) ：观察者模式">
-<meta name="twitter:description" content="定义：定义对象间一种一对多的依赖关系，使得当每一个对象改变状态，则所有依赖于它的对象都会得到通知并自动更新。 类型：行为类模式">
-<meta name="twitter:image" content="http://yoursite.com/images/observer.png">
+<meta name="twitter:title" content="那些年走过的坑-tf2_gpu安装">
+<meta name="twitter:description" content="Tensorflow-gpu 的安装的复杂早有耳闻，以前一直用的都是cpu版，一直通过conda一键安装，过于安逸。 哎，欠的账始终是要还的。 最近，接触到实验室服务器后，开始捣鼓Tensoflow2.0-gpu，才发现各种神坑。首先因为学校服务器都是共享的无法获取root权限，导致无法更新显卡驱动，使得cuda10 ，无法安装。于是只能安装cuda9 。然后问题来了，google只提供了tens">
+<meta name="twitter:image" content="http://yoursite.com/images/那些年走过的坑/tf2_gpu安装1.png">
 
 
 
@@ -123,7 +124,7 @@
   };
 </script>
 
-  <title> 设计模式 (二) ：观察者模式 | SmileTM博客 </title><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+  <title> 那些年走过的坑-tf2_gpu安装 | SmileTM博客 </title><!-- hexo-inject:begin --><!-- hexo-inject:end -->
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
@@ -286,7 +287,7 @@
             
             
               
-                设计模式 (二) ：观察者模式
+                那些年走过的坑-tf2_gpu安装
               
             
           </h1>
@@ -298,8 +299,8 @@
               <i class="fa fa-calendar-o"></i>
             </span>
             <span class="post-meta-item-text">发表于</span>
-            <time itemprop="dateCreated" datetime="2016-11-26T23:42:13+08:00" content="2016-11-26">
-              2016-11-26
+            <time itemprop="dateCreated" datetime="2019-09-28T10:20:02+08:00" content="2019-09-28">
+              2019-09-28
             </time>
           </span>
 
@@ -326,17 +327,71 @@
       
 
       
-        <p><strong>定义：</strong>定义对象间一种一对多的依赖关系，使得当每一个对象改变状态，则所有依赖于它的对象都会得到通知并自动更新。</p>
-<p><strong>类型：</strong>行为类模式</p>
+        <p>Tensorflow-gpu 的安装的复杂早有耳闻，以前一直用的都是cpu版，一直通过conda一键安装，过于安逸。</p>
+<p>哎，欠的账始终是要还的。</p>
+<p>最近，接触到实验室服务器后，开始捣鼓Tensoflow2.0-gpu，才发现各种神坑。<br>首先因为学校服务器都是共享的无法获取root权限，导致无法更新显卡驱动，使得cuda10 ，无法安装。于是只能安装cuda9 。然后问题来了，google只提供了tensorflow2.0-gpu cuda10的版本。通过Google发现有人也提了这个问题<a href="https://github.com/tensorflow/tensorflow/issues/26418" target="_blank" rel="noopener">How to install tensorflow2.0 in cuda9? #26418</a> 。问题中的解决方案是 通过Tensoflow2.0的源码 在cuda9上重新编译就行了。因为Google提供的是基于cuda10编译的，并不能找到cuda9。</p>
+<p>好了，有了解决方案本以为会很容易，结果又碰见权限问题。因为没有root权限，开始安装bazel编译工具时碰见了麻烦。记得以前看conda list时看见过bazel，于是Google了发现conda确实可绕过 root权限 进行bazel的安装 而且conda还会自动的帮你把bazel所需的 jdk一起安装，真的安逸。本以为会很顺利，结果编译了30分钟后，开始报错，提示该环境下没有找到keras-preprocessing ,keras-applications,numpy。（通过conda专门搭建的编译环境一时疏忽，只安装了bazel，别的都忘了安。）QAQ 白瞎了30分钟。</p>
+<p>所有依赖的包安装好后，重新开始编译，32线程开工，花了大约1个小时。</p>
 <a id="more"></a>
-<p><strong>观察者模式代码</strong></p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">IObserver</span> </span>&#123;</div><div class="line">    <span class="function"><span class="keyword">void</span> <span class="title">update</span><span class="params">()</span></span>;</div><div class="line">&#125;</div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Observer1</span> <span class="keyword">implements</span> <span class="title">IObserver</span></span>&#123;                		<span class="comment">//观察者</span></div><div class="line">    <span class="meta">@Override</span></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">update</span><span class="params">()</span> </span>&#123;                              </div><div class="line">      	<span class="comment">//观察者做出相应的反应</span></div><div class="line">        System.out.println(<span class="string">"Observer1 has updated"</span>);</div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Observer2</span> <span class="keyword">implements</span> <span class="title">IObserver</span> </span>&#123;                		<span class="comment">//观察者</span></div><div class="line">    <span class="meta">@Override</span></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">update</span><span class="params">()</span> </span>&#123;                  </div><div class="line">       <span class="comment">//观察者做出相应的反应</span></div><div class="line">        System.out.println(<span class="string">"Observer2 has updated"</span>);</div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line"><span class="keyword">abstract</span> <span class="class"><span class="keyword">class</span> <span class="title">Target</span> </span>&#123;</div><div class="line">    <span class="keyword">private</span> ArrayList&lt;IObserver&gt; obs = <span class="keyword">new</span> ArrayList&lt;&gt;();     		<span class="comment">//创建一个观察者数组列表</span></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">addObserver</span><span class="params">(IObserver iObserver)</span> </span>&#123;</div><div class="line">      <span class="comment">//添加观察者</span></div><div class="line">        <span class="keyword">this</span>.obs.add(iObserver);</div><div class="line">    &#125;</div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">delObserver</span><span class="params">(IObserver iObserver)</span> </span>&#123;</div><div class="line">        <span class="keyword">this</span>.obs.remove(iObserver);</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">notifyObserver</span><span class="params">()</span> </span>&#123;        </div><div class="line">      <span class="comment">//通知观察者进行更新</span></div><div class="line">        <span class="keyword">for</span> (IObserver o : obs) &#123;</div><div class="line">            o.update();</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">abstract</span> <span class="keyword">void</span> <span class="title">doSomething</span><span class="params">()</span></span>;</div><div class="line">&#125;</div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ConcreteTarget</span> <span class="keyword">extends</span> <span class="title">Target</span> </span>&#123;       </div><div class="line">  		<span class="comment">//被观察者</span></div><div class="line">    <span class="meta">@Override</span></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">doSomething</span><span class="params">()</span> </span>&#123;</div><div class="line">        System.out.println(<span class="string">"Concrete is doing something"</span>);</div><div class="line">        <span class="keyword">this</span>.notifyObserver();</div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Main</span> </span>&#123;</div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String args[])</span> </span>&#123;</div><div class="line">        Target target = <span class="keyword">new</span> ConcreteTarget();</div><div class="line">        target.addObserver(<span class="keyword">new</span> Observer1());</div><div class="line">        target.addObserver(<span class="keyword">new</span> Observer2());</div><div class="line">        target.doSomething();</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p><strong>类图</strong></p>
-<p><img src="/images/observer.png" alt="observer"></p>
-<p>通过运行结果可以看到，我们只调用了Target的方法，但同时两个观察者的相关方法都被同时调用了。仔细看一下代码，其实很简单，无非就是在Target类中关联一下Observer类，并且在doSomething方法中遍历一下Observer的update方法就行了。</p>
-<p><strong>观察者模式的优点</strong></p>
-<p>观察者与被观察者之间是属于轻度的关联关系，并且是抽象耦合的，这样，对于两者来说都比较容易进行扩展。</p>
-<p>观察者模式是一种常用的触发机制，它形成一条触发链，依次对各个观察者的方法进行处理。但同时，这也算是观察者模式一个缺点，由于是链式触发，当观察者比较多的时候，性能问题是比较令人担忧的。并且，在链式结构中，比较容易出现循环引用的错误，造成系统假死。</p>
+<h1 id="配置"><a href="#配置" class="headerlink" title="配置"></a>配置</h1><ul>
+<li>Ubuntu 16.04</li>
+<li>GPU：Tesla M40（驱动387.26）</li>
+<li>cuda 9.0</li>
+<li>cudnn 7.6.0</li>
+<li>conda</li>
+</ul>
+<h1 id="前期准备"><a href="#前期准备" class="headerlink" title="前期准备"></a>前期准备</h1><p>刚开始开始拿到服务器，居然连conda都没安，然后给服务器安上了conda。（conda一定要安， 后面可以通过conda绕过root权限）。</p>
+<p>接下来就是根据GPU的驱动安装cuna和cudnn。 由于没有root权限 无法升级显卡驱动，只能安装对应驱动版本的cuda和cudnn。</p>
+<p>显卡驱动版本可以通过nvidia-smi进行查看。</p>
+<p><img src="/images/那些年走过的坑/tf2_gpu安装1.png" alt="tf2_gpu安装1"></p>
+<p>cuda，cudnn安装好后，就可以利用conda来创建 编译环境了。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">conda create -n mk</div></pre></td></tr></table></figure>
+<p>创建编译环境mk。</p>
+<p>在mk环境中，安装</p>
+<ul>
+<li><p>pip</p>
+</li>
+<li><p>six </p>
+</li>
+<li><p>numpy </p>
+</li>
+<li><p>wheel</p>
+</li>
+<li><p>setuptools</p>
+</li>
+<li><p>mock future&gt;=0.17.1</p>
+</li>
+<li><p>keras_applications==1.0.6</p>
+</li>
+<li><p>keras_preprocessing==1.0.5</p>
+</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">conda install pip six numpy wheel setuptools mock future&gt;=0.17.1</div><div class="line">conda install keras_applications==1.0.6</div><div class="line">conda install keras_preprocessing==1.0.5</div></pre></td></tr></table></figure>
+<p>可能keras_applications和keras_preprocessing 在conda中并没有，这时我们可以通过pip进行安装。</p>
+<p>开始就是这两个忘记安装了，导致百花30分钟QAQ。</p>
+<h1 id="克隆TensorFlow代码库"><a href="#克隆TensorFlow代码库" class="headerlink" title="克隆TensorFlow代码库"></a>克隆TensorFlow代码库</h1><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">git <span class="built_in">clone</span> https://github.com/tensorflow/tensorflow.git</div><div class="line"><span class="built_in">cd</span> tensorflow</div></pre></td></tr></table></figure>
+<p>由于代码库默认的分支为<strong>master</strong>。通过，下面代码进行分支切换。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">git checkout r2.0   <span class="comment">#要编译的是tf2.0 所以切换到r2.0 版本</span></div></pre></td></tr></table></figure>
+<h1 id="编译配置"><a href="#编译配置" class="headerlink" title="编译配置"></a>编译配置</h1><p>启动编译配置</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">./configure</div></pre></td></tr></table></figure>
+<p>由于实验室服务器是共享，有别的用户开始在usr/local 下安装过cuda 导致编译程序会自动优先默认识别usr/local目录下的cuda。但由于每个用户安装的cuda版本不同，并且又没有权限去修改usr/local下cuda的指向，我们可以在配置好configure后，在tensorflow目录下修改<strong>.tf_configure.bazelrc</strong>文件.。</p>
+<p>将文件中的cuda指定到 特定cuda版本的位置即可</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">build --action_env CUDA_TOOLKIT_PATH=&quot;/disk1/lx/cuda&quot;</div></pre></td></tr></table></figure>
+<h1 id="Bazel-build"><a href="#Bazel-build" class="headerlink" title="Bazel build"></a>Bazel build</h1><p>一切准备就绪，就可以开始编译了。编译有两种，一种是仅支持cpu，另一种是支持gpu，需要哪个就用那个命令。</p>
+<h2 id="仅支持-CPU"><a href="#仅支持-CPU" class="headerlink" title="仅支持 CPU"></a>仅支持 CPU</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">bazel build --config=opt //tensorflow/tools/pip_package:build_pip_package</div></pre></td></tr></table></figure>
+<h2 id="GPU-支持"><a href="#GPU-支持" class="headerlink" title="GPU 支持"></a>GPU 支持</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">bazel build --config=opt --config=cuda //tensorflow/tools/pip_package:build_pip_package</div></pre></td></tr></table></figure>
+<p><strong>编译前一定要通过conda list，pip list 来查看 前期准备 中 提到的依赖包是否全部安装。</strong></p>
+<p>在32线程全开，经过漫长一个小时等待，终于编译完成了QAQ。</p>
+<p>编译完成后<code>会创建一个名为</code>build_pip_package` 的可执行文件</p>
+<p>再通过该命令进行编译，编译后会在/disk1/lx下产生一个.whl的软件包。</p>
+<p>该命令后面的 /disk1/lx 可以自行修改指定文件夹</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">./bazel-bin/tensorflow/tools/pip_package/build_pip_package /disk1/lx</div></pre></td></tr></table></figure>
+<h1 id="pip-安装"><a href="#pip-安装" class="headerlink" title="pip 安装"></a>pip 安装</h1><p>得到了.whl文件后</p>
+<p>通过pip执行安装</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">pip install tensorflow-2.0.0-cp37-cp37m-linux_x86_64.whl</div></pre></td></tr></table></figure>
+<h1 id="python环境测试"><a href="#python环境测试" class="headerlink" title="python环境测试"></a>python环境测试</h1><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">import</span> tensorflow <span class="keyword">as</span> tf</div><div class="line">print(tf.__versiong__)</div><div class="line">print(tf.test.is_gpu_available())</div></pre></td></tr></table></figure>
+<p><img src="/images/那些年走过的坑/tf2_gpu安装2.png" alt="tf2_gpu安装2"></p>
+<p>看见True 就代表成功了。</p>
 
       
     </div>
@@ -358,7 +413,7 @@
       
         <div class="post-tags">
           
-            <a href="/tags/设计模式/" rel="tag">#设计模式</a>
+            <a href="/tags/TensorFlow/" rel="tag">#TensorFlow</a>
           
         </div>
       
@@ -367,17 +422,13 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2016/11/24/DesignModel-1/" rel="next" title="设计模式 (一) ：抽象工厂模式">
-                <i class="fa fa-chevron-left"></i> 设计模式 (一) ：抽象工厂模式
+              <a href="/2019/09/22/Custom-layers/" rel="next" title="Custom layers">
+                <i class="fa fa-chevron-left"></i> Custom layers
               </a>
             
           </div>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2016/12/03/IntelliJ-Hibernate/" rel="prev" title="IntelliJ IDEA配置 Hibernate">
-                IntelliJ IDEA配置 Hibernate <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -516,7 +567,7 @@
               
             
             
-              <p class="post-toc-empty">此文章未包含目录</p>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#配置"><span class="nav-number">1.</span> <span class="nav-text">配置</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#前期准备"><span class="nav-number">2.</span> <span class="nav-text">前期准备</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#克隆TensorFlow代码库"><span class="nav-number">3.</span> <span class="nav-text">克隆TensorFlow代码库</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#编译配置"><span class="nav-number">4.</span> <span class="nav-text">编译配置</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Bazel-build"><span class="nav-number">5.</span> <span class="nav-text">Bazel build</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#仅支持-CPU"><span class="nav-number">5.1.</span> <span class="nav-text">仅支持 CPU</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#GPU-支持"><span class="nav-number">5.2.</span> <span class="nav-text">GPU 支持</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#pip-安装"><span class="nav-number">6.</span> <span class="nav-text">pip 安装</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#python环境测试"><span class="nav-number">7.</span> <span class="nav-text">python环境测试</span></a></li></ol></div>
             
           </div>
         </section>
