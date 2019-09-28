@@ -102,7 +102,7 @@
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="http://yoursite.com/images/那些年走过的坑/tf2_gpu安装1.png">
 <meta property="og:image" content="http://yoursite.com/images/那些年走过的坑/tf2_gpu安装2.png">
-<meta property="og:updated_time" content="2019-09-28T02:43:38.752Z">
+<meta property="og:updated_time" content="2019-09-28T02:46:16.569Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="那些年走过的坑-tf2_gpu安装">
 <meta name="twitter:description" content="Tensorflow-gpu 的安装的复杂早有耳闻，以前一直用的都是cpu版，一直通过conda一键安装，过于安逸。 哎，欠的账始终是要还的。 最近，接触到实验室服务器后，开始捣鼓Tensoflow2.0-gpu，才发现各种神坑。首先因为学校服务器都是共享的无法获取root权限，导致无法更新显卡驱动，使得cuda10 ，无法安装。于是只能安装cuda9 。然后问题来了，google只提供了tens">
@@ -366,7 +366,7 @@
 <h1 id="克隆TensorFlow代码库"><a href="#克隆TensorFlow代码库" class="headerlink" title="克隆TensorFlow代码库"></a>克隆TensorFlow代码库</h1><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">git <span class="built_in">clone</span> https://github.com/tensorflow/tensorflow.git</div><div class="line"><span class="built_in">cd</span> tensorflow</div></pre></td></tr></table></figure>
 <p>由于代码库默认的分支为<strong>master</strong>。通过，下面代码进行分支切换。</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">git checkout r2.0   <span class="comment">#要编译的是tf2.0 所以切换到r2.0 版本</span></div></pre></td></tr></table></figure>
-<h1 id="编译配置"><a href="#编译配置" class="headerlink" title="编译配置"></a>编译配置</h1><p>启动编译配置</p>
+<h1 id="编译配置"><a href="#编译配置" class="headerlink" title="编译配置"></a>编译配置</h1><p>启动编译配置，输入accept后，开始进行配置，更具需求输入y/n 就行，一般只有CUDA那输入y。</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">./configure</div></pre></td></tr></table></figure>
 <p>由于实验室服务器是共享，有别的用户开始在usr/local 下安装过cuda 导致编译程序会自动优先默认识别usr/local目录下的cuda。但由于每个用户安装的cuda版本不同，并且又没有权限去修改usr/local下cuda的指向，我们可以在配置好configure后，在tensorflow目录下修改<strong>.tf_configure.bazelrc</strong>文件.。</p>
 <p>将文件中的cuda指定到 特定cuda版本的位置即可</p>
