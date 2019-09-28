@@ -102,7 +102,7 @@
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="http://yoursite.com/images/那些年走过的坑/tf2_gpu安装1.png">
 <meta property="og:image" content="http://yoursite.com/images/那些年走过的坑/tf2_gpu安装2.png">
-<meta property="og:updated_time" content="2019-09-28T02:34:00.614Z">
+<meta property="og:updated_time" content="2019-09-28T02:38:41.387Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="那些年走过的坑-tf2_gpu安装">
 <meta name="twitter:description" content="Tensorflow-gpu 的安装的复杂早有耳闻，以前一直用的都是cpu版，一直通过conda一键安装，过于安逸。 哎，欠的账始终是要还的。 最近，接触到实验室服务器后，开始捣鼓Tensoflow2.0-gpu，才发现各种神坑。首先因为学校服务器都是共享的无法获取root权限，导致无法更新显卡驱动，使得cuda10 ，无法安装。于是只能安装cuda9 。然后问题来了，google只提供了tens">
@@ -347,28 +347,22 @@
 <p>cuda，cudnn安装好后，就可以利用conda来创建 编译环境了。</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">conda create -n mk</div></pre></td></tr></table></figure>
 <p>创建编译环境mk。</p>
+<p>切换编译环境。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">conda activate mk</div></pre></td></tr></table></figure>
 <p>在mk环境中，安装</p>
 <ul>
-<li><p>pip</p>
-</li>
-<li><p>six </p>
-</li>
-<li><p>numpy </p>
-</li>
-<li><p>wheel</p>
-</li>
-<li><p>setuptools</p>
-</li>
-<li><p>mock future&gt;=0.17.1</p>
-</li>
-<li><p>keras_applications==1.0.6</p>
-</li>
-<li><p>keras_preprocessing==1.0.5</p>
-</li>
+<li>pip</li>
+<li>six</li>
+<li>numpy</li>
+<li>wheel</li>
+<li>setuptools</li>
+<li>mock future&gt;=0.17.1</li>
+<li>keras_applications==1.0.6</li>
+<li>keras_preprocessing==1.0.5</li>
 </ul>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">conda install pip six numpy wheel setuptools mock future&gt;=0.17.1</div><div class="line">conda install keras_applications==1.0.6</div><div class="line">conda install keras_preprocessing==1.0.5</div></pre></td></tr></table></figure>
 <p>可能keras_applications和keras_preprocessing 在conda中并没有，这时我们可以通过pip进行安装。</p>
-<p>开始就是这两个忘记安装了，导致百花30分钟QAQ。</p>
+<p>开始就是这两个忘记安装了，导致白花30分钟QAQ。</p>
 <h1 id="克隆TensorFlow代码库"><a href="#克隆TensorFlow代码库" class="headerlink" title="克隆TensorFlow代码库"></a>克隆TensorFlow代码库</h1><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">git <span class="built_in">clone</span> https://github.com/tensorflow/tensorflow.git</div><div class="line"><span class="built_in">cd</span> tensorflow</div></pre></td></tr></table></figure>
 <p>由于代码库默认的分支为<strong>master</strong>。通过，下面代码进行分支切换。</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">git checkout r2.0   <span class="comment">#要编译的是tf2.0 所以切换到r2.0 版本</span></div></pre></td></tr></table></figure>
