@@ -102,7 +102,7 @@
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="http://yoursite.com/images/那些年走过的坑/tf2_gpu安装1.png">
 <meta property="og:image" content="http://yoursite.com/images/那些年走过的坑/tf2_gpu安装2.png">
-<meta property="og:updated_time" content="2019-09-28T02:38:41.387Z">
+<meta property="og:updated_time" content="2019-09-28T02:43:38.752Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="那些年走过的坑-tf2_gpu安装">
 <meta name="twitter:description" content="Tensorflow-gpu 的安装的复杂早有耳闻，以前一直用的都是cpu版，一直通过conda一键安装，过于安逸。 哎，欠的账始终是要还的。 最近，接触到实验室服务器后，开始捣鼓Tensoflow2.0-gpu，才发现各种神坑。首先因为学校服务器都是共享的无法获取root权限，导致无法更新显卡驱动，使得cuda10 ，无法安装。于是只能安装cuda9 。然后问题来了，google只提供了tens">
@@ -386,6 +386,10 @@
 <h1 id="python环境测试"><a href="#python环境测试" class="headerlink" title="python环境测试"></a>python环境测试</h1><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">import</span> tensorflow <span class="keyword">as</span> tf</div><div class="line">print(tf.__versiong__)</div><div class="line">print(tf.test.is_gpu_available())</div></pre></td></tr></table></figure>
 <p><img src="/images/那些年走过的坑/tf2_gpu安装2.png" alt="tf2_gpu安装2"></p>
 <p>看见True 就代表成功了。</p>
+<p>然后，通过pycharm远程连接操作，真的方便。</p>
+<p>看见True，当时感动哭了，花了两天终于把这环境在服务器上配置好了。</p>
+<p>两天前，还傻到去找老师要root账号，去升级显卡驱动。结果，被老师回绝了，QAQ。</p>
+<p>凡事还是只能靠自己。</p>
 
       
     </div>
