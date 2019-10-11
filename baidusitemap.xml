@@ -4,8 +4,25 @@
 
     
   <url>
+    <loc>http://yoursite.com/2019/10/11/TF2%E6%A8%A1%E5%9E%8B%E4%BF%9D%E5%AD%98%E5%8A%A0%E8%BD%BD/</loc>
+    <lastmod>2019-10-11T15:32:04.803Z</lastmod>
+    <data>
+        <display>
+        <title>TF2模型保存加载</title>
+        <pubTime>2019-10-11T15:25:35.000Z</pubTime>
+        
+        <tag>Tensorflow</tag>
+         
+         
+           
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
     <loc>http://yoursite.com/2019/09/28/%E9%82%A3%E4%BA%9B%E5%B9%B4%E8%B5%B0%E8%BF%87%E7%9A%84%E5%9D%91-tf2-gpu%E5%AE%89%E8%A3%85/</loc>
-    <lastmod>2019-09-28T02:46:16.569Z</lastmod>
+    <lastmod>2019-10-06T05:57:26.392Z</lastmod>
     <data>
         <display>
         <title>那些年走过的坑-tf2_gpu安装</title>

@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://yoursite.com/"/>
-  <updated>2019-09-28T02:46:16.569Z</updated>
+  <updated>2019-10-11T15:32:04.803Z</updated>
   <id>http://yoursite.com/</id>
   
   <author>
@@ -16,11 +16,75 @@
   <generator uri="http://hexo.io/">Hexo</generator>
   
   <entry>
+    <title>TF2模型保存加载</title>
+    <link href="http://yoursite.com/2019/10/11/TF2%E6%A8%A1%E5%9E%8B%E4%BF%9D%E5%AD%98%E5%8A%A0%E8%BD%BD/"/>
+    <id>http://yoursite.com/2019/10/11/TF2模型保存加载/</id>
+    <published>2019-10-11T15:25:35.000Z</published>
+    <updated>2019-10-11T15:32:04.803Z</updated>
+    
+    <content type="html"><![CDATA[<p>在TF2中保存加载模型，有多种方式。下面介绍下，最主要的几种方式，以及在模型中有Custom Layer时如何保存和加载模型。</p>
+<p>由于Google官方在有Custom Layer层 的模型 保存/加载 介绍的非常不全面。这里统一详细介绍下。</p>
+<h1 id="tf-keras-models-保存-加载"><a href="#tf-keras-models-保存-加载" class="headerlink" title="tf.keras.models 保存/加载"></a>tf.keras.models 保存/加载</h1><h2 id="一般情况"><a href="#一般情况" class="headerlink" title="一般情况"></a>一般情况</h2><p>在利用tf.keras创建的model中直接运用model.save 保存模型的结构和权重为.h5文件。加载时用tf.keras.models.load进行加载。</p>
+<h3 id="保存"><a href="#保存" class="headerlink" title="保存"></a>保存</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">model = tf.keras.models.Sequential([...])</div><div class="line">model.save(<span class="string">"model.h5"</span>)</div></pre></td></tr></table></figure>
+<h3 id="加载"><a href="#加载" class="headerlink" title="加载"></a>加载</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">tf.keras.models.load_model(&quot;model.h5&quot;)</div></pre></td></tr></table></figure>
+<h2 id="含有custom-layer情况"><a href="#含有custom-layer情况" class="headerlink" title="含有custom layer情况"></a>含有custom layer情况</h2><p>自定义层：</p>
+<p>在编写自定义层时</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">MyDense</span><span class="params">(tf.keras.layers.Layer)</span>:</span></div><div class="line">    <span class="comment"># init 可以进行所有与输入无关的初始化</span></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, units)</span>:</span></div><div class="line">        super(MyDense, self).__init__()</div><div class="line">        self.units = units</div><div class="line">    <span class="comment"># build 可以知道输入张量的形状，并可以进行其余的初始化</span></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">build</span><span class="params">(self, input_shape)</span>:</span></div><div class="line">        self.w1 = self.add_weight(name=<span class="string">"w1"</span>,shape=[input_shape[<span class="number">-1</span>], self.units])</div><div class="line">        self.b1 = self.add_weight(name=<span class="string">"b1"</span>,shape=(self.units),initializer=tf.keras.initializers.zeros())</div><div class="line">    <span class="comment"># 在这里进行正向计算</span></div><div class="line"><span class="meta">    @tf.function</span></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">call</span><span class="params">(self, inputs)</span>:</span></div><div class="line">        <span class="comment"># return tf.matmul(inputs, self.w1)</span></div><div class="line">        <span class="keyword">return</span> inputs @ self.w1 + self.b1</div><div class="line">    </div><div class="line">    <span class="comment"># 自定义层配置 在model.save时有用</span></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">get_config</span><span class="params">(self)</span>:</span></div><div class="line">        config = &#123;</div><div class="line">            <span class="string">'units'</span>: self.units,</div><div class="line">        &#125;</div><div class="line">        base_config = super(MyDense,self).get_config()</div><div class="line">        <span class="keyword">return</span> dict(list(config.items()))</div></pre></td></tr></table></figure>
+<p>在custom layer中的 call() 上添加 @tf.function 可以将前向传播过程中不属于Graph的部分 转化为Graph。</p>
+<p><strong>报错一</strong></p>
+<p>如果在自定义层中没有重载get_config时，使用model.save() 将会提示如下错误。</p>
+<p>NotImplementedError: Layers with arguments in <code>__init__</code> must override <code>get_config</code>.</p>
+<p>如果自定义层中没有重载get_config， 在下文中使用tf.saved_model 中可以正常使用。</p>
+<p>因此get_config 只对model.save() 起配置作用。</p>
+<p>在custom layer中的 call() 上添加 @tf.function 可以将前向传播过程 转化为Graph。</p>
+<p><strong>报错二</strong></p>
+<p>若在custom layer的biuld 中创建初始矩阵时，name属性没写，会导致model.save报错</p>
+<p>报错提示名字name already exists已存在</p>
+<p>File “h5py/_objects.pyx”, line 54, in h5py._objects.with_phil.wrapper<br>File “h5py/_objects.pyx”, line 55, in h5py._objects.with_phil.wrapper<br>File “h5py/h5o.pyx”, line 202, in h5py.h5o.link<br>RuntimeError: Unable to create link (name already exists)</p>
+<p>因此正确的写法是 对每一个 矩阵 加上name属性</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">self.w1 = self.add_weight(name=<span class="string">"w1"</span>)</div><div class="line">self.b1 = self.add_weight(name=<span class="string">"b1"</span>)</div></pre></td></tr></table></figure>
+<p> 报错提示名字name already exists已存在</p>
+<p>File “h5py/_objects.pyx”, line 54, in h5py._objects.with_phil.wrapper<br>File “h5py/_objects.pyx”, line 55, in h5py._objects.with_phil.wrapper<br>File “h5py/h5o.pyx”, line 202, in h5py.h5o.link<br>RuntimeError: Unable to create link (name already exists)</p>
+<h3 id="保存-1"><a href="#保存-1" class="headerlink" title="保存"></a>保存</h3><p>在含有custom layer时 保存方式和一般情况相同直接，通过model.save(‘model.h5’)即可</p>
+<h3 id="加载-1"><a href="#加载-1" class="headerlink" title="加载"></a>加载</h3><p>在含有custom layer时，加载保存的。.h5 模型文件时需要声明 自定义的层和自定义的损失函数。</p>
+<p>在tf.keras.models.load_model中通custom_objects 来指定自定义层，自定义损失函数。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">model = tf.keras.models.load_model(<span class="string">"./model0.h5"</span>,custom_objects=&#123;<span class="string">"MyDense"</span>:MyDense&#125;)</div></pre></td></tr></table></figure>
+<h1 id="tf-saved-model-保存-加载"><a href="#tf-saved-model-保存-加载" class="headerlink" title="tf.saved_model 保存/加载"></a>tf.saved_model 保存/加载</h1><p>通过tf.saved_model 保存注意的事情没有tf.keras.models 那么多。但在加载时比较复杂。</p>
+<p>特别是，在有自定义层时，tf.save_model 方法在保存时 加载时更加方便，不需要额外的声明自定义层。但，需要在自定义层call 加上<strong>@tf.fuction</strong> 进行修饰。</p>
+<h2 id="保存-2"><a href="#保存-2" class="headerlink" title="保存"></a>保存</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">tf.saved_model.save(model, <span class="string">"./test_model_out"</span>)</div></pre></td></tr></table></figure>
+<h2 id="加载-2"><a href="#加载-2" class="headerlink" title="加载"></a>加载</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">load = tf.save_model.load(<span class="string">"./test_model_out"</span>)</div><div class="line">print(list(loaded.signatures.keys()))</div></pre></td></tr></table></figure>
+<p>[‘serving_default’]</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">infer = loaded.signatures[<span class="string">"serving_default"</span>]</div><div class="line">print(infer.structured_outputs)</div></pre></td></tr></table></figure>
+<p>{‘output’: TensorSpec(shape=(None, 1), dtype=tf.float32, name=’output’)}</p>
+<p>然后可以直接通过infer进行预测。</p>
+<p>输入数据为Tensor变量。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">test_input_ids   = np.load(<span class="string">'./data/test/input_ids.npy'</span>)[:<span class="number">10</span>]</div><div class="line">test_input_masks = np.load(<span class="string">'./data/test/input_masks.npy'</span>)[:<span class="number">10</span>]</div><div class="line">test_segment_ids = np.load(<span class="string">'./data/test/segment_ids.npy'</span>)[:<span class="number">10</span>]</div><div class="line"><span class="comment"># 转换为Tensor变量 其中dtype 需要对应，根据报错信息修改即可 一般为tf.int32 tf.float32</span></div><div class="line">test_input_word_ids =tf.convert_to_tensor(test_input_ids, dtype=tf.int32)</div><div class="line">test_input_mask     =tf.convert_to_tensor(test_input_masks, dtype=tf.int32)</div><div class="line">test_input_type_ids =tf.convert_to_tensor(test_segment_ids, dtype=tf.int32)</div></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">pre = infer(input_mask=test_input_mask,input_type_ids=test_input_type_ids,input_word_ids=test_input_word_ids)</div><div class="line">print(pre)</div></pre></td></tr></table></figure>
+<p>{‘output’: <tf.tensor: id="22859," shape="(10," 1),="" dtype="float32," numpy="array([[0.16463354]," [0.17504019],="" [0.16223168],="" [0.18234646],="" [0.17594947],="" [0.16918331],="" [0.15553711],="" [0.14790532],="" [0.15857093],="" [0.17600629]],="">}</tf.tensor:></p>
+<p>通过上面的打印可以看见 layer name = output，可以通过该索引输出。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">print(pre[<span class="string">'output'</span>].numpy())</div></pre></td></tr></table></figure>
+<p>[[0.16463354]<br> [0.17504019]<br> [0.16223168]<br> [0.18234646]<br> [0.17594947]<br> [0.16918331]<br> [0.15553711]<br> [0.14790532]<br> [0.15857093]<br> [0.17600629]]</p>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;在TF2中保存加载模型，有多种方式。下面介绍下，最主要的几种方式，以及在模型中有Custom Layer时如何保存和加载模型。&lt;/p&gt;
+&lt;p&gt;由于Google官方在有Custom Layer层 的模型 保存/加载 介绍的非常不全面。这里统一详细介绍下。&lt;/p&gt;
+&lt;h1 id
+    
+    </summary>
+    
+    
+      <category term="Tensorflow" scheme="http://yoursite.com/tags/Tensorflow/"/>
+    
+  </entry>
+  
+  <entry>
     <title>那些年走过的坑-tf2_gpu安装</title>
     <link href="http://yoursite.com/2019/09/28/%E9%82%A3%E4%BA%9B%E5%B9%B4%E8%B5%B0%E8%BF%87%E7%9A%84%E5%9D%91-tf2-gpu%E5%AE%89%E8%A3%85/"/>
     <id>http://yoursite.com/2019/09/28/那些年走过的坑-tf2-gpu安装/</id>
     <published>2019-09-28T02:20:02.000Z</published>
-    <updated>2019-09-28T02:46:16.569Z</updated>
+    <updated>2019-10-06T05:57:26.392Z</updated>
     
     <content type="html"><![CDATA[<p>Tensorflow-gpu 的安装的复杂早有耳闻，以前一直用的都是cpu版，一直通过conda一键安装，过于安逸。</p>
 <p>哎，欠的账始终是要还的。</p>
@@ -66,7 +130,9 @@
 <p>由于实验室服务器是共享，有别的用户开始在usr/local 下安装过cuda 导致编译程序会自动优先默认识别usr/local目录下的cuda。但由于每个用户安装的cuda版本不同，并且又没有权限去修改usr/local下cuda的指向，我们可以在配置好configure后，在tensorflow目录下修改<strong>.tf_configure.bazelrc</strong>文件.。</p>
 <p>将文件中的cuda指定到 特定cuda版本的位置即可</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">build --action_env CUDA_TOOLKIT_PATH=&quot;/disk1/lx/cuda&quot;</div></pre></td></tr></table></figure>
-<h1 id="Bazel-build"><a href="#Bazel-build" class="headerlink" title="Bazel build"></a>Bazel build</h1><p>一切准备就绪，就可以开始编译了。编译有两种，一种是仅支持cpu，另一种是支持gpu，需要哪个就用那个命令。</p>
+<h1 id="Bazel-build"><a href="#Bazel-build" class="headerlink" title="Bazel build"></a>Bazel build</h1><p>编译前，最好执行下面的 bazel清空命令，清除下bazel的缓存，以免报错</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">bazel clean --expunge</div></pre></td></tr></table></figure>
+<p>一切准备就绪，就可以开始编译了。编译有两种，一种是仅支持cpu，另一种是支持gpu，需要哪个就用那个命令。</p>
 <h2 id="仅支持-CPU"><a href="#仅支持-CPU" class="headerlink" title="仅支持 CPU"></a>仅支持 CPU</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">bazel build --config=opt //tensorflow/tools/pip_package:build_pip_package</div></pre></td></tr></table></figure>
 <h2 id="GPU-支持"><a href="#GPU-支持" class="headerlink" title="GPU 支持"></a>GPU 支持</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">bazel build --config=opt --config=cuda //tensorflow/tools/pip_package:build_pip_package</div></pre></td></tr></table></figure>
 <p><strong>编译前一定要通过conda list，pip list 来查看 前期准备 中 提到的依赖包是否全部安装。</strong></p>
@@ -1092,29 +1158,6 @@ sigmoid\_derivative(x) = \sigma&#39;(x) = \sigma(x) (1 - \sigma(x))\tag{2}&lt;/s
     
     
       <category term="learn" scheme="http://yoursite.com/tags/learn/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>Hello World</title>
-    <link href="http://yoursite.com/2016/11/15/hello-world/"/>
-    <id>http://yoursite.com/2016/11/15/hello-world/</id>
-    <published>2016-11-15T04:46:45.000Z</published>
-    <updated>2016-11-17T16:31:23.000Z</updated>
-    
-    <content type="html"><![CDATA[<figure class="highlight c"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdio.h&gt;</span></span></div><div class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></div><div class="line">&#123;</div><div class="line">   <span class="built_in">printf</span>(<span class="string">"Hello World!!"</span>);</div><div class="line">   <span class="keyword">return</span> <span class="number">0</span>;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">public</span> class <span class="title">Main</span><span class="params">()</span></span>&#123;</div><div class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String args[])</span></span>&#123;</div><div class="line">		System.out.println(<span class="string">"Hello World!!"</span>);</div><div class="line">	&#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<a id="more"></a>]]></content>
-    
-    <summary type="html">
-    
-      &lt;figure class=&quot;highlight c&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;1&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;2&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;3&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;4&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;5&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;6&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;&lt;span class=&quot;meta&quot;&gt;#&lt;span class=&quot;meta-keyword&quot;&gt;include&lt;/span&gt; &lt;span class=&quot;meta-string&quot;&gt;&amp;lt;stdio.h&amp;gt;&lt;/span&gt;&lt;/span&gt;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;&lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;title&quot;&gt;main&lt;/span&gt;&lt;span class=&quot;params&quot;&gt;()&lt;/span&gt;&lt;/span&gt;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;&amp;#123;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;   &lt;span class=&quot;built_in&quot;&gt;printf&lt;/span&gt;(&lt;span class=&quot;string&quot;&gt;&quot;Hello World!!&quot;&lt;/span&gt;);&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;   &lt;span class=&quot;keyword&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;number&quot;&gt;0&lt;/span&gt;;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;&amp;#125;&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
-&lt;figure class=&quot;highlight java&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;1&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;2&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;3&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;4&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;5&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;&lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; class &lt;span class=&quot;title&quot;&gt;Main&lt;/span&gt;&lt;span class=&quot;params&quot;&gt;()&lt;/span&gt;&lt;/span&gt;&amp;#123;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;	&lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;static&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;void&lt;/span&gt; &lt;span class=&quot;title&quot;&gt;main&lt;/span&gt;&lt;span class=&quot;params&quot;&gt;(String args[])&lt;/span&gt;&lt;/span&gt;&amp;#123;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;		System.out.println(&lt;span class=&quot;string&quot;&gt;&quot;Hello World!!&quot;&lt;/span&gt;);&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;	&amp;#125;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;&amp;#125;&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
-    
-    </summary>
-    
-    
-      <category term="start" scheme="http://yoursite.com/tags/start/"/>
     
   </entry>
   
