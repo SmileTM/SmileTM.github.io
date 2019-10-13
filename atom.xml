@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://yoursite.com/"/>
-  <updated>2019-10-11T15:32:04.803Z</updated>
+  <updated>2019-10-13T05:17:45.033Z</updated>
   <id>http://yoursite.com/</id>
   
   <author>
@@ -20,11 +20,12 @@
     <link href="http://yoursite.com/2019/10/11/TF2%E6%A8%A1%E5%9E%8B%E4%BF%9D%E5%AD%98%E5%8A%A0%E8%BD%BD/"/>
     <id>http://yoursite.com/2019/10/11/TF2模型保存加载/</id>
     <published>2019-10-11T15:25:35.000Z</published>
-    <updated>2019-10-11T15:32:04.803Z</updated>
+    <updated>2019-10-13T05:17:45.033Z</updated>
     
     <content type="html"><![CDATA[<p>在TF2中保存加载模型，有多种方式。下面介绍下，最主要的几种方式，以及在模型中有Custom Layer时如何保存和加载模型。</p>
 <p>由于Google官方在有Custom Layer层 的模型 保存/加载 介绍的非常不全面。这里统一详细介绍下。</p>
-<h1 id="tf-keras-models-保存-加载"><a href="#tf-keras-models-保存-加载" class="headerlink" title="tf.keras.models 保存/加载"></a>tf.keras.models 保存/加载</h1><h2 id="一般情况"><a href="#一般情况" class="headerlink" title="一般情况"></a>一般情况</h2><p>在利用tf.keras创建的model中直接运用model.save 保存模型的结构和权重为.h5文件。加载时用tf.keras.models.load进行加载。</p>
+<h1 id="h5-保存-加载"><a href="#h5-保存-加载" class="headerlink" title=".h5 保存/加载"></a>.h5 保存/加载</h1><p>据Google那边的消息，好像他们准备力推TF save_model形式。</p>
+<h2 id="一般情况"><a href="#一般情况" class="headerlink" title="一般情况"></a>一般情况</h2><p>在利用tf.keras创建的model中直接运用model.save 保存模型的结构和权重为.h5文件。加载时用tf.keras.models.load进行加载。</p>
 <h3 id="保存"><a href="#保存" class="headerlink" title="保存"></a>保存</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">model = tf.keras.models.Sequential([...])</div><div class="line">model.save(<span class="string">"model.h5"</span>)</div></pre></td></tr></table></figure>
 <h3 id="加载"><a href="#加载" class="headerlink" title="加载"></a>加载</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">tf.keras.models.load_model(&quot;model.h5&quot;)</div></pre></td></tr></table></figure>
 <h2 id="含有custom-layer情况"><a href="#含有custom-layer情况" class="headerlink" title="含有custom layer情况"></a>含有custom layer情况</h2><p>自定义层：</p>
@@ -49,10 +50,11 @@
 <h3 id="加载-1"><a href="#加载-1" class="headerlink" title="加载"></a>加载</h3><p>在含有custom layer时，加载保存的。.h5 模型文件时需要声明 自定义的层和自定义的损失函数。</p>
 <p>在tf.keras.models.load_model中通custom_objects 来指定自定义层，自定义损失函数。</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">model = tf.keras.models.load_model(<span class="string">"./model0.h5"</span>,custom_objects=&#123;<span class="string">"MyDense"</span>:MyDense&#125;)</div></pre></td></tr></table></figure>
-<h1 id="tf-saved-model-保存-加载"><a href="#tf-saved-model-保存-加载" class="headerlink" title="tf.saved_model 保存/加载"></a>tf.saved_model 保存/加载</h1><p>通过tf.saved_model 保存注意的事情没有tf.keras.models 那么多。但在加载时比较复杂。</p>
+<h1 id="TF-save-model保存-加载"><a href="#TF-save-model保存-加载" class="headerlink" title="TF save_model保存/加载"></a>TF save_model保存/加载</h1><p>通过tf.saved_model 保存注意的事情没有tf.keras.models 那么多。但在加载时比较复杂。</p>
 <p>特别是，在有自定义层时，tf.save_model 方法在保存时 加载时更加方便，不需要额外的声明自定义层。但，需要在自定义层call 加上<strong>@tf.fuction</strong> 进行修饰。</p>
 <h2 id="保存-2"><a href="#保存-2" class="headerlink" title="保存"></a>保存</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">tf.saved_model.save(model, <span class="string">"./test_model_out"</span>)</div></pre></td></tr></table></figure>
-<h2 id="加载-2"><a href="#加载-2" class="headerlink" title="加载"></a>加载</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">load = tf.save_model.load(<span class="string">"./test_model_out"</span>)</div><div class="line">print(list(loaded.signatures.keys()))</div></pre></td></tr></table></figure>
+<p>或者直接通过keras model.save 进行保存。 若没有 .h5 后缀，则会自动保存为TF save_model形式。若有.h5 则会保存为.h5文件<br><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">model.save(<span class="string">"./test_model_out"</span>)</div></pre></td></tr></table></figure></p>
+<h2 id="加载-2"><a href="#加载-2" class="headerlink" title="加载"></a>加载</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">load = tf.save_model.load(<span class="string">"./test_model_out"</span>)</div><div class="line"><span class="comment"># 两种方法效果一样</span></div><div class="line">load = tf.keras.models.load_model(<span class="string">"./test_model_out"</span>)</div><div class="line">print(list(loaded.signatures.keys()))</div></pre></td></tr></table></figure>
 <p>[‘serving_default’]</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">infer = loaded.signatures[<span class="string">"serving_default"</span>]</div><div class="line">print(infer.structured_outputs)</div></pre></td></tr></table></figure>
 <p>{‘output’: TensorSpec(shape=(None, 1), dtype=tf.float32, name=’output’)}</p>
@@ -64,6 +66,14 @@
 <p>通过上面的打印可以看见 layer name = output，可以通过该索引输出。</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">print(pre[<span class="string">'output'</span>].numpy())</div></pre></td></tr></table></figure>
 <p>[[0.16463354]<br> [0.17504019]<br> [0.16223168]<br> [0.18234646]<br> [0.17594947]<br> [0.16918331]<br> [0.15553711]<br> [0.14790532]<br> [0.15857093]<br> [0.17600629]]</p>
+<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>在和Google大佬的交谈中发现TF团队准备力推TF save_model 的形式。</p>
+<p><a href="https://github.com/tensorflow/models/issues/7643" target="_blank" rel="noopener">https://github.com/tensorflow/models/issues/7643</a></p>
+<p>简单总结下：</p>
+<p>模型保存 </p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">model.save(<span class="string">'file_path'</span>)</div></pre></td></tr></table></figure>
+<p>模型加载</p>
+<p>infer()中的数据 需要是Tensor 形式，可以用tf.convert_to_tensor 进行转换</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">load = tf.save_model.load(<span class="string">'file_path'</span>)</div><div class="line">infer = load.signatures[<span class="string">'serving_default'</span>]</div><div class="line"><span class="comment">#进行预测</span></div><div class="line"><span class="comment">#单输入情况</span></div><div class="line">infer(test_x)											</div><div class="line"><span class="comment">#多输入情况</span></div><div class="line">infer(x1 =test_x1, x2 = test_x2 )</div></pre></td></tr></table></figure>
 ]]></content>
     
     <summary type="html">
