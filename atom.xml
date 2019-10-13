@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://yoursite.com/"/>
-  <updated>2019-10-13T05:17:45.033Z</updated>
+  <updated>2019-10-13T10:36:48.039Z</updated>
   <id>http://yoursite.com/</id>
   
   <author>
@@ -20,10 +20,11 @@
     <link href="http://yoursite.com/2019/10/11/TF2%E6%A8%A1%E5%9E%8B%E4%BF%9D%E5%AD%98%E5%8A%A0%E8%BD%BD/"/>
     <id>http://yoursite.com/2019/10/11/TF2模型保存加载/</id>
     <published>2019-10-11T15:25:35.000Z</published>
-    <updated>2019-10-13T05:17:45.033Z</updated>
+    <updated>2019-10-13T10:36:48.039Z</updated>
     
     <content type="html"><![CDATA[<p>在TF2中保存加载模型，有多种方式。下面介绍下，最主要的几种方式，以及在模型中有Custom Layer时如何保存和加载模型。</p>
 <p>由于Google官方在有Custom Layer层 的模型 保存/加载 介绍的非常不全面。这里统一详细介绍下。</p>
+<a id="more"></a>
 <h1 id="h5-保存-加载"><a href="#h5-保存-加载" class="headerlink" title=".h5 保存/加载"></a>.h5 保存/加载</h1><p>据Google那边的消息，好像他们准备力推TF save_model形式。</p>
 <h2 id="一般情况"><a href="#一般情况" class="headerlink" title="一般情况"></a>一般情况</h2><p>在利用tf.keras创建的model中直接运用model.save 保存模型的结构和权重为.h5文件。加载时用tf.keras.models.load进行加载。</p>
 <h3 id="保存"><a href="#保存" class="headerlink" title="保存"></a>保存</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">model = tf.keras.models.Sequential([...])</div><div class="line">model.save(<span class="string">"model.h5"</span>)</div></pre></td></tr></table></figure>
@@ -80,7 +81,6 @@
     
       &lt;p&gt;在TF2中保存加载模型，有多种方式。下面介绍下，最主要的几种方式，以及在模型中有Custom Layer时如何保存和加载模型。&lt;/p&gt;
 &lt;p&gt;由于Google官方在有Custom Layer层 的模型 保存/加载 介绍的非常不全面。这里统一详细介绍下。&lt;/p&gt;
-&lt;h1 id
     
     </summary>
     
