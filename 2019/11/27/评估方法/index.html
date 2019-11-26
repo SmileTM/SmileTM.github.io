@@ -74,7 +74,7 @@
 <link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="Ros," />
+  <meta name="keywords" content="NLP," />
 
 
 
@@ -92,25 +92,18 @@
 
 
 
-<meta name="description" content="最近，在做毕业设计，有关Ros这方面的。于是，利用空余时间，简单的探索了一下。 环境Ubuntu 16.04 LTS + ROS  kinetic 首先为catkin创建一个工作空间 如果已装好了catkin，并且初始化好了变量环境，且创建好了工作空间，则该步骤可以跳过。 若没有，则可以按照下面步骤进行。">
-<meta name="keywords" content="Ros">
+<meta name="description" content="混淆矩阵、准确率、精确率、召回率、F值、ROC曲线、AUC、PR曲线-Sklearn.metrics评估方法混淆矩阵 TN ：真实为0，预测为0 FP ：真实为0，预测为1 FN ：真实为1，预测为0 TP ：真实为1，预测为1          混淆矩阵     预测           0     1               真实     0     TN     FP">
+<meta name="keywords" content="NLP">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Ros基于RRT算法的路径仿真">
-<meta property="og:url" content="http://yoursite.com/2018/01/17/基于RRT算法的路径仿真/index.html">
+<meta property="og:title" content="评估方法">
+<meta property="og:url" content="http://yoursite.com/2019/11/27/评估方法/index.html">
 <meta property="og:site_name" content="SmileTM博客">
-<meta property="og:description" content="最近，在做毕业设计，有关Ros这方面的。于是，利用空余时间，简单的探索了一下。 环境Ubuntu 16.04 LTS + ROS  kinetic 首先为catkin创建一个工作空间 如果已装好了catkin，并且初始化好了变量环境，且创建好了工作空间，则该步骤可以跳过。 若没有，则可以按照下面步骤进行。">
+<meta property="og:description" content="混淆矩阵、准确率、精确率、召回率、F值、ROC曲线、AUC、PR曲线-Sklearn.metrics评估方法混淆矩阵 TN ：真实为0，预测为0 FP ：真实为0，预测为1 FN ：真实为1，预测为0 TP ：真实为1，预测为1          混淆矩阵     预测           0     1               真实     0     TN     FP">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="http://yoursite.com/images/Ros/ros1.png">
-<meta property="og:image" content="http://yoursite.com/images/Ros/ros2.png">
-<meta property="og:image" content="http://yoursite.com/images/Ros/ros3.png">
-<meta property="og:image" content="http://yoursite.com/images/Ros/ros4.gif">
-<meta property="og:image" content="http://yoursite.com/images/Ros/ros5.png">
-<meta property="og:image" content="http://yoursite.com/images/Ros/ros6.png">
-<meta property="og:updated_time" content="2018-01-17T11:09:48.285Z">
+<meta property="og:updated_time" content="2019-11-26T17:16:14.573Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Ros基于RRT算法的路径仿真">
-<meta name="twitter:description" content="最近，在做毕业设计，有关Ros这方面的。于是，利用空余时间，简单的探索了一下。 环境Ubuntu 16.04 LTS + ROS  kinetic 首先为catkin创建一个工作空间 如果已装好了catkin，并且初始化好了变量环境，且创建好了工作空间，则该步骤可以跳过。 若没有，则可以按照下面步骤进行。">
-<meta name="twitter:image" content="http://yoursite.com/images/Ros/ros1.png">
+<meta name="twitter:title" content="评估方法">
+<meta name="twitter:description" content="混淆矩阵、准确率、精确率、召回率、F值、ROC曲线、AUC、PR曲线-Sklearn.metrics评估方法混淆矩阵 TN ：真实为0，预测为0 FP ：真实为0，预测为1 FN ：真实为1，预测为0 TP ：真实为1，预测为1          混淆矩阵     预测           0     1               真实     0     TN     FP">
 
 
 
@@ -128,7 +121,7 @@
   };
 </script>
 
-  <title> Ros基于RRT算法的路径仿真 | SmileTM博客 </title><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+  <title> 评估方法 | SmileTM博客 </title><!-- hexo-inject:begin --><!-- hexo-inject:end -->
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
@@ -291,7 +284,7 @@
             
             
               
-                Ros基于RRT算法的路径仿真
+                评估方法
               
             
           </h1>
@@ -303,8 +296,8 @@
               <i class="fa fa-calendar-o"></i>
             </span>
             <span class="post-meta-item-text">发表于</span>
-            <time itemprop="dateCreated" datetime="2018-01-17T18:56:32+08:00" content="2018-01-17">
-              2018-01-17
+            <time itemprop="dateCreated" datetime="2019-11-27T00:19:02+08:00" content="2019-11-27">
+              2019-11-27
             </time>
           </span>
 
@@ -331,40 +324,45 @@
       
 
       
-        <p>最近，在做毕业设计，有关Ros这方面的。于是，利用空余时间，简单的探索了一下。</p>
-<p>环境Ubuntu 16.04 LTS + ROS  kinetic</p>
-<p>首先为catkin创建一个工作空间</p>
-<p>如果已装好了catkin，并且初始化好了变量环境，且创建好了工作空间，则该步骤可以跳过。</p>
-<p>若没有，则可以按照下面步骤进行。</p>
-<a id="more"></a>
-<p>创建一个catkin工作空间</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">$ mkdir -p ~/catkin_ws/src</div><div class="line">$ <span class="built_in">cd</span> ~/catkin_ws/src</div><div class="line">$ catkin_init_workspace</div><div class="line">$ mkdir -p ~/catkin_ws/src</div><div class="line">$ <span class="built_in">cd</span> ~/catkin_ws/src</div><div class="line">$ catkin_init_workspace</div></pre></td></tr></table></figure>
-<p>进入工作空间，通过catkin_make进行编译</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">$ <span class="built_in">cd</span> ~/catkin_ws/</div><div class="line">$ catkin_make</div></pre></td></tr></table></figure>
-<p>工作空间建立好后，文件夹中会看见 src文件夹，然后 将path_planning 放入src中</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div></pre></td><td class="code"><pre><div class="line">打开终端</div><div class="line">$ roscore				// 启动ros</div><div class="line"></div><div class="line"></div><div class="line">打开新的终端</div><div class="line">$ <span class="built_in">cd</span> ~/catkin_ws   		//进入工作空间</div><div class="line">$ catkin_make   		//对工程进行编译</div><div class="line">$ <span class="built_in">source</span> devel/setup.sh      </div><div class="line">将编译后的文件 提到上层 若不执行改命令 这 rosrun 指令无法识别 已编译的程序</div><div class="line">$ rosrun path_planning env_node    //执行环境节点</div><div class="line"></div><div class="line"></div><div class="line">再开启新的终端</div><div class="line">$ rosrun rviz rviz    //启动Rviz模拟仿真软件</div><div class="line">在Rviz窗口，更改：</div><div class="line">在全局选项固定框架<span class="string">'path_planner'</span></div><div class="line">在Rviz 左下角 点击add添加 Mark ，并改变Mark主题 为<span class="string">'Path_planner_rrt'</span></div><div class="line"></div><div class="line"></div><div class="line">再打开新终端</div><div class="line">$ rosrun path_planning rrt_node</div></pre></td></tr></table></figure>
-<p><img src="/images/Ros/ros1.png" alt="rrt_ros1"> </p>
-<p>修改path_planning 包的scr中的obstacles.cpp 代码 可以 向地图中添加 障碍物</p>
-<h3 id="基于官方的rrt-exploration的探索"><a href="#基于官方的rrt-exploration的探索" class="headerlink" title="基于官方的rrt_exploration的探索"></a>基于官方的rrt_exploration的探索</h3><p>起初，使用的是环境Ubuntu 16.04 LTS + ROS  lunar 但由于该版本太新 官方没有提供相应的ros-kinetic-kobuki ros-kinetic-kobuki-core ros-kinetic-kobuki-gazebo 包 只好回到环境Ubuntu 16.04 LTS + ROS  kinetic。</p>
-<p><a href="http://wiki.ros.org/rrt_exploration/Tutorials" target="_blank" rel="noopener">rrt_exploration教程</a></p>
-<p>首先，在安装好Ros 并创建好工作环境下，安装需要的依赖环境。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">sudo apt-get install ros-kinetic-gmapping ros-kinetic-navigation ros-kinetic-kobuki ros-kinetic-kobuki-core ros-kinetic-kobuki-gazebo</div><div class="line">sudo apt-get install python-opencv python-numpy python-scikits-learn</div></pre></td></tr></table></figure>
-<p>然后，将官方的rrt_exploration包从git中clone到本地的 工作环境目录中的 src，并对其进行编译。</p>
-<p>在编译过程中 遇到了“make -j2 -l2” 报错 ，发现双核2G，程序无法编译完成，由于是在虚拟机中运行，将虚拟机中的配置 改为4核4G 才能 编译完成。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">$ cd ~/catkin_ws/src/</div><div class="line">$ git clone https://github.com/hasauino/rrt_exploration.git</div><div class="line">$ git clone https://github.com/hasauino/rrt_exploration_tutorials.git</div><div class="line">$ cd ~/catkin_ws</div><div class="line">$ catkin_make</div></pre></td></tr></table></figure>
-<p>第1,2行 在每次编译新包后，一定要运行，将新编译的文件添加到ros依赖中，否则roslaunch，rosrun 等命令无法识别新产生的文件。 若，依然无法识别，将工作环境目录下的build中，相应的包删除，重新编译，反复执行第1，2行 。（有的时候，能识别；有时候，不能。具体，为什么，我也不清楚）</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">$ cd ~/catkin_ws/</div><div class="line">$ source devel/setup.sh </div><div class="line">roslaunch rrt_exploration_tutorials single_simulated_house.launch</div></pre></td></tr></table></figure>
-<p>运行后，将会自动启动Rviz和Gazebo模拟器。若启动后，发现 一直停在 Gazebo启动 页面 则代表Gazebo真正下载模型，下载完毕即可。</p>
-<p><img src="/images/Ros/ros2.png" alt="rrt_ros2"></p>
-<p><img src="/images/Ros/ros3.png" alt="rrt_ros3"></p>
-<p>在执行下面命令 启动机器人节点</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ roslaunch rrt_exploration single.launch</div></pre></td></tr></table></figure>
-<p>并在 rviz中 如图操作，让机器人节点，自动搜寻 整个房间。</p>
-<p><img src="/images/Ros/ros4.gif" alt="rrt_ros4"></p>
-<p><img src="/images/Ros/ros5.png" alt="rrt_ros5"></p>
-<p>与此同时，机器人节点，根据Gazebo中的房间 模型， 在Rviz中实时 绘出地图，并根据该 绘出的图形，机器人耿局rrt算法进行 下一步搜索</p>
-<p><img src="/images/Ros/ros6.png" alt="rrt_ros6"></p>
+        <h1 id="混淆矩阵、准确率、精确率、召回率、F值、ROC曲线、AUC、PR曲线-Sklearn-metrics评估方法"><a href="#混淆矩阵、准确率、精确率、召回率、F值、ROC曲线、AUC、PR曲线-Sklearn-metrics评估方法" class="headerlink" title="混淆矩阵、准确率、精确率、召回率、F值、ROC曲线、AUC、PR曲线-Sklearn.metrics评估方法"></a>混淆矩阵、准确率、精确率、召回率、F值、ROC曲线、AUC、PR曲线-Sklearn.metrics评估方法</h1><h2 id="混淆矩阵"><a href="#混淆矩阵" class="headerlink" title="混淆矩阵"></a>混淆矩阵</h2><ul>
+<li>TN ：真实为0，预测为0</li>
+<li>FP ：真实为0，预测为1</li>
+<li>FN ：真实为1，预测为0</li>
+<li>TP ：真实为1，预测为1</li>
+</ul>
+<table>
+  <tr>
+    <td rowspan="2" colspan="2">混淆矩阵</td>
+    <td colspan="2">预测</td>
+  </tr>
+  <tr>
+    <td>0</td>
+    <td>1</td>    
+  </tr>
+  <tr>
+    <td rowspan="2">真实</td>
+    <td>0</td>
+    <td>TN</td>
+    <td>FP</td>
+  </tr>
+  <tr>
+    <td>1</td>
+    <td>FN</td>
+    <td>TP</td>
+  </tr>
+</table>
 
+
+
+
+
+
+
+
+
+
+
+<h2 id="准确率"><a href="#准确率" class="headerlink" title="准确率"></a>准确率</h2><h2 id="精确率"><a href="#精确率" class="headerlink" title="精确率"></a>精确率</h2><h2 id="召回率"><a href="#召回率" class="headerlink" title="召回率"></a>召回率</h2><h2 id="F值"><a href="#F值" class="headerlink" title="F值"></a>F值</h2><h2 id="ROC曲线"><a href="#ROC曲线" class="headerlink" title="ROC曲线"></a>ROC曲线</h2><h2 id="AUC"><a href="#AUC" class="headerlink" title="AUC"></a>AUC</h2><h2 id="PR曲线"><a href="#PR曲线" class="headerlink" title="PR曲线"></a>PR曲线</h2>
       
     </div>
 
@@ -385,7 +383,7 @@
       
         <div class="post-tags">
           
-            <a href="/tags/Ros/" rel="tag">#Ros</a>
+            <a href="/tags/NLP/" rel="tag">#NLP</a>
           
         </div>
       
@@ -394,17 +392,13 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2018/01/09/Hexo+NexT+LaTex配置/" rel="next" title="Hexo+NexT+LaTex配置">
-                <i class="fa fa-chevron-left"></i> Hexo+NexT+LaTex配置
+              <a href="/2019/10/11/TF2模型保存加载/" rel="next" title="TF2模型保存加载">
+                <i class="fa fa-chevron-left"></i> TF2模型保存加载
               </a>
             
           </div>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2018/04/15/线段与线段、矩形相交问题/" rel="prev" title="线段与线段、矩形相交问题">
-                线段与线段、矩形相交问题 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -543,7 +537,7 @@
               
             
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#基于官方的rrt-exploration的探索"><span class="nav-number">1.</span> <span class="nav-text">基于官方的rrt_exploration的探索</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#混淆矩阵、准确率、精确率、召回率、F值、ROC曲线、AUC、PR曲线-Sklearn-metrics评估方法"><span class="nav-number">1.</span> <span class="nav-text">混淆矩阵、准确率、精确率、召回率、F值、ROC曲线、AUC、PR曲线-Sklearn.metrics评估方法</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#混淆矩阵"><span class="nav-number">1.1.</span> <span class="nav-text">混淆矩阵</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#准确率"><span class="nav-number">1.2.</span> <span class="nav-text">准确率</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#精确率"><span class="nav-number">1.3.</span> <span class="nav-text">精确率</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#召回率"><span class="nav-number">1.4.</span> <span class="nav-text">召回率</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#F值"><span class="nav-number">1.5.</span> <span class="nav-text">F值</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ROC曲线"><span class="nav-number">1.6.</span> <span class="nav-text">ROC曲线</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#AUC"><span class="nav-number">1.7.</span> <span class="nav-text">AUC</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#PR曲线"><span class="nav-number">1.8.</span> <span class="nav-text">PR曲线</span></a></li></ol></li></ol></div>
             
           </div>
         </section>

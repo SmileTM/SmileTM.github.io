@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://yoursite.com/"/>
-  <updated>2019-10-13T10:36:48.039Z</updated>
+  <updated>2019-11-26T17:16:14.573Z</updated>
   <id>http://yoursite.com/</id>
   
   <author>
@@ -14,6 +14,64 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>评估方法</title>
+    <link href="http://yoursite.com/2019/11/27/%E8%AF%84%E4%BC%B0%E6%96%B9%E6%B3%95/"/>
+    <id>http://yoursite.com/2019/11/27/评估方法/</id>
+    <published>2019-11-26T16:19:02.000Z</published>
+    <updated>2019-11-26T17:16:14.573Z</updated>
+    
+    <content type="html"><![CDATA[<h1 id="混淆矩阵、准确率、精确率、召回率、F值、ROC曲线、AUC、PR曲线-Sklearn-metrics评估方法"><a href="#混淆矩阵、准确率、精确率、召回率、F值、ROC曲线、AUC、PR曲线-Sklearn-metrics评估方法" class="headerlink" title="混淆矩阵、准确率、精确率、召回率、F值、ROC曲线、AUC、PR曲线-Sklearn.metrics评估方法"></a>混淆矩阵、准确率、精确率、召回率、F值、ROC曲线、AUC、PR曲线-Sklearn.metrics评估方法</h1><h2 id="混淆矩阵"><a href="#混淆矩阵" class="headerlink" title="混淆矩阵"></a>混淆矩阵</h2><ul>
+<li>TN ：真实为0，预测为0</li>
+<li>FP ：真实为0，预测为1</li>
+<li>FN ：真实为1，预测为0</li>
+<li>TP ：真实为1，预测为1</li>
+</ul>
+<table>
+  <tr>
+    <td rowspan="2" colspan="2">混淆矩阵</td>
+    <td colspan="2">预测</td>
+  </tr>
+  <tr>
+    <td>0</td>
+    <td>1</td>    
+  </tr>
+  <tr>
+    <td rowspan="2">真实</td>
+    <td>0</td>
+    <td>TN</td>
+    <td>FP</td>
+  </tr>
+  <tr>
+    <td>1</td>
+    <td>FN</td>
+    <td>TP</td>
+  </tr>
+</table>
+
+
+
+
+
+
+
+
+
+
+
+<h2 id="准确率"><a href="#准确率" class="headerlink" title="准确率"></a>准确率</h2><h2 id="精确率"><a href="#精确率" class="headerlink" title="精确率"></a>精确率</h2><h2 id="召回率"><a href="#召回率" class="headerlink" title="召回率"></a>召回率</h2><h2 id="F值"><a href="#F值" class="headerlink" title="F值"></a>F值</h2><h2 id="ROC曲线"><a href="#ROC曲线" class="headerlink" title="ROC曲线"></a>ROC曲线</h2><h2 id="AUC"><a href="#AUC" class="headerlink" title="AUC"></a>AUC</h2><h2 id="PR曲线"><a href="#PR曲线" class="headerlink" title="PR曲线"></a>PR曲线</h2>]]></content>
+    
+    <summary type="html">
+    
+      &lt;h1 id=&quot;混淆矩阵、准确率、精确率、召回率、F值、ROC曲线、AUC、PR曲线-Sklearn-metrics评估方法&quot;&gt;&lt;a href=&quot;#混淆矩阵、准确率、精确率、召回率、F值、ROC曲线、AUC、PR曲线-Sklearn-metrics评估方法&quot; class=&quot;hea
+    
+    </summary>
+    
+    
+      <category term="NLP" scheme="http://yoursite.com/tags/NLP/"/>
+    
+  </entry>
   
   <entry>
     <title>TF2模型保存加载</title>
@@ -1131,43 +1189,6 @@ sigmoid\_derivative(x) = \sigma&#39;(x) = \sigma(x) (1 - \sigma(x))\tag{2}&lt;/s
     
     
       <category term="IntelliJ IDEA配置" scheme="http://yoursite.com/tags/IntelliJ-IDEA%E9%85%8D%E7%BD%AE/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>Markdown</title>
-    <link href="http://yoursite.com/2016/11/18/markdown/"/>
-    <id>http://yoursite.com/2016/11/18/markdown/</id>
-    <published>2016-11-17T16:37:14.000Z</published>
-    <updated>2016-12-02T13:52:40.000Z</updated>
-    
-    <content type="html"><![CDATA[<h4 id="引用"><a href="#引用" class="headerlink" title="引用"></a>引用</h4><blockquote>
-<p>1 “&gt;”</p>
-</blockquote>
-<ul>
-<li>“&gt;”<br>两种形式* 必须用在每次开始一行的头部才有效，且前后各一个空格“&gt;”</li>
-</ul>
-<h4 id="代码高亮"><a href="#代码高亮" class="headerlink" title="代码高亮"></a>代码高亮</h4><p>利用来<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">```swift</div><div class="line">print(&quot;Hello World!!&quot;)</div></pre></td></tr></table></figure></p>
-<h4 id="字体样式"><a href="#字体样式" class="headerlink" title="字体样式"></a>字体样式</h4><p>“<strong>强调</strong>”，“<em>斜体</em>“，“<em>强调</em>”，“<strong>强调</strong>”<br><a id="more"></a></p>
-<h4 id="图片引用"><a href="#图片引用" class="headerlink" title="图片引用"></a>图片引用</h4><p><img src="1" alt="">  1处写图片链接  </p>
-<h4 id="网站引用"><a href="#网站引用" class="headerlink" title="网站引用"></a>网站引用</h4><p><a href="www.s-tm.cn">STM</a></p>
-]]></content>
-    
-    <summary type="html">
-    
-      &lt;h4 id=&quot;引用&quot;&gt;&lt;a href=&quot;#引用&quot; class=&quot;headerlink&quot; title=&quot;引用&quot;&gt;&lt;/a&gt;引用&lt;/h4&gt;&lt;blockquote&gt;
-&lt;p&gt;1 “&amp;gt;”&lt;/p&gt;
-&lt;/blockquote&gt;
-&lt;ul&gt;
-&lt;li&gt;“&amp;gt;”&lt;br&gt;两种形式* 必须用在每次开始一行的头部才有效，且前后各一个空格“&amp;gt;”&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h4 id=&quot;代码高亮&quot;&gt;&lt;a href=&quot;#代码高亮&quot; class=&quot;headerlink&quot; title=&quot;代码高亮&quot;&gt;&lt;/a&gt;代码高亮&lt;/h4&gt;&lt;p&gt;利用来&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;1&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;2&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;3&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;```swift&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;print(&amp;quot;Hello World!!&amp;quot;)&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;&lt;/p&gt;
-&lt;h4 id=&quot;字体样式&quot;&gt;&lt;a href=&quot;#字体样式&quot; class=&quot;headerlink&quot; title=&quot;字体样式&quot;&gt;&lt;/a&gt;字体样式&lt;/h4&gt;&lt;p&gt;“&lt;strong&gt;强调&lt;/strong&gt;”，“&lt;em&gt;斜体&lt;/em&gt;“，“&lt;em&gt;强调&lt;/em&gt;”，“&lt;strong&gt;强调&lt;/strong&gt;”&lt;br&gt;
-    
-    </summary>
-    
-    
-      <category term="learn" scheme="http://yoursite.com/tags/learn/"/>
     
   </entry>
   
