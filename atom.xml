@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://yoursite.com/"/>
-  <updated>2019-11-27T05:20:07.904Z</updated>
+  <updated>2019-11-27T06:01:21.273Z</updated>
   <id>http://yoursite.com/</id>
   
   <author>
@@ -20,7 +20,7 @@
     <link href="http://yoursite.com/2019/11/27/%E8%AF%84%E4%BC%B0%E6%96%B9%E6%B3%95/"/>
     <id>http://yoursite.com/2019/11/27/评估方法/</id>
     <published>2019-11-26T16:19:02.000Z</published>
-    <updated>2019-11-27T05:20:07.904Z</updated>
+    <updated>2019-11-27T06:01:21.273Z</updated>
     
     <content type="html"><![CDATA[<h1 id="混淆矩阵、准确率、精确率、召回率、F值、ROC曲线、AUC、PR曲线-Sklearn-metrics评估方法"><a href="#混淆矩阵、准确率、精确率、召回率、F值、ROC曲线、AUC、PR曲线-Sklearn-metrics评估方法" class="headerlink" title="混淆矩阵、准确率、精确率、召回率、F值、ROC曲线、AUC、PR曲线-Sklearn.metrics评估方法"></a>混淆矩阵、准确率、精确率、召回率、F值、ROC曲线、AUC、PR曲线-Sklearn.metrics评估方法</h1><h2 id="混淆矩阵"><a href="#混淆矩阵" class="headerlink" title="混淆矩阵"></a>混淆矩阵</h2><ul>
 <li>TN ：真实为0，预测为0</li>
@@ -54,7 +54,9 @@
 <figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">from</span> sklearn.metrics <span class="keyword">import</span> confusion_matrix</div><div class="line">yp = [<span class="number">1</span>,<span class="number">1</span>,<span class="number">0</span>,<span class="number">1</span>,<span class="number">1</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">1</span>]</div><div class="line">yr = [<span class="number">1</span>,<span class="number">1</span>,<span class="number">1</span>,<span class="number">1</span>,<span class="number">1</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">1</span>,<span class="number">0</span>,<span class="number">0</span>]</div><div class="line">confusion_matrix=confusion_matrix(yr,yp)</div></pre></td></tr></table></figure>
 <p>output:</p>
 <p>[[3 1]<br> [2 4]]</p>
-<h2 id="分类准确率-Accuracy"><a href="#分类准确率-Accuracy" class="headerlink" title="分类准确率 Accuracy"></a>分类准确率 Accuracy</h2><ul>
+<h2 id="分类准确率-Accuracy"><a href="#分类准确率-Accuracy" class="headerlink" title="分类准确率 Accuracy"></a>分类准确率 Accuracy</h2><p>Accuracy是最常见的evaluation metric。但在binary classification中，如果遇见正反例不平衡的情况下，尤其是我们对少数类别感兴趣的情况下，Accuracy将不再具有参考价值。</p>
+<p>比如，100个样本中有99个正例，那么我们全部预测为1，则准确率将达到99%。若将该model放在新样本环境中，却一个负例都无法分辨，使得该model毫无意义。</p>
+<ul>
 <li>所有样本中预测正确的比率</li>
 </ul>
 <script type="math/tex; mode=display">
@@ -70,6 +72,10 @@ Precision = \frac{TP}{TP+FP}</script><figure class="highlight python"><table><tr
 <script type="math/tex; mode=display">
 Recall = \frac{TP}{TP+FN}</script><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">from</span> sklearn.metrics <span class="keyword">import</span> recall_score</div><div class="line">recall_score=recall_score(yr,yp)</div></pre></td></tr></table></figure>
 <p>recall_score = 0.6666666666666666</p>
+<p>其中Recall是相对真实答案而言的， Precision是相对model而言。</p>
+<p>一般来说Precision与Recall是一种博弈的关系。</p>
+<p>Recall高的，一般Precision就会低，因为model要考虑到更多的样本，就代表出错的可能性就越高。</p>
+<p>反之，Precision高的，Recall一般会低，因为model只对它自己肯定的样本进行预测，这样一来model的泛华能力比较弱。<br>因此，就有了下面的F1 score，对这两个指数进行综合考察。</p>
 <h2 id="F1值"><a href="#F1值" class="headerlink" title="F1值"></a>F1值</h2><p>用来衡量二分类模型精确度的一种指标。它同时兼顾了分类模型的准确率和召回率。F1分数可以看作是模型准确率和召回率的一种加权平均，它的最大值是1，最小值是0。</p>
 <p>其中F1 score是一个综合考虑Precision和Recall的metric。</p>
 <script type="math/tex; mode=display">
