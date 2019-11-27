@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://yoursite.com/"/>
-  <updated>2019-11-26T17:16:14.573Z</updated>
+  <updated>2019-11-27T05:18:37.954Z</updated>
   <id>http://yoursite.com/</id>
   
   <author>
@@ -20,7 +20,7 @@
     <link href="http://yoursite.com/2019/11/27/%E8%AF%84%E4%BC%B0%E6%96%B9%E6%B3%95/"/>
     <id>http://yoursite.com/2019/11/27/评估方法/</id>
     <published>2019-11-26T16:19:02.000Z</published>
-    <updated>2019-11-26T17:16:14.573Z</updated>
+    <updated>2019-11-27T05:18:37.954Z</updated>
     
     <content type="html"><![CDATA[<h1 id="混淆矩阵、准确率、精确率、召回率、F值、ROC曲线、AUC、PR曲线-Sklearn-metrics评估方法"><a href="#混淆矩阵、准确率、精确率、召回率、F值、ROC曲线、AUC、PR曲线-Sklearn-metrics评估方法" class="headerlink" title="混淆矩阵、准确率、精确率、召回率、F值、ROC曲线、AUC、PR曲线-Sklearn.metrics评估方法"></a>混淆矩阵、准确率、精确率、召回率、F值、ROC曲线、AUC、PR曲线-Sklearn.metrics评估方法</h1><h2 id="混淆矩阵"><a href="#混淆矩阵" class="headerlink" title="混淆矩阵"></a>混淆矩阵</h2><ul>
 <li>TN ：真实为0，预测为0</li>
@@ -50,21 +50,82 @@
   </tr>
 </table>
 
-
-
-
-
-
-
-
-
-
-
-<h2 id="准确率"><a href="#准确率" class="headerlink" title="准确率"></a>准确率</h2><h2 id="精确率"><a href="#精确率" class="headerlink" title="精确率"></a>精确率</h2><h2 id="召回率"><a href="#召回率" class="headerlink" title="召回率"></a>召回率</h2><h2 id="F值"><a href="#F值" class="headerlink" title="F值"></a>F值</h2><h2 id="ROC曲线"><a href="#ROC曲线" class="headerlink" title="ROC曲线"></a>ROC曲线</h2><h2 id="AUC"><a href="#AUC" class="headerlink" title="AUC"></a>AUC</h2><h2 id="PR曲线"><a href="#PR曲线" class="headerlink" title="PR曲线"></a>PR曲线</h2>]]></content>
+<a id="more"></a>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">from</span> sklearn.metrics <span class="keyword">import</span> confusion_matrix</div><div class="line">yp = [<span class="number">1</span>,<span class="number">1</span>,<span class="number">0</span>,<span class="number">1</span>,<span class="number">1</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">1</span>]</div><div class="line">yr = [<span class="number">1</span>,<span class="number">1</span>,<span class="number">1</span>,<span class="number">1</span>,<span class="number">1</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">1</span>,<span class="number">0</span>,<span class="number">0</span>]</div><div class="line">confusion_matrix=confusion_matrix(yr,yp)</div></pre></td></tr></table></figure>
+<p>output:</p>
+<p>[[3 1]<br> [2 4]]</p>
+<h2 id="分类准确率-Accuracy"><a href="#分类准确率-Accuracy" class="headerlink" title="分类准确率 Accuracy"></a>分类准确率 Accuracy</h2><ul>
+<li>所有样本中预测正确的比率</li>
+</ul>
+<script type="math/tex; mode=display">
+Accuracy = \frac{TP+TN}{TN+FP+FN+TP}</script><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">from</span> sklearn.metrics <span class="keyword">import</span> accuracy_score</div><div class="line">yp = [<span class="number">1</span>,<span class="number">1</span>,<span class="number">0</span>,<span class="number">1</span>,<span class="number">1</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">1</span>]</div><div class="line">yr = [<span class="number">1</span>,<span class="number">1</span>,<span class="number">1</span>,<span class="number">1</span>,<span class="number">1</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">1</span>,<span class="number">0</span>,<span class="number">0</span>]</div><div class="line">accuracy_score=accuracy_score(yr,yp)</div></pre></td></tr></table></figure>
+<p>accuracy_score = 0.7</p>
+<h2 id="精确率-Precison"><a href="#精确率-Precison" class="headerlink" title="精确率 Precison"></a>精确率 Precison</h2><p>在所有预测为1的样本中，真实为1的概率。</p>
+<p>你有一个model，期间预测了100个正样本，其中有90个为真的正样本，10个为假的正样本（预测错误）。精确度就是90%。<br>所以，精确度就是衡量一个model的可信度。</p>
+<script type="math/tex; mode=display">
+Precision = \frac{TP}{TP+FP}</script><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">from</span> sklearn.metrics <span class="keyword">import</span> precison_score</div><div class="line">precison_score=precison_score(yr,yp)</div></pre></td></tr></table></figure>
+<p>precison_score = 0.8</p>
+<h2 id="召回率-Recall"><a href="#召回率-Recall" class="headerlink" title="召回率 Recall"></a>召回率 Recall</h2><p>在所有真实正样本中，正确预测出正样本的比率。<br>有一model，有100个真实正样本，model预测出80个正样本，20个负样本。因此召回率为80%</p>
+<p>也就是说，召回率是表示model识别正样本的能力</p>
+<script type="math/tex; mode=display">
+Recall = \frac{TP}{TP+FN}</script><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">from</span> sklearn.metrics <span class="keyword">import</span> recall_score</div><div class="line">recall_score=recall_score(yr,yp)</div></pre></td></tr></table></figure>
+<p>recall_score = 0.6666666666666666</p>
+<h2 id="F1值"><a href="#F1值" class="headerlink" title="F1值"></a>F1值</h2><p>用来衡量二分类模型精确度的一种指标。它同时兼顾了分类模型的准确率和召回率。F1分数可以看作是模型准确率和召回率的一种加权平均，它的最大值是1，最小值是0。</p>
+<p>其中F1 score是一个综合考虑Precision和Recall的metric。</p>
+<script type="math/tex; mode=display">
+F1 = 2*\frac{Precison*Recall}{Precision+Recall}</script><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">from</span> sklearn.metrics <span class="keyword">import</span> f1_score</div><div class="line">f1_score=f1_score(yr,yp)</div></pre></td></tr></table></figure>
+<p>f1_score = 0.7272727272727272</p>
+<h2 id="ROC曲线"><a href="#ROC曲线" class="headerlink" title="ROC曲线"></a>ROC曲线</h2><p>计算ROC前 我们需要了解两个变量FPR（横轴）和TPR（纵轴）。</p>
+<p>FPR (False Positive Rate)：真实的反例中，被预测为正例的比率</p>
+<p>TN+FP 为样本中所有负例的个数</p>
+<script type="math/tex; mode=display">
+FPR = \frac{FP}{TN+FP}</script><p>TPR (True Positive Rate): 真实的正例中，被预测为正例的比率</p>
+<p>TP+FN 为样本中所有正例的个数</p>
+<script type="math/tex; mode=display">
+TPR = \frac{TP}{TP+FN}</script><p>理想分类器下 FPR=0，TPR=1。</p>
+<p>其中，ROC曲线越接近左上角越好。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">fpr, tpr, thresholds = metrics.roc_curve(yr,yp)</div><div class="line">roc_auc = auc(fpr, tpr)  <span class="comment">#auc为Roc曲线下的面积，计算auc</span></div><div class="line"><span class="comment">#开始画ROC曲线</span></div><div class="line">plt.plot(fpr, tpr, <span class="string">'b'</span>,label=<span class="string">'AUC = %0.2f'</span>% roc_auc)</div><div class="line">plt.legend(loc=<span class="string">'lower right'</span>)</div><div class="line">plt.plot([<span class="number">0</span>,<span class="number">1</span>],[<span class="number">0</span>,<span class="number">1</span>],<span class="string">'r--'</span>)</div><div class="line">plt.xlim([<span class="number">-0.1</span>,<span class="number">1.1</span>])</div><div class="line">plt.ylim([<span class="number">-0.1</span>,<span class="number">1.1</span>])</div><div class="line">plt.xlabel(<span class="string">'False Positive Rate'</span>) <span class="comment">#横坐标是fpr</span></div><div class="line">plt.ylabel(<span class="string">'True Positive Rate'</span>)  <span class="comment">#纵坐标是tpr</span></div><div class="line">plt.title(<span class="string">'Receiver operating characteristic example'</span>)</div><div class="line">plt.show()</div></pre></td></tr></table></figure>
+<p><img src="/Users/lollipop/Hexo/source/images/ROC.png" alt="ROC" style="zoom:70%;"></p>
+<h2 id="AUC"><a href="#AUC" class="headerlink" title="AUC"></a>AUC</h2><p>AUC指的是ROC曲线下方的面积。也是通过ROC曲线衡量模型好坏的一个重要指标，AUC的值越大越好。</p>
+<p>在进行学习器的比较时，若一个学习器的ROC曲线被另一个学习器的曲线完全“包住”，则可断言后者的性能优于前者；若两个学习器的ROC曲线发生交叉，则难以一般性的断言两者孰优孰劣。此时如果一定要进行比较，则比较合理的判断依据是比较<strong>ROC曲线下的面积</strong>，即<strong>AUC</strong>(Area Under Curve)。</p>
+<h2 id="PRC曲线"><a href="#PRC曲线" class="headerlink" title="PRC曲线"></a>PRC曲线</h2><p>就是Precison和Recall分别为纵、横轴，根据不同的阈值画出的曲线，类似ROC。但与ROC不同的是，PRC曲线越接近右上角越好。同样，AUC越大越好。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">p, r, thresholds = metrics.precision_recall_curve(yr,yp)</div><div class="line">roc_auc = auc(r, p)  <span class="comment">#auc为Roc曲线下的面积</span></div><div class="line"><span class="comment">#开始画ROC曲线</span></div><div class="line">plt.plot(r, p, <span class="string">'b'</span>,label=<span class="string">'AUC = %0.2f'</span>% roc_auc)</div><div class="line">plt.legend(loc=<span class="string">'lower right'</span>)</div><div class="line">plt.xlim([<span class="number">-0.1</span>,<span class="number">1.1</span>])</div><div class="line">plt.ylim([<span class="number">-0.1</span>,<span class="number">1.1</span>])</div><div class="line">plt.xlabel(<span class="string">'Recall'</span>) <span class="comment">#横坐标是Recall</span></div><div class="line">plt.ylabel(<span class="string">'Precision'</span>)  <span class="comment">#纵坐标是Precision</span></div><div class="line">plt.title(<span class="string">'PR example'</span>)</div><div class="line">plt.show()</div></pre></td></tr></table></figure>
+<p><img src="/Users/lollipop/Hexo/source/images/PR.png" alt="PR" style="zoom:70%;"></p>
+<p>以上几个metric中ROC和PRC主要可以解决样本不平衡导致metric不可信的问题。<br>具体需要使用哪个metric具体模型具体分析。<br>但通过大量的实验表明：</p>
+<p><strong>在negative instances的数量远远大于positive instances的data set里， PRC更能有效衡量检测器的好坏。</strong></p>
+<p>参考：</p>
+<p><a href="https://www.zhihu.com/question/30643044/answer/48955833" target="_blank" rel="noopener">https://www.zhihu.com/question/30643044/answer/48955833</a></p>
+]]></content>
     
     <summary type="html">
     
-      &lt;h1 id=&quot;混淆矩阵、准确率、精确率、召回率、F值、ROC曲线、AUC、PR曲线-Sklearn-metrics评估方法&quot;&gt;&lt;a href=&quot;#混淆矩阵、准确率、精确率、召回率、F值、ROC曲线、AUC、PR曲线-Sklearn-metrics评估方法&quot; class=&quot;hea
+      &lt;h1 id=&quot;混淆矩阵、准确率、精确率、召回率、F值、ROC曲线、AUC、PR曲线-Sklearn-metrics评估方法&quot;&gt;&lt;a href=&quot;#混淆矩阵、准确率、精确率、召回率、F值、ROC曲线、AUC、PR曲线-Sklearn-metrics评估方法&quot; class=&quot;headerlink&quot; title=&quot;混淆矩阵、准确率、精确率、召回率、F值、ROC曲线、AUC、PR曲线-Sklearn.metrics评估方法&quot;&gt;&lt;/a&gt;混淆矩阵、准确率、精确率、召回率、F值、ROC曲线、AUC、PR曲线-Sklearn.metrics评估方法&lt;/h1&gt;&lt;h2 id=&quot;混淆矩阵&quot;&gt;&lt;a href=&quot;#混淆矩阵&quot; class=&quot;headerlink&quot; title=&quot;混淆矩阵&quot;&gt;&lt;/a&gt;混淆矩阵&lt;/h2&gt;&lt;ul&gt;
+&lt;li&gt;TN ：真实为0，预测为0&lt;/li&gt;
+&lt;li&gt;FP ：真实为0，预测为1&lt;/li&gt;
+&lt;li&gt;FN ：真实为1，预测为0&lt;/li&gt;
+&lt;li&gt;TP ：真实为1，预测为1&lt;/li&gt;
+&lt;/ul&gt;
+&lt;table&gt;
+  &lt;tr&gt;
+    &lt;td rowspan=&quot;2&quot; colspan=&quot;2&quot;&gt;混淆矩阵&lt;/td&gt;
+    &lt;td colspan=&quot;2&quot;&gt;预测&lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+    &lt;td&gt;0&lt;/td&gt;
+    &lt;td&gt;1&lt;/td&gt;    
+  &lt;/tr&gt;
+  &lt;tr&gt;
+    &lt;td rowspan=&quot;2&quot;&gt;真实&lt;/td&gt;
+    &lt;td&gt;0&lt;/td&gt;
+    &lt;td&gt;TN&lt;/td&gt;
+    &lt;td&gt;FP&lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+    &lt;td&gt;1&lt;/td&gt;
+    &lt;td&gt;FN&lt;/td&gt;
+    &lt;td&gt;TP&lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/table&gt;
     
     </summary>
     
