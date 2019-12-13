@@ -4,8 +4,25 @@
 
     
   <url>
+    <loc>http://yoursite.com/2019/12/13/NMT-Attention/</loc>
+    <lastmod>2019-12-13T08:33:11.668Z</lastmod>
+    <data>
+        <display>
+        <title>NMT-Attention</title>
+        <pubTime>2019-12-13T01:51:02.000Z</pubTime>
+        
+        <tag>NLP</tag>
+         
+         
+           
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
     <loc>http://yoursite.com/2019/12/01/docker+tensorflow:serving/</loc>
-    <lastmod>2019-12-01T07:28:27.080Z</lastmod>
+    <lastmod>2019-12-01T08:35:45.176Z</lastmod>
     <data>
         <display>
         <title>docker+tensorflow/serving</title>
