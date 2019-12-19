@@ -285,6 +285,111 @@
             
               
                 
+                <a class="post-title-link" href="/2019/12/19/tensorflow-addons/" itemprop="url">
+                  tensorflow_addons
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2019-12-19T15:23:40+08:00" content="2019-12-19">
+              2019-12-19
+            </time>
+          </span>
+
+          
+
+          
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h1 id="Build-with-custom-cuda-cudnn-version"><a href="#Build-with-custom-cuda-cudnn-version" class="headerlink" title="Build with custom cuda/cudnn  version"></a>Build with custom cuda/cudnn  version</h1><h2 id="First"><a href="#First" class="headerlink" title="First"></a>First</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">git clone https://github.com/tensorflow/addons.git</div><div class="line">cd addons</div><div class="line"># we should checkout to Latest release version  </div><div class="line">git checkout r0.6   </div><div class="line"># then clean bazel buffer</div><div class="line">bazel clean --expunge</div></pre></td></tr></table></figure>
+<h2 id="Second"><a href="#Second" class="headerlink" title="Second"></a>Second</h2><p>Then, in the addons folder，we need to change ‘configure.sh’ and ‘setup.py’.</p>
+<h3 id="configure-sh"><a href="#configure-sh" class="headerlink" title="configure.sh"></a>configure.sh</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">vim configure.sh</div></pre></td></tr></table></figure>
+<p>we need to alter line 82 to 87 to match your cuda/cudnn version.</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">if [[ &quot;$TF_NEED_CUDA&quot; == &quot;1&quot; ]]; then</div><div class="line">    write_action_env_to_bazelrc &quot;TF_NEED_CUDA&quot; $&#123;TF_NEED_CUDA&#125;</div><div class="line">    write_action_env_to_bazelrc &quot;CUDNN_INSTALL_PATH&quot; &quot;$&#123;CUDNN_INSTALL_PATH:=/disk1/lx/cuda/lib64&#125;</div><div class="line">    write_action_env_to_bazelrc &quot;TF_CUDA_VERSION&quot; &quot;9.0&quot;</div><div class="line">    write_action_env_to_bazelrc &quot;TF_CUDNN_VERSION&quot; &quot;7&quot;</div><div class="line">    write_action_env_to_bazelrc &quot;CUDA_TOOLKIT_PATH&quot; &quot;$&#123;CUDA_HOME:=/disk1/lx/cuda&#125;&quot;</div></pre></td></tr></table></figure>
+<h3 id="setup-py"><a href="#setup-py" class="headerlink" title="setup.py"></a>setup.py</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">vim setup.py</div></pre></td></tr></table></figure>
+<p>We can specify the TF2 version you need in line 69~80</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">                                                                                 </div><div class="line">if project_name == TFA_RELEASE:                                                  </div><div class="line">    # TODO: remove if-else condition when tf supports package consolidation.     </div><div class="line">    if platform.system() == &apos;Linux&apos;:                                             </div><div class="line">        REQUIRED_PACKAGES.append(&apos;tensorflow == 2.0.0&apos;)                          </div><div class="line">    else:                                                                        </div><div class="line">        REQUIRED_PACKAGES.append(&apos;tensorflow == 2.0.0&apos;)</div></pre></td></tr></table></figure>
+<h2 id="Third"><a href="#Third" class="headerlink" title="Third"></a>Third</h2><p>change addons/build_deps/    requirements_gpu.txt and  requirements.txt to match your TF2 version.</p>
+<h3 id="requirements-gpu-txt"><a href="#requirements-gpu-txt" class="headerlink" title="requirements_gpu.txt"></a>requirements_gpu.txt</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"># TensorFlow greater than this date is manylinux2010 compliant                             </div><div class="line"># nothing</div></pre></td></tr></table></figure>
+<h3 id="requirements-txt"><a href="#requirements-txt" class="headerlink" title="requirements.txt"></a>requirements.txt</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"># TensorFlow greater than this date is manylinux2010 compliant             </div><div class="line">tensorflow==2.0.0</div></pre></td></tr></table></figure>
+<h2 id="Forth"><a href="#Forth" class="headerlink" title="Forth"></a>Forth</h2><h3 id="bazel-and-install"><a href="#bazel-and-install" class="headerlink" title="bazel and install"></a>bazel and install</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"></div><div class="line"># This script links project with TensorFlow dependency</div><div class="line">./configure.sh</div><div class="line"></div><div class="line">bazel build build_pip_pkg</div><div class="line">bazel-bin/build_pip_pkg artifacts </div><div class="line"></div><div class="line">pip install artifacts/tensorflow_addons-*.whl</div></pre></td></tr></table></figure>
+
+          
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
                 <a class="post-title-link" href="/2019/12/13/NMT-Attention/" itemprop="url">
                   NMT-Attention
                 </a>
@@ -1180,103 +1285,6 @@
 
 
     
-      
-
-  
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2019/08/26/Bert/" itemprop="url">
-                  Bert
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            <span class="post-meta-item-icon">
-              <i class="fa fa-calendar-o"></i>
-            </span>
-            <span class="post-meta-item-text">发表于</span>
-            <time itemprop="dateCreated" datetime="2019-08-26T23:10:32+08:00" content="2019-08-26">
-              2019-08-26
-            </time>
-          </span>
-
-          
-
-          
-            
-          
-
-          
-
-          
-          
-
-          
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <p>Bert全名Bidirectional Encoder Representations from Transformers. 顾名思义，Bert最关键的在于Transformer. </p>
-<p>Transformer是谷歌大脑在2017年底发表的论文<strong>attention is all you need</strong>中所提出的seq2seq模型. 现在已经取得了大范围的应用和扩展, 而BERT就是从transformer中衍生出来的预训练语言模型，Bert主要用到了Transformer的encoder部分. Transformer的具体介绍 在后面transformer_model 部分会详细介绍。</p>
-          <div class="post-more-link text-center">
-            <a class="btn" href="/2019/08/26/Bert/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-        
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
   </section>
 
   
@@ -1322,7 +1330,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">24</span>
+              <span class="site-state-item-count">25</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>
