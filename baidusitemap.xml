@@ -4,8 +4,93 @@
 
     
   <url>
+    <loc>http://yoursite.com/2019/09/19/tf-ImageDataGenerator/</loc>
+    <lastmod>2019-12-20T03:08:25.274Z</lastmod>
+    <data>
+        <display>
+        <title>tf_ImageDataGenerator</title>
+        <pubTime>2019-09-19T13:19:54.000Z</pubTime>
+        
+        <tag>TensorFlow2.0</tag>
+         
+         
+           
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://yoursite.com/2019/09/21/tf%E6%96%87%E6%9C%AC%E5%A4%84%E7%90%86/</loc>
+    <lastmod>2019-12-20T03:08:17.664Z</lastmod>
+    <data>
+        <display>
+        <title>tf文本处理</title>
+        <pubTime>2019-09-21T12:40:41.000Z</pubTime>
+        
+        <tag>TensorFlow2.0</tag>
+         
+         
+           
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://yoursite.com/2019/10/11/TF2%E6%A8%A1%E5%9E%8B%E4%BF%9D%E5%AD%98%E5%8A%A0%E8%BD%BD/</loc>
+    <lastmod>2019-12-20T03:08:07.685Z</lastmod>
+    <data>
+        <display>
+        <title>TF2模型保存加载</title>
+        <pubTime>2019-10-11T15:25:35.000Z</pubTime>
+        
+        <tag>TensorFlow2.0</tag>
+         
+         
+           
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://yoursite.com/2019/12/01/docker+tensorflow:serving/</loc>
+    <lastmod>2019-12-20T03:07:53.569Z</lastmod>
+    <data>
+        <display>
+        <title>docker+tensorflow/serving</title>
+        <pubTime>2019-12-01T03:30:40.000Z</pubTime>
+        
+        <tag>TensorFlow2.0</tag>
+         
+         
+           
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://yoursite.com/2019/09/22/Custom-layers/</loc>
+    <lastmod>2019-12-20T03:07:40.991Z</lastmod>
+    <data>
+        <display>
+        <title>Custom layers</title>
+        <pubTime>2019-09-22T11:08:09.000Z</pubTime>
+        
+        <tag>TensorFlow2.0</tag>
+         
+         
+           
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
     <loc>http://yoursite.com/2019/08/26/Bert/</loc>
-    <lastmod>2019-12-20T02:52:52.051Z</lastmod>
+    <lastmod>2019-12-20T02:57:26.163Z</lastmod>
     <data>
         <display>
         <title>Bert</title>
@@ -72,23 +157,6 @@
 
     
   <url>
-    <loc>http://yoursite.com/2019/12/01/docker+tensorflow:serving/</loc>
-    <lastmod>2019-12-01T08:35:45.176Z</lastmod>
-    <data>
-        <display>
-        <title>docker+tensorflow/serving</title>
-        <pubTime>2019-12-01T03:30:40.000Z</pubTime>
-        
-        <tag>Tensorflow</tag>
-         
-         
-           
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
     <loc>http://yoursite.com/2019/11/27/%E8%AF%84%E4%BC%B0%E6%96%B9%E6%B3%95/</loc>
     <lastmod>2019-11-27T06:01:21.273Z</lastmod>
     <data>
@@ -97,74 +165,6 @@
         <pubTime>2019-11-26T16:19:02.000Z</pubTime>
         
         <tag>NLP</tag>
-         
-         
-           
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>http://yoursite.com/2019/10/11/TF2%E6%A8%A1%E5%9E%8B%E4%BF%9D%E5%AD%98%E5%8A%A0%E8%BD%BD/</loc>
-    <lastmod>2019-10-13T10:36:48.039Z</lastmod>
-    <data>
-        <display>
-        <title>TF2模型保存加载</title>
-        <pubTime>2019-10-11T15:25:35.000Z</pubTime>
-        
-        <tag>Tensorflow</tag>
-         
-         
-           
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>http://yoursite.com/2019/09/22/Custom-layers/</loc>
-    <lastmod>2019-09-22T12:46:05.200Z</lastmod>
-    <data>
-        <display>
-        <title>Custom layers</title>
-        <pubTime>2019-09-22T11:08:09.000Z</pubTime>
-        
-        <tag>Tensorflow</tag>
-         
-         
-           
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>http://yoursite.com/2019/09/21/tf%E6%96%87%E6%9C%AC%E5%A4%84%E7%90%86/</loc>
-    <lastmod>2019-09-22T12:45:55.944Z</lastmod>
-    <data>
-        <display>
-        <title>tf文本处理</title>
-        <pubTime>2019-09-21T12:40:41.000Z</pubTime>
-        
-        <tag>Tensorflow</tag>
-         
-         
-           
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>http://yoursite.com/2019/09/19/tf-ImageDataGenerator/</loc>
-    <lastmod>2019-09-19T13:31:40.678Z</lastmod>
-    <data>
-        <display>
-        <title>tf_ImageDataGenerator</title>
-        <pubTime>2019-09-19T13:19:54.000Z</pubTime>
-        
-        <tag>Tensorflow</tag>
          
          
            
