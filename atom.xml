@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://yoursite.com/"/>
-  <updated>2019-12-19T11:35:03.473Z</updated>
+  <updated>2019-12-29T12:01:26.693Z</updated>
   <id>http://yoursite.com/</id>
   
   <author>
@@ -20,7 +20,7 @@
     <link href="http://yoursite.com/2019/12/19/tensorflow-addons/"/>
     <id>http://yoursite.com/2019/12/19/tensorflow-addons/</id>
     <published>2019-12-19T07:23:40.000Z</published>
-    <updated>2019-12-19T11:35:03.473Z</updated>
+    <updated>2019-12-29T12:01:26.693Z</updated>
     
     <content type="html"><![CDATA[<h1 id="Build-with-custom-cuda-cudnn-version"><a href="#Build-with-custom-cuda-cudnn-version" class="headerlink" title="Build with custom cuda/cudnn  version"></a>Build with custom cuda/cudnn  version</h1><h2 id="First"><a href="#First" class="headerlink" title="First"></a>First</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">git clone https://github.com/tensorflow/addons.git</div><div class="line">cd addons</div><div class="line"># we should checkout to Latest release version  </div><div class="line">git checkout r0.6   </div><div class="line"># then clean bazel buffer</div><div class="line">bazel clean --expunge</div></pre></td></tr></table></figure>
 <h2 id="Second"><a href="#Second" class="headerlink" title="Second"></a>Second</h2><p>Then, in the addons folder，we need to change ‘configure.sh’ and ‘setup.py’.</p>
@@ -416,7 +416,7 @@ TPR = \frac{TP}{TP+FN}</script><p>理想分类器下 FPR=0，TPR=1。</p>
     <link href="http://yoursite.com/2019/09/28/%E9%82%A3%E4%BA%9B%E5%B9%B4%E8%B5%B0%E8%BF%87%E7%9A%84%E5%9D%91-tf2-gpu%E5%AE%89%E8%A3%85/"/>
     <id>http://yoursite.com/2019/09/28/那些年走过的坑-tf2-gpu安装/</id>
     <published>2019-09-28T02:20:02.000Z</published>
-    <updated>2019-12-19T07:24:36.453Z</updated>
+    <updated>2019-12-29T12:14:15.404Z</updated>
     
     <content type="html"><![CDATA[<p>Tensorflow-gpu 的安装的复杂早有耳闻，以前一直用的都是cpu版，一直通过conda一键安装，过于安逸。</p>
 <p>哎，欠的账始终是要还的。</p>
@@ -451,15 +451,15 @@ TPR = \frac{TP}{TP+FN}</script><p>理想分类器下 FPR=0，TPR=1。</p>
 <li>keras_applications==1.0.6</li>
 <li>keras_preprocessing==1.0.5</li>
 </ul>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">conda install pip six numpy wheel setuptools mock future&gt;=0.17.1</div><div class="line">conda install keras_applications==1.0.6</div><div class="line">conda install keras_preprocessing==1.0.5</div></pre></td></tr></table></figure>
-<p>可能keras_applications和keras_preprocessing 在conda中并没有，这时我们可以通过pip进行安装。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">conda install pip six numpy wheel setuptools mock future&gt;=0.17.1</div><div class="line">pip install keras_applications==1.0.6</div><div class="line">pip install keras_preprocessing==1.0.5</div></pre></td></tr></table></figure>
+<p>可能keras_applications和keras_preprocessing 在conda中并没有，这时我们可以通过pip / conda进行安装。</p>
 <p>开始就是这两个忘记安装了，导致白花30分钟QAQ。</p>
 <h1 id="克隆TensorFlow代码库"><a href="#克隆TensorFlow代码库" class="headerlink" title="克隆TensorFlow代码库"></a>克隆TensorFlow代码库</h1><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">git <span class="built_in">clone</span> https://github.com/tensorflow/tensorflow.git</div><div class="line"><span class="built_in">cd</span> tensorflow</div></pre></td></tr></table></figure>
 <p>由于代码库默认的分支为<strong>master</strong>。通过，下面代码进行分支切换。</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">git checkout r2.0   <span class="comment">#要编译的是tf2.0 所以切换到r2.0 版本</span></div></pre></td></tr></table></figure>
 <h1 id="编译配置"><a href="#编译配置" class="headerlink" title="编译配置"></a>编译配置</h1><p>启动编译配置，输入accept后，开始进行配置，更具需求输入y/n 就行，一般只有CUDA那输入y。</p>
 <figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">./configure</div></pre></td></tr></table></figure>
-<p>由于实验室服务器是共享，有别的用户开始在usr/local 下安装过cuda 导致编译程序会自动优先默认识别usr/local目录下的cuda。但由于每个用户安装的cuda版本不同，并且又没有权限去修改usr/local下cuda的指向，我们可以在配置好configure后，在tensorflow目录下修改<strong>.tf_configure.bazelrc</strong>文件.。</p>
+<p>由于实验室服务器是共享，有别的用户开始在usr/local 下安装过cuda 导致编译程序会自动优先默认识别usr/local目录下的cuda。但由于每个用户安装的cuda版本不同，并且又没有权限去修改usr/local下cuda的指向，我们可以在配置好configure后，在tensorflow目录下会产生 <strong>.tf_configure.bazelrc</strong> ，修改<strong>.tf_configure.bazelrc</strong>文件。</p>
 <p>将文件中的cuda指定到 特定cuda版本的位置即可</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">build --action_env CUDA_TOOLKIT_PATH=&quot;/disk1/lx/cuda&quot;</div></pre></td></tr></table></figure>
 <h1 id="Bazel-build"><a href="#Bazel-build" class="headerlink" title="Bazel build"></a>Bazel build</h1><p>编译前，最好执行下面的 bazel清空命令，清除下bazel的缓存，以免报错</p>
