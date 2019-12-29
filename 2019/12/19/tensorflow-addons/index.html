@@ -92,18 +92,18 @@
 
 
 
-<meta name="description" content="Build with custom cuda/cudnn  versionFirst123456git clone https://github.com/tensorflow/addons.gitcd addons# we should checkout to Latest release version  git checkout r0.6   # then clean bazel buffer">
+<meta name="description" content="Build tensorflow/addons with custom cuda/cudnn  versionThere have four steps to  “Build tensorflow/addons with custom cuda/cudnn  version”.">
 <meta name="keywords" content="TensorFlow2.0">
 <meta property="og:type" content="article">
 <meta property="og:title" content="tensorflow_addons">
 <meta property="og:url" content="http://yoursite.com/2019/12/19/tensorflow-addons/index.html">
 <meta property="og:site_name" content="SmileTM博客">
-<meta property="og:description" content="Build with custom cuda/cudnn  versionFirst123456git clone https://github.com/tensorflow/addons.gitcd addons# we should checkout to Latest release version  git checkout r0.6   # then clean bazel buffer">
+<meta property="og:description" content="Build tensorflow/addons with custom cuda/cudnn  versionThere have four steps to  “Build tensorflow/addons with custom cuda/cudnn  version”.">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2019-12-29T12:01:26.693Z">
+<meta property="og:updated_time" content="2019-12-29T13:22:25.243Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="tensorflow_addons">
-<meta name="twitter:description" content="Build with custom cuda/cudnn  versionFirst123456git clone https://github.com/tensorflow/addons.gitcd addons# we should checkout to Latest release version  git checkout r0.6   # then clean bazel buffer">
+<meta name="twitter:description" content="Build tensorflow/addons with custom cuda/cudnn  versionThere have four steps to  “Build tensorflow/addons with custom cuda/cudnn  version”.">
 
 
 
@@ -324,7 +324,24 @@
       
 
       
-        <h1 id="Build-with-custom-cuda-cudnn-version"><a href="#Build-with-custom-cuda-cudnn-version" class="headerlink" title="Build with custom cuda/cudnn  version"></a>Build with custom cuda/cudnn  version</h1><h2 id="First"><a href="#First" class="headerlink" title="First"></a>First</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">git clone https://github.com/tensorflow/addons.git</div><div class="line">cd addons</div><div class="line"># we should checkout to Latest release version  </div><div class="line">git checkout r0.6   </div><div class="line"># then clean bazel buffer</div><div class="line">bazel clean --expunge</div></pre></td></tr></table></figure>
+        <h1 id="Build-tensorflow-addons-with-custom-cuda-cudnn-version"><a href="#Build-tensorflow-addons-with-custom-cuda-cudnn-version" class="headerlink" title="Build tensorflow/addons with custom cuda/cudnn  version"></a>Build tensorflow/addons with custom cuda/cudnn  version</h1><p>There have four steps to  “Build tensorflow/addons with custom cuda/cudnn  version”.</p>
+<a id="more"></a>
+<p>your can use conda to duild.</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">conda create -n mk</div><div class="line">conda activate mk</div></pre></td></tr></table></figure>
+<h2 id="Requirement"><a href="#Requirement" class="headerlink" title="Requirement"></a>Requirement</h2><p>then use conda/pip to install some pkgs.</p>
+<ul>
+<li>pip</li>
+<li>six</li>
+<li>numpy</li>
+<li>wheel</li>
+<li>setuptools</li>
+<li>mock future&gt;=0.17.1</li>
+<li>keras_applications==1.0.6</li>
+<li>keras_preprocessing==1.0.5</li>
+<li>bazel=0.24.1</li>
+</ul>
+<h2 id="First"><a href="#First" class="headerlink" title="First"></a>First</h2><p>Pull the source code from the github.</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">git clone https://github.com/tensorflow/addons.git</div><div class="line">cd addons</div><div class="line"># we should checkout to Latest release version  </div><div class="line">git checkout r0.6   </div><div class="line"># then clean bazel buffer</div><div class="line">bazel clean --expunge</div></pre></td></tr></table></figure>
 <h2 id="Second"><a href="#Second" class="headerlink" title="Second"></a>Second</h2><p>Then, in the addons folder，we need to change ‘configure.sh’ and ‘setup.py’.</p>
 <h3 id="configure-sh"><a href="#configure-sh" class="headerlink" title="configure.sh"></a>configure.sh</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">vim configure.sh</div></pre></td></tr></table></figure>
 <p>we need to alter line 82 to 87 to match your cuda/cudnn version.</p>
@@ -523,7 +540,7 @@
               
             
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Build-with-custom-cuda-cudnn-version"><span class="nav-number">1.</span> <span class="nav-text">Build with custom cuda/cudnn  version</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#First"><span class="nav-number">1.1.</span> <span class="nav-text">First</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Second"><span class="nav-number">1.2.</span> <span class="nav-text">Second</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#configure-sh"><span class="nav-number">1.2.1.</span> <span class="nav-text">configure.sh</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#setup-py"><span class="nav-number">1.2.2.</span> <span class="nav-text">setup.py</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Third"><span class="nav-number">1.3.</span> <span class="nav-text">Third</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#requirements-gpu-txt"><span class="nav-number">1.3.1.</span> <span class="nav-text">requirements_gpu.txt</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#requirements-txt"><span class="nav-number">1.3.2.</span> <span class="nav-text">requirements.txt</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Forth"><span class="nav-number">1.4.</span> <span class="nav-text">Forth</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#bazel-and-install"><span class="nav-number">1.4.1.</span> <span class="nav-text">bazel and install</span></a></li></ol></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Build-tensorflow-addons-with-custom-cuda-cudnn-version"><span class="nav-number">1.</span> <span class="nav-text">Build tensorflow/addons with custom cuda/cudnn  version</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Requirement"><span class="nav-number">1.1.</span> <span class="nav-text">Requirement</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#First"><span class="nav-number">1.2.</span> <span class="nav-text">First</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Second"><span class="nav-number">1.3.</span> <span class="nav-text">Second</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#configure-sh"><span class="nav-number">1.3.1.</span> <span class="nav-text">configure.sh</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#setup-py"><span class="nav-number">1.3.2.</span> <span class="nav-text">setup.py</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Third"><span class="nav-number">1.4.</span> <span class="nav-text">Third</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#requirements-gpu-txt"><span class="nav-number">1.4.1.</span> <span class="nav-text">requirements_gpu.txt</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#requirements-txt"><span class="nav-number">1.4.2.</span> <span class="nav-text">requirements.txt</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Forth"><span class="nav-number">1.5.</span> <span class="nav-text">Forth</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#bazel-and-install"><span class="nav-number">1.5.1.</span> <span class="nav-text">bazel and install</span></a></li></ol></li></ol></li></ol></div>
             
           </div>
         </section>

@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://yoursite.com/"/>
-  <updated>2019-12-29T12:01:26.693Z</updated>
+  <updated>2019-12-29T13:22:25.243Z</updated>
   <id>http://yoursite.com/</id>
   
   <author>
@@ -20,9 +20,26 @@
     <link href="http://yoursite.com/2019/12/19/tensorflow-addons/"/>
     <id>http://yoursite.com/2019/12/19/tensorflow-addons/</id>
     <published>2019-12-19T07:23:40.000Z</published>
-    <updated>2019-12-29T12:01:26.693Z</updated>
+    <updated>2019-12-29T13:22:25.243Z</updated>
     
-    <content type="html"><![CDATA[<h1 id="Build-with-custom-cuda-cudnn-version"><a href="#Build-with-custom-cuda-cudnn-version" class="headerlink" title="Build with custom cuda/cudnn  version"></a>Build with custom cuda/cudnn  version</h1><h2 id="First"><a href="#First" class="headerlink" title="First"></a>First</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">git clone https://github.com/tensorflow/addons.git</div><div class="line">cd addons</div><div class="line"># we should checkout to Latest release version  </div><div class="line">git checkout r0.6   </div><div class="line"># then clean bazel buffer</div><div class="line">bazel clean --expunge</div></pre></td></tr></table></figure>
+    <content type="html"><![CDATA[<h1 id="Build-tensorflow-addons-with-custom-cuda-cudnn-version"><a href="#Build-tensorflow-addons-with-custom-cuda-cudnn-version" class="headerlink" title="Build tensorflow/addons with custom cuda/cudnn  version"></a>Build tensorflow/addons with custom cuda/cudnn  version</h1><p>There have four steps to  “Build tensorflow/addons with custom cuda/cudnn  version”.</p>
+<a id="more"></a>
+<p>your can use conda to duild.</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">conda create -n mk</div><div class="line">conda activate mk</div></pre></td></tr></table></figure>
+<h2 id="Requirement"><a href="#Requirement" class="headerlink" title="Requirement"></a>Requirement</h2><p>then use conda/pip to install some pkgs.</p>
+<ul>
+<li>pip</li>
+<li>six</li>
+<li>numpy</li>
+<li>wheel</li>
+<li>setuptools</li>
+<li>mock future&gt;=0.17.1</li>
+<li>keras_applications==1.0.6</li>
+<li>keras_preprocessing==1.0.5</li>
+<li>bazel=0.24.1</li>
+</ul>
+<h2 id="First"><a href="#First" class="headerlink" title="First"></a>First</h2><p>Pull the source code from the github.</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">git clone https://github.com/tensorflow/addons.git</div><div class="line">cd addons</div><div class="line"># we should checkout to Latest release version  </div><div class="line">git checkout r0.6   </div><div class="line"># then clean bazel buffer</div><div class="line">bazel clean --expunge</div></pre></td></tr></table></figure>
 <h2 id="Second"><a href="#Second" class="headerlink" title="Second"></a>Second</h2><p>Then, in the addons folder，we need to change ‘configure.sh’ and ‘setup.py’.</p>
 <h3 id="configure-sh"><a href="#configure-sh" class="headerlink" title="configure.sh"></a>configure.sh</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">vim configure.sh</div></pre></td></tr></table></figure>
 <p>we need to alter line 82 to 87 to match your cuda/cudnn version.</p>
@@ -38,7 +55,7 @@
     
     <summary type="html">
     
-      &lt;h1 id=&quot;Build-with-custom-cuda-cudnn-version&quot;&gt;&lt;a href=&quot;#Build-with-custom-cuda-cudnn-version&quot; class=&quot;headerlink&quot; title=&quot;Build with custom cu
+      &lt;h1 id=&quot;Build-tensorflow-addons-with-custom-cuda-cudnn-version&quot;&gt;&lt;a href=&quot;#Build-tensorflow-addons-with-custom-cuda-cudnn-version&quot; class=&quot;headerlink&quot; title=&quot;Build tensorflow/addons with custom cuda/cudnn  version&quot;&gt;&lt;/a&gt;Build tensorflow/addons with custom cuda/cudnn  version&lt;/h1&gt;&lt;p&gt;There have four steps to  “Build tensorflow/addons with custom cuda/cudnn  version”.&lt;/p&gt;
     
     </summary>
     
@@ -416,7 +433,7 @@ TPR = \frac{TP}{TP+FN}</script><p>理想分类器下 FPR=0，TPR=1。</p>
     <link href="http://yoursite.com/2019/09/28/%E9%82%A3%E4%BA%9B%E5%B9%B4%E8%B5%B0%E8%BF%87%E7%9A%84%E5%9D%91-tf2-gpu%E5%AE%89%E8%A3%85/"/>
     <id>http://yoursite.com/2019/09/28/那些年走过的坑-tf2-gpu安装/</id>
     <published>2019-09-28T02:20:02.000Z</published>
-    <updated>2019-12-29T12:14:15.404Z</updated>
+    <updated>2019-12-29T13:08:43.827Z</updated>
     
     <content type="html"><![CDATA[<p>Tensorflow-gpu 的安装的复杂早有耳闻，以前一直用的都是cpu版，一直通过conda一键安装，过于安逸。</p>
 <p>哎，欠的账始终是要还的。</p>
@@ -459,8 +476,11 @@ TPR = \frac{TP}{TP+FN}</script><p>理想分类器下 FPR=0，TPR=1。</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">git checkout r2.0   <span class="comment">#要编译的是tf2.0 所以切换到r2.0 版本</span></div></pre></td></tr></table></figure>
 <h1 id="编译配置"><a href="#编译配置" class="headerlink" title="编译配置"></a>编译配置</h1><p>启动编译配置，输入accept后，开始进行配置，更具需求输入y/n 就行，一般只有CUDA那输入y。</p>
 <figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">./configure</div></pre></td></tr></table></figure>
-<p>由于实验室服务器是共享，有别的用户开始在usr/local 下安装过cuda 导致编译程序会自动优先默认识别usr/local目录下的cuda。但由于每个用户安装的cuda版本不同，并且又没有权限去修改usr/local下cuda的指向，我们可以在配置好configure后，在tensorflow目录下会产生 <strong>.tf_configure.bazelrc</strong> ，修改<strong>.tf_configure.bazelrc</strong>文件。</p>
-<p>将文件中的cuda指定到 特定cuda版本的位置即可</p>
+<p>由于实验室服务器是共享，有别的用户开始在usr/local 下安装过cuda 导致编译程序会自动优先默认识别usr/local目录下的cuda。但由于每个用户安装的cuda版本不同，并且又没有权限去修改usr/local下cuda的指向，我们可以在配置好configure后，在tensorflow目录下会产生 <strong>.tf_configure.bazelrc</strong>。</p>
+<p>通过下面命令 查看 .tf_configure.bazelrc 中生成的cuda 路径是否正确，若不正确，就对其进行修改。</p>
+<figure class="highlight stylus"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">vim <span class="selector-class">.tf_configure</span><span class="selector-class">.bazelrc</span></div></pre></td></tr></table></figure>
+<p>如果你的cuda安装在默认位置 则跳过修改该文件。否则,对  <strong>.tf_configure.bazelrc</strong> 文件进行修改。</p>
+<p>将 <strong>.tf_configure.bazelrc</strong> 文件中的cuda指定到  特定cuda版本的位置即可</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">build --action_env CUDA_TOOLKIT_PATH=&quot;/disk1/lx/cuda&quot;</div></pre></td></tr></table></figure>
 <h1 id="Bazel-build"><a href="#Bazel-build" class="headerlink" title="Bazel build"></a>Bazel build</h1><p>编译前，最好执行下面的 bazel清空命令，清除下bazel的缓存，以免报错</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">bazel clean --expunge</div></pre></td></tr></table></figure>
