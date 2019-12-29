@@ -527,6 +527,9 @@ X_{hidden} = Activate(Linear(Linear(X_{attention})))</script><p>下面是Bert源
           
   <div class="comments" id="comments">
     
+      <div id="gitalk-container"></div>
+    
+
   </div>
 
 
@@ -771,6 +774,22 @@ X_{hidden} = Activate(Linear(Linear(X_{attention})))</script><p>下面是Bert源
 
   
 
+
+
+  <link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css">
+  <script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
+   <script type="text/javascript">
+        var gitalk = new Gitalk({
+          clientID: 'ed531d5b5c361d2a4ee1',
+          clientSecret: '23d9318d301649f0513a37915b9466b68b44acd4',
+          repo: 'SmileTM.github.io',
+          owner: 'SmileTM',
+          admin: ['github帐号'],
+          id: location.pathname,
+          distractionFreeMode: 'true'
+        })
+        gitalk.render('gitalk-container')           
+       </script>
 
 
   

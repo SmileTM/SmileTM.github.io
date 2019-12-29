@@ -472,6 +472,9 @@ TPR = \frac{TP}{TP+FN}</script><p>理想分类器下 FPR=0，TPR=1。</p>
           
   <div class="comments" id="comments">
     
+      <div id="gitalk-container"></div>
+    
+
   </div>
 
 
@@ -716,6 +719,22 @@ TPR = \frac{TP}{TP+FN}</script><p>理想分类器下 FPR=0，TPR=1。</p>
 
   
 
+
+
+  <link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css">
+  <script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
+   <script type="text/javascript">
+        var gitalk = new Gitalk({
+          clientID: 'ed531d5b5c361d2a4ee1',
+          clientSecret: '23d9318d301649f0513a37915b9466b68b44acd4',
+          repo: 'SmileTM.github.io',
+          owner: 'SmileTM',
+          admin: ['github帐号'],
+          id: location.pathname,
+          distractionFreeMode: 'true'
+        })
+        gitalk.render('gitalk-container')           
+       </script>
 
 
   
