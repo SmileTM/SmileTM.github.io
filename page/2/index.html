@@ -285,6 +285,110 @@
             
               
                 
+                <a class="post-title-link" href="/2019/09/18/Tricks/" itemprop="url">
+                  Tricks
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2019-09-18T10:24:08+08:00" content="2019-09-18">
+              2019-09-18
+            </time>
+          </span>
+
+          
+
+          
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h1 id="Python-Tricks"><a href="#Python-Tricks" class="headerlink" title="Python Tricks"></a>Python Tricks</h1><h2 id="Enumerate"><a href="#Enumerate" class="headerlink" title="Enumerate"></a>Enumerate</h2><p>enumerate 枚举的用法:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">colors = [<span class="string">'red'</span>,<span class="string">'green'</span>,<span class="string">'yellow'</span>]</div><div class="line"><span class="keyword">for</span> i, name <span class="keyword">in</span> enumerate(colors,<span class="number">0</span>):</div><div class="line">    print(i,name)</div><div class="line"></div><div class="line"></div><div class="line">out：    </div><div class="line"><span class="number">0</span> red</div><div class="line"><span class="number">1</span> green</div><div class="line"><span class="number">2</span> yellow</div></pre></td></tr></table></figure>
+<p>enumerate的第二个参数 代表 产生的index的起始</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">colors = [<span class="string">'red'</span>,<span class="string">'green'</span>,<span class="string">'yellow'</span>]</div><div class="line"><span class="keyword">for</span> i, name <span class="keyword">in</span> enumerate(colors,<span class="number">1</span>):</div><div class="line">    print(i,name)</div><div class="line"></div><div class="line"></div><div class="line">out：    </div><div class="line"><span class="number">1</span> red</div><div class="line"><span class="number">2</span> green</div><div class="line"><span class="number">3</span> yellow</div></pre></td></tr></table></figure>
+<h2 id="Zip"><a href="#Zip" class="headerlink" title="Zip"></a>Zip</h2><p>zip的用法：可以将两个list里的内容一一对应。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">fruits = [<span class="string">'apple'</span>, <span class="string">'orange'</span>]</div><div class="line">colors = [<span class="string">'green'</span>,<span class="string">'yellow'</span>]</div><div class="line"></div><div class="line"><span class="keyword">for</span> fruit, color <span class="keyword">in</span> zip(fruits, colors):</div><div class="line">    print(fruit, color)</div><div class="line">    </div><div class="line">    </div><div class="line">    </div><div class="line">out：</div><div class="line">apple green</div><div class="line">orange yellow</div></pre></td></tr></table></figure>
+<h1 id="Numpy-Tricks"><a href="#Numpy-Tricks" class="headerlink" title="Numpy Tricks"></a>Numpy Tricks</h1><h2 id="numpy-clip"><a href="#numpy-clip" class="headerlink" title="numpy.clip"></a>numpy.clip</h2><p>np.clip(a, a_min, a_max , out=None)</p>
+<p>a为数组， </p>
+<p>当数组中的数小于a_min，则小于a_min的部分会被替换成a_min，</p>
+<p> 当数组中的数大于a_max，则大于a_max的部分会被替换成a_max。</p>
+<p>若out指定为np.array a，则输出将会保存在a中</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line"><span class="meta">&gt;&gt;&gt; </span>a = np.arange(<span class="number">10</span>)</div><div class="line"><span class="meta">&gt;&gt;&gt; </span>np.clip(a, <span class="number">1</span>, <span class="number">8</span>)</div><div class="line">array([<span class="number">1</span>, <span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>, <span class="number">7</span>, <span class="number">8</span>, <span class="number">8</span>])</div><div class="line"><span class="meta">&gt;&gt;&gt; </span>a</div><div class="line">array([<span class="number">0</span>, <span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>, <span class="number">7</span>, <span class="number">8</span>, <span class="number">9</span>])</div><div class="line">np.clip(a, <span class="number">3</span>, <span class="number">6</span>, out=a)</div><div class="line">&gt;&gt;&gt;a</div><div class="line">array([<span class="number">3</span>, <span class="number">3</span>, <span class="number">3</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>, <span class="number">6</span>, <span class="number">6</span>, <span class="number">6</span>])</div><div class="line"><span class="meta">&gt;&gt;&gt; </span>a = np.arange(<span class="number">10</span>)</div><div class="line"><span class="meta">&gt;&gt;&gt; </span>a</div><div class="line">array([<span class="number">0</span>, <span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>, <span class="number">7</span>, <span class="number">8</span>, <span class="number">9</span>])</div><div class="line"><span class="meta">&gt;&gt;&gt; </span>np.clip(a, [<span class="number">3</span>, <span class="number">4</span>, <span class="number">1</span>, <span class="number">1</span>, <span class="number">1</span>, <span class="number">4</span>, <span class="number">4</span>, <span class="number">4</span>, <span class="number">4</span>, <span class="number">4</span>], <span class="number">8</span>)</div><div class="line">array([<span class="number">3</span>, <span class="number">4</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>, <span class="number">7</span>, <span class="number">8</span>, <span class="number">8</span>])</div></pre></td></tr></table></figure>
+          
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
                 <a class="post-title-link" href="/2019/08/26/Bert/" itemprop="url">
                   Bert
                 </a>
@@ -1186,102 +1290,6 @@ sigmoid\_derivative(x) = \sigma'(x) = \sigma(x) (1 - \sigma(x))\tag{2}</script><
 
 
     
-      
-
-  
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2016/12/03/IntelliJ-Hibernate/" itemprop="url">
-                  IntelliJ IDEA配置 Hibernate
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            <span class="post-meta-item-icon">
-              <i class="fa fa-calendar-o"></i>
-            </span>
-            <span class="post-meta-item-text">发表于</span>
-            <time itemprop="dateCreated" datetime="2016-12-03T00:02:19+08:00" content="2016-12-03">
-              2016-12-03
-            </time>
-          </span>
-
-          
-
-          
-            
-          
-
-          
-
-          
-          
-
-          
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <p>由于最近在学习Hibernate时，特别是在Mac+idea16+Mysql网上的环境搭建教程比较少，另一个原因也是为了记录自己在建立Hibernate项目时所遇到的一系列问题，特此写下该文档来记录，方便自己和他人日后遇到同样的问题，能少走弯路。</p>
-          <div class="post-more-link text-center">
-            <a class="btn" href="/2016/12/03/IntelliJ-Hibernate/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-        
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
   </section>
 
   
@@ -1327,7 +1335,7 @@ sigmoid\_derivative(x) = \sigma'(x) = \sigma(x) (1 - \sigma(x))\tag{2}</script><
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">25</span>
+              <span class="site-state-item-count">26</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>
