@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://yoursite.com/"/>
-  <updated>2019-12-29T13:26:45.656Z</updated>
+  <updated>2019-12-29T13:29:36.918Z</updated>
   <id>http://yoursite.com/</id>
   
   <author>
@@ -20,7 +20,7 @@
     <link href="http://yoursite.com/2019/12/19/tensorflow-addons/"/>
     <id>http://yoursite.com/2019/12/19/tensorflow-addons/</id>
     <published>2019-12-19T07:23:40.000Z</published>
-    <updated>2019-12-29T13:26:45.656Z</updated>
+    <updated>2019-12-29T13:29:36.918Z</updated>
     
     <content type="html"><![CDATA[<h1 id="Build-tensorflow-addons-with-custom-cuda-cudnn-version"><a href="#Build-tensorflow-addons-with-custom-cuda-cudnn-version" class="headerlink" title="Build tensorflow/addons with custom cuda/cudnn  version"></a>Build tensorflow/addons with custom cuda/cudnn  version</h1><p>There have four steps to  “Build tensorflow/addons with custom cuda/cudnn  version”.</p>
 <p>your can use conda to duild.</p>
