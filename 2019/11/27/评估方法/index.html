@@ -730,7 +730,7 @@ TPR = \frac{TP}{TP+FN}</script><p>理想分类器下 FPR=0，TPR=1。</p>
           repo: 'SmileTM.github.io',
           owner: 'SmileTM',
           admin: ['SmileTM'],
-          id: location.pathname,
+          id: decodeURI(location.pathname),
           distractionFreeMode: 'true'
         })
         gitalk.render('gitalk-container')           

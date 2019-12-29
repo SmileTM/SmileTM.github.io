@@ -737,7 +737,7 @@ x_{mn}y_1&\dots&x_{mn}y_{1q}&x_{mn}y_2&\dots&x_{mn}y_{pq}\\
           repo: 'SmileTM.github.io',
           owner: 'SmileTM',
           admin: ['SmileTM'],
-          id: location.pathname,
+          id: decodeURI(location.pathname),
           distractionFreeMode: 'true'
         })
         gitalk.render('gitalk-container')           

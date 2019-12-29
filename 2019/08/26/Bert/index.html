@@ -785,7 +785,7 @@ X_{hidden} = Activate(Linear(Linear(X_{attention})))</script><p>下面是Bert源
           repo: 'SmileTM.github.io',
           owner: 'SmileTM',
           admin: ['SmileTM'],
-          id: location.pathname,
+          id: decodeURI(location.pathname),
           distractionFreeMode: 'true'
         })
         gitalk.render('gitalk-container')           
