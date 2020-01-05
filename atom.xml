@@ -508,7 +508,7 @@ TPR = \frac{TP}{TP+FN}</script><p>理想分类器下 FPR=0，TPR=1。</p>
     <link href="http://yoursite.com/2019/09/28/%E9%82%A3%E4%BA%9B%E5%B9%B4%E8%B5%B0%E8%BF%87%E7%9A%84%E5%9D%91-tf2-gpu%E5%AE%89%E8%A3%85/"/>
     <id>http://yoursite.com/2019/09/28/那些年走过的坑-tf2-gpu安装/</id>
     <published>2019-09-28T02:20:02.000Z</published>
-    <updated>2020-01-05T13:22:41.474Z</updated>
+    <updated>2020-01-05T14:24:29.505Z</updated>
     
     <content type="html"><![CDATA[<p>Tensorflow2.0-gpu 的安装的复杂早有耳闻，以前一直用的都是cpu版，一直通过conda一键安装，过于安逸。</p>
 <p>哎，欠的账始终是要还的。</p>
@@ -528,6 +528,8 @@ TPR = \frac{TP}{TP+FN}</script><p>理想分类器下 FPR=0，TPR=1。</p>
 <p>显卡驱动版本可以通过nvidia-smi进行查看。</p>
 <p><img src="/images/那些年走过的坑/tf2_gpu安装1.png" alt="tf2_gpu安装1"></p>
 <p>至于cuda，cudnn怎么装，请自行参考google 或 baidu</p>
+<p><strong>特别强调 由于没有root权限 服务器/usr/local 路径下 一般用户无权修改 所以安装CUDA，CUDNN时请选择 当前用户的根目录进行安装。</strong></p>
+<p><strong>有root权限的直接升级显卡驱动安装cuda10，从Tensorflow官方包进行安装。</strong></p>
 <p>根据显卡驱动 安装指定的 <a href="https://developer.nvidia.com/cuda-toolkit-archive" target="_blank" rel="noopener">CUDA</a> 版本   这里我用的是<a href="https://developer.nvidia.com/cuda-90-download-archive?target_os=Linux&amp;target_arch=x86_64&amp;target_distro=Ubuntu&amp;target_version=1604&amp;target_type=clusterlocal" target="_blank" rel="noopener">CUDA9.0</a>版本。</p>
 <p>安装<a href="https://developer.nvidia.com/rdp/form/cudnn-download-survey" target="_blank" rel="noopener">CUDNN</a>,需要英伟达账号，自己注册就行。 根据CUDA和显卡驱动 选择相应版本的CUDNN。</p>
 <p>这里 建议CUDA9.0 的下载 CUDNN7.6.0版本，其余版本的CUDNN会有bug。</p>
@@ -607,7 +609,16 @@ TPR = \frac{TP}{TP+FN}</script><p>理想分类器下 FPR=0，TPR=1。</p>
 <p>看见True，当时感动哭了，花了两天终于把这环境在服务器上配置好了。</p>
 <p>两天前，还傻到去找老师要root账号，去升级显卡驱动。结果，被老师回绝了，QAQ。</p>
 <p>凡事还是只能靠自己。</p>
-<p>如果需要帮助，请在下方留言。</p>
+<h1 id="彩蛋"><a href="#彩蛋" class="headerlink" title="彩蛋"></a>彩蛋</h1><p>编译了一个cuda默认路径下的Tensorflow2.0-GPU-CUDA9.0 </p>
+<p>谷歌云链接放在了这个页面里<a href="https://github.com/SmileTM/Tensorflow2.0-GPU-CUDA9.0" target="_blank" rel="noopener">Tensorflow2.0-GPU-CUDA9.0</a></p>
+<h2 id="Requires"><a href="#Requires" class="headerlink" title="Requires"></a>Requires</h2><p>python 3.7</p>
+<p>CUDA 9.0 in:</p>
+<pre><code>/usr/local/cuda/lib64
+/usr/local/cuda/include
+</code></pre><p>cuDNN 7 in:</p>
+<pre><code>/usr/local/cuda/lib64
+/usr/local/cuda/include
+</code></pre><p>如果需要帮助，请在下方留言。</p>
 ]]></content>
     
     <summary type="html">
