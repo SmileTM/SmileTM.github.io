@@ -508,7 +508,7 @@ TPR = \frac{TP}{TP+FN}</script><p>理想分类器下 FPR=0，TPR=1。</p>
     <link href="http://yoursite.com/2019/09/28/%E9%82%A3%E4%BA%9B%E5%B9%B4%E8%B5%B0%E8%BF%87%E7%9A%84%E5%9D%91-tf2-gpu%E5%AE%89%E8%A3%85/"/>
     <id>http://yoursite.com/2019/09/28/那些年走过的坑-tf2-gpu安装/</id>
     <published>2019-09-28T02:20:02.000Z</published>
-    <updated>2020-01-05T11:02:23.360Z</updated>
+    <updated>2020-01-05T11:03:50.978Z</updated>
     
     <content type="html"><![CDATA[<p>Tensorflow-gpu 的安装的复杂早有耳闻，以前一直用的都是cpu版，一直通过conda一键安装，过于安逸。</p>
 <p>哎，欠的账始终是要还的。</p>
@@ -592,6 +592,7 @@ TPR = \frac{TP}{TP+FN}</script><p>理想分类器下 FPR=0，TPR=1。</p>
 <p>看见True，当时感动哭了，花了两天终于把这环境在服务器上配置好了。</p>
 <p>两天前，还傻到去找老师要root账号，去升级显卡驱动。结果，被老师回绝了，QAQ。</p>
 <p>凡事还是只能靠自己。</p>
+<p>如果需要帮助，请在下方留言。</p>
 ]]></content>
     
     <summary type="html">
