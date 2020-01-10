@@ -508,7 +508,7 @@ TPR = \frac{TP}{TP+FN}</script><p>理想分类器下 FPR=0，TPR=1。</p>
     <link href="http://yoursite.com/2019/09/28/%E9%82%A3%E4%BA%9B%E5%B9%B4%E8%B5%B0%E8%BF%87%E7%9A%84%E5%9D%91-tf2-gpu%E5%AE%89%E8%A3%85/"/>
     <id>http://yoursite.com/2019/09/28/那些年走过的坑-tf2-gpu安装/</id>
     <published>2019-09-28T02:20:02.000Z</published>
-    <updated>2020-01-10T04:00:00.541Z</updated>
+    <updated>2020-01-10T04:01:37.252Z</updated>
     
     <content type="html"><![CDATA[<p>Tensorflow2.0-gpu 的安装的复杂早有耳闻，以前一直用的都是cpu版，一直通过conda一键安装，过于安逸。</p>
 <p>哎，欠的账始终是要还的。</p>
@@ -569,7 +569,7 @@ TPR = \frac{TP}{TP+FN}</script><p>理想分类器下 FPR=0，TPR=1。</p>
 <p>在<a href="https://github.com/bazelbuild/bazel/releases/tag/0.29.1" target="_blank" rel="noopener">Bazel 0.29.1</a>该链接中找到相应的安装包进行下载，这里我服务器安装的是Linux，所以下载对应的<a href="https://github.com/bazelbuild/bazel/releases/download/0.29.1/bazel-0.29.1-installer-linux-x86_64.sh" target="_blank" rel="noopener">bazel-0.29.1-installer-linux-x86_64.sh</a>。</p>
 <p>下载成功后，先给该.sh文件加上可执行权限。</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">chmod +x bazel-0.29.1-installer-linux-x86_64.sh</div></pre></td></tr></table></figure>
-<p>由于，我没有root权限，所以要通过prefix改变安装路径。通过以下命令进行安装,将Bazel 安装到当前用户目录下的Bazel文件夹中。</p>
+<p>由于，我没有root权限,无法安装到系统usr文件夹中，所以要通过prefix改变安装路径。通过以下命令进行安装,将Bazel 安装到当前用户目录下的Bazel文件夹中。</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">./bazel-&lt;version&gt;-installer-linux-x86_64.sh --prefix=~/Bazel</div></pre></td></tr></table></figure>
 <p>安装后，在~/.bashrc中添加Bazel路径。</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">export PATH=$PATH:&quot;~/Bazel/bin&quot;</div></pre></td></tr></table></figure>

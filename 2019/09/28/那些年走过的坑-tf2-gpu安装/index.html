@@ -103,7 +103,7 @@
 <meta property="og:image" content="http://yoursite.com/images/那些年走过的坑/tf2_gpu安装1.png">
 <meta property="og:image" content="http://yoursite.com/images/那些年走过的坑/tf2_gpu安装3.png">
 <meta property="og:image" content="http://yoursite.com/images/那些年走过的坑/tf2_gpu安装2.png">
-<meta property="og:updated_time" content="2020-01-10T04:00:00.541Z">
+<meta property="og:updated_time" content="2020-01-10T04:01:37.252Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="那些年走过的坑TF2.0-GPU安装">
 <meta name="twitter:description" content="Tensorflow2.0-gpu 的安装的复杂早有耳闻，以前一直用的都是cpu版，一直通过conda一键安装，过于安逸。 哎，欠的账始终是要还的。 最近，接触到实验室服务器后，开始捣鼓Tensoflow2.0-GPU，才发现各种神坑。首先因为学校服务器都是共享的无法获取root权限，导致无法更新显卡驱动，使得cuda10 ，无法安装。于是只能安装cuda9 。然后问题来了，google只提供了T">
@@ -396,7 +396,7 @@
 <p>在<a href="https://github.com/bazelbuild/bazel/releases/tag/0.29.1" target="_blank" rel="noopener">Bazel 0.29.1</a>该链接中找到相应的安装包进行下载，这里我服务器安装的是Linux，所以下载对应的<a href="https://github.com/bazelbuild/bazel/releases/download/0.29.1/bazel-0.29.1-installer-linux-x86_64.sh" target="_blank" rel="noopener">bazel-0.29.1-installer-linux-x86_64.sh</a>。</p>
 <p>下载成功后，先给该.sh文件加上可执行权限。</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">chmod +x bazel-0.29.1-installer-linux-x86_64.sh</div></pre></td></tr></table></figure>
-<p>由于，我没有root权限，所以要通过prefix改变安装路径。通过以下命令进行安装,将Bazel 安装到当前用户目录下的Bazel文件夹中。</p>
+<p>由于，我没有root权限,无法安装到系统usr文件夹中，所以要通过prefix改变安装路径。通过以下命令进行安装,将Bazel 安装到当前用户目录下的Bazel文件夹中。</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">./bazel-&lt;version&gt;-installer-linux-x86_64.sh --prefix=~/Bazel</div></pre></td></tr></table></figure>
 <p>安装后，在~/.bashrc中添加Bazel路径。</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">export PATH=$PATH:&quot;~/Bazel/bin&quot;</div></pre></td></tr></table></figure>
