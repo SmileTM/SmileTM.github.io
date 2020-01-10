@@ -508,7 +508,7 @@ TPR = \frac{TP}{TP+FN}</script><p>理想分类器下 FPR=0，TPR=1。</p>
     <link href="http://yoursite.com/2019/09/28/%E9%82%A3%E4%BA%9B%E5%B9%B4%E8%B5%B0%E8%BF%87%E7%9A%84%E5%9D%91-tf2-gpu%E5%AE%89%E8%A3%85/"/>
     <id>http://yoursite.com/2019/09/28/那些年走过的坑-tf2-gpu安装/</id>
     <published>2019-09-28T02:20:02.000Z</published>
-    <updated>2020-01-10T03:31:35.508Z</updated>
+    <updated>2020-01-10T04:00:00.541Z</updated>
     
     <content type="html"><![CDATA[<p>Tensorflow2.0-gpu 的安装的复杂早有耳闻，以前一直用的都是cpu版，一直通过conda一键安装，过于安逸。</p>
 <p>哎，欠的账始终是要还的。</p>
@@ -545,7 +545,7 @@ TPR = \frac{TP}{TP+FN}</script><p>理想分类器下 FPR=0，TPR=1。</p>
 <p>若显示下面信息，则代表成功安装CUDA和CUDNN。</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">(mk) wxy@sait:/disk1/lx/cuda$ cat /disk1/lx/cuda/include/cudnn.h | grep CUDNN_MAJOR -A 2</div><div class="line">#define CUDNN_MAJOR 7</div><div class="line">#define CUDNN_MINOR 6</div><div class="line">#define CUDNN_PATCHLEVEL 0</div><div class="line">--</div><div class="line">#define CUDNN_VERSION (CUDNN_MAJOR * 1000 + CUDNN_MINOR * 100 + CUDNN_PATCHLEVEL)</div><div class="line"></div><div class="line">#include &quot;driver_types.h&quot;</div><div class="line">(mk) wxy@sait:/disk1/lx/cuda$</div></pre></td></tr></table></figure>
 <p>cuda，cudnn安装好后，就可以利用conda来创建 编译环境了。</p>
-<h2 id="编译环境安装"><a href="#编译环境安装" class="headerlink" title="编译环境安装"></a>编译环境安装</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">conda create -n mk python=<span class="number">3.7</span></div></pre></td></tr></table></figure>
+<h2 id="Conda编译环境安装"><a href="#Conda编译环境安装" class="headerlink" title="Conda编译环境安装"></a>Conda编译环境安装</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">conda create -n mk python=<span class="number">3.7</span></div></pre></td></tr></table></figure>
 <p>创建编译环境mk。</p>
 <p>切换编译环境。</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">conda activate mk</div></pre></td></tr></table></figure>
@@ -553,7 +553,7 @@ TPR = \frac{TP}{TP+FN}</script><p>理想分类器下 FPR=0，TPR=1。</p>
 <ul>
 <li>pip</li>
 <li>six</li>
-<li>bazel </li>
+<li>openjdk (Ubuntu16.x openjdk=8.X ; Ubuntu18.x openjdk=10.x )</li>
 <li>numpy</li>
 <li>wheel</li>
 <li>setuptools</li>
@@ -562,9 +562,23 @@ TPR = \frac{TP}{TP+FN}</script><p>理想分类器下 FPR=0，TPR=1。</p>
 <li>keras_applications==1.0.6</li>
 <li>keras_preprocessing==1.0.5</li>
 </ul>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">conda install pip six bazel numpy wheel setuptools mock future&gt;=0.17.1</div><div class="line">pip install keras_applications==1.0.6</div><div class="line">pip install keras_preprocessing==1.0.5</div></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">conda install pip six openjdk numpy wheel setuptools mock future&gt;=0.17.1</div><div class="line">pip install keras_applications==1.0.6</div><div class="line">pip install keras_preprocessing==1.0.5</div></pre></td></tr></table></figure>
 <p>可能keras_applications和keras_preprocessing 在conda中并没有，这时我们可以通过pip / conda进行安装。</p>
 <p>开始就是这两个忘记安装了，导致白花30分钟QAQ。</p>
+<h2 id="Bazel环境安装"><a href="#Bazel环境安装" class="headerlink" title="Bazel环境安装"></a>Bazel环境安装</h2><p>由于conda中提供的Bazel为0.26.1版本，而最新的TensorFlow2.1 则需求Bazel 0.29.1 ，所以我们需要安装相应的Bazel版本。</p>
+<p>在<a href="https://github.com/bazelbuild/bazel/releases/tag/0.29.1" target="_blank" rel="noopener">Bazel 0.29.1</a>该链接中找到相应的安装包进行下载，这里我服务器安装的是Linux，所以下载对应的<a href="https://github.com/bazelbuild/bazel/releases/download/0.29.1/bazel-0.29.1-installer-linux-x86_64.sh" target="_blank" rel="noopener">bazel-0.29.1-installer-linux-x86_64.sh</a>。</p>
+<p>下载成功后，先给该.sh文件加上可执行权限。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">chmod +x bazel-0.29.1-installer-linux-x86_64.sh</div></pre></td></tr></table></figure>
+<p>由于，我没有root权限，所以要通过prefix改变安装路径。通过以下命令进行安装,将Bazel 安装到当前用户目录下的Bazel文件夹中。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">./bazel-&lt;version&gt;-installer-linux-x86_64.sh --prefix=~/Bazel</div></pre></td></tr></table></figure>
+<p>安装后，在~/.bashrc中添加Bazel路径。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">export PATH=$PATH:&quot;~/Bazel/bin&quot;</div></pre></td></tr></table></figure>
+<p>再对.bashrc 进行更新。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">source ~/.bashrc</div></pre></td></tr></table></figure>
+<p>最后，我们通过，查看bazel 版本命令，判断是否安装成功。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">bazel --version</div></pre></td></tr></table></figure>
+<p>若正确显示bazel 版本，则代表安装成功。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">bazel 0.29.1</div></pre></td></tr></table></figure>
 <h1 id="查看系统环境配置"><a href="#查看系统环境配置" class="headerlink" title="查看系统环境配置"></a>查看系统环境配置</h1><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">cat ~/.bashrc</div></pre></td></tr></table></figure>
 <p>查看.bashrc 中是否有添加相关cuda 路径依赖。 这里的，所有路径参数，需要根据你安装的cuda路径进行修改。</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">export CUDA_HOME=/usr/local/cuda</div><div class="line">export PATH=/usr/local/cuda/bin$&#123;PATH:+:$&#123;PATH&#125;&#125; </div><div class="line">export LD_LIBRARY_PATH=/usr/local/cuda/lib64</div><div class="line">export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/local/cuda</div><div class="line">export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/local/cuda/extras/CUPTI/lib64</div></pre></td></tr></table></figure>

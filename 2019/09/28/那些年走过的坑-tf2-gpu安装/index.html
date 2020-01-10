@@ -103,7 +103,7 @@
 <meta property="og:image" content="http://yoursite.com/images/那些年走过的坑/tf2_gpu安装1.png">
 <meta property="og:image" content="http://yoursite.com/images/那些年走过的坑/tf2_gpu安装3.png">
 <meta property="og:image" content="http://yoursite.com/images/那些年走过的坑/tf2_gpu安装2.png">
-<meta property="og:updated_time" content="2020-01-10T03:31:35.508Z">
+<meta property="og:updated_time" content="2020-01-10T04:00:00.541Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="那些年走过的坑TF2.0-GPU安装">
 <meta name="twitter:description" content="Tensorflow2.0-gpu 的安装的复杂早有耳闻，以前一直用的都是cpu版，一直通过conda一键安装，过于安逸。 哎，欠的账始终是要还的。 最近，接触到实验室服务器后，开始捣鼓Tensoflow2.0-GPU，才发现各种神坑。首先因为学校服务器都是共享的无法获取root权限，导致无法更新显卡驱动，使得cuda10 ，无法安装。于是只能安装cuda9 。然后问题来了，google只提供了T">
@@ -372,7 +372,7 @@
 <p>若显示下面信息，则代表成功安装CUDA和CUDNN。</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">(mk) wxy@sait:/disk1/lx/cuda$ cat /disk1/lx/cuda/include/cudnn.h | grep CUDNN_MAJOR -A 2</div><div class="line">#define CUDNN_MAJOR 7</div><div class="line">#define CUDNN_MINOR 6</div><div class="line">#define CUDNN_PATCHLEVEL 0</div><div class="line">--</div><div class="line">#define CUDNN_VERSION (CUDNN_MAJOR * 1000 + CUDNN_MINOR * 100 + CUDNN_PATCHLEVEL)</div><div class="line"></div><div class="line">#include &quot;driver_types.h&quot;</div><div class="line">(mk) wxy@sait:/disk1/lx/cuda$</div></pre></td></tr></table></figure>
 <p>cuda，cudnn安装好后，就可以利用conda来创建 编译环境了。</p>
-<h2 id="编译环境安装"><a href="#编译环境安装" class="headerlink" title="编译环境安装"></a>编译环境安装</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">conda create -n mk python=<span class="number">3.7</span></div></pre></td></tr></table></figure>
+<h2 id="Conda编译环境安装"><a href="#Conda编译环境安装" class="headerlink" title="Conda编译环境安装"></a>Conda编译环境安装</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">conda create -n mk python=<span class="number">3.7</span></div></pre></td></tr></table></figure>
 <p>创建编译环境mk。</p>
 <p>切换编译环境。</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">conda activate mk</div></pre></td></tr></table></figure>
@@ -380,7 +380,7 @@
 <ul>
 <li>pip</li>
 <li>six</li>
-<li>bazel </li>
+<li>openjdk (Ubuntu16.x openjdk=8.X ; Ubuntu18.x openjdk=10.x )</li>
 <li>numpy</li>
 <li>wheel</li>
 <li>setuptools</li>
@@ -389,9 +389,23 @@
 <li>keras_applications==1.0.6</li>
 <li>keras_preprocessing==1.0.5</li>
 </ul>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">conda install pip six bazel numpy wheel setuptools mock future&gt;=0.17.1</div><div class="line">pip install keras_applications==1.0.6</div><div class="line">pip install keras_preprocessing==1.0.5</div></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">conda install pip six openjdk numpy wheel setuptools mock future&gt;=0.17.1</div><div class="line">pip install keras_applications==1.0.6</div><div class="line">pip install keras_preprocessing==1.0.5</div></pre></td></tr></table></figure>
 <p>可能keras_applications和keras_preprocessing 在conda中并没有，这时我们可以通过pip / conda进行安装。</p>
 <p>开始就是这两个忘记安装了，导致白花30分钟QAQ。</p>
+<h2 id="Bazel环境安装"><a href="#Bazel环境安装" class="headerlink" title="Bazel环境安装"></a>Bazel环境安装</h2><p>由于conda中提供的Bazel为0.26.1版本，而最新的TensorFlow2.1 则需求Bazel 0.29.1 ，所以我们需要安装相应的Bazel版本。</p>
+<p>在<a href="https://github.com/bazelbuild/bazel/releases/tag/0.29.1" target="_blank" rel="noopener">Bazel 0.29.1</a>该链接中找到相应的安装包进行下载，这里我服务器安装的是Linux，所以下载对应的<a href="https://github.com/bazelbuild/bazel/releases/download/0.29.1/bazel-0.29.1-installer-linux-x86_64.sh" target="_blank" rel="noopener">bazel-0.29.1-installer-linux-x86_64.sh</a>。</p>
+<p>下载成功后，先给该.sh文件加上可执行权限。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">chmod +x bazel-0.29.1-installer-linux-x86_64.sh</div></pre></td></tr></table></figure>
+<p>由于，我没有root权限，所以要通过prefix改变安装路径。通过以下命令进行安装,将Bazel 安装到当前用户目录下的Bazel文件夹中。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">./bazel-&lt;version&gt;-installer-linux-x86_64.sh --prefix=~/Bazel</div></pre></td></tr></table></figure>
+<p>安装后，在~/.bashrc中添加Bazel路径。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">export PATH=$PATH:&quot;~/Bazel/bin&quot;</div></pre></td></tr></table></figure>
+<p>再对.bashrc 进行更新。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">source ~/.bashrc</div></pre></td></tr></table></figure>
+<p>最后，我们通过，查看bazel 版本命令，判断是否安装成功。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">bazel --version</div></pre></td></tr></table></figure>
+<p>若正确显示bazel 版本，则代表安装成功。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">bazel 0.29.1</div></pre></td></tr></table></figure>
 <h1 id="查看系统环境配置"><a href="#查看系统环境配置" class="headerlink" title="查看系统环境配置"></a>查看系统环境配置</h1><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">cat ~/.bashrc</div></pre></td></tr></table></figure>
 <p>查看.bashrc 中是否有添加相关cuda 路径依赖。 这里的，所有路径参数，需要根据你安装的cuda路径进行修改。</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">export CUDA_HOME=/usr/local/cuda</div><div class="line">export PATH=/usr/local/cuda/bin$&#123;PATH:+:$&#123;PATH&#125;&#125; </div><div class="line">export LD_LIBRARY_PATH=/usr/local/cuda/lib64</div><div class="line">export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/local/cuda</div><div class="line">export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/local/cuda/extras/CUPTI/lib64</div></pre></td></tr></table></figure>
@@ -631,7 +645,7 @@
               
             
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#配置"><span class="nav-number">1.</span> <span class="nav-text">配置</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#前期准备"><span class="nav-number">2.</span> <span class="nav-text">前期准备</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#CUDA、CUDNN安装"><span class="nav-number">2.1.</span> <span class="nav-text">CUDA、CUDNN安装</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#编译环境安装"><span class="nav-number">2.2.</span> <span class="nav-text">编译环境安装</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#查看系统环境配置"><span class="nav-number">3.</span> <span class="nav-text">查看系统环境配置</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#克隆TensorFlow代码库"><span class="nav-number">4.</span> <span class="nav-text">克隆TensorFlow代码库</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#配置编译相关参数"><span class="nav-number">5.</span> <span class="nav-text">配置编译相关参数</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Bazel-build"><span class="nav-number">6.</span> <span class="nav-text">Bazel build</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#仅支持-CPU"><span class="nav-number">6.1.</span> <span class="nav-text">仅支持 CPU</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#GPU-支持"><span class="nav-number">6.2.</span> <span class="nav-text">GPU 支持</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#pip-安装"><span class="nav-number">7.</span> <span class="nav-text">pip 安装</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#python环境测试"><span class="nav-number">8.</span> <span class="nav-text">python环境测试</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#彩蛋"><span class="nav-number">9.</span> <span class="nav-text">彩蛋</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#配置"><span class="nav-number">1.</span> <span class="nav-text">配置</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#前期准备"><span class="nav-number">2.</span> <span class="nav-text">前期准备</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#CUDA、CUDNN安装"><span class="nav-number">2.1.</span> <span class="nav-text">CUDA、CUDNN安装</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Conda编译环境安装"><span class="nav-number">2.2.</span> <span class="nav-text">Conda编译环境安装</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Bazel环境安装"><span class="nav-number">2.3.</span> <span class="nav-text">Bazel环境安装</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#查看系统环境配置"><span class="nav-number">3.</span> <span class="nav-text">查看系统环境配置</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#克隆TensorFlow代码库"><span class="nav-number">4.</span> <span class="nav-text">克隆TensorFlow代码库</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#配置编译相关参数"><span class="nav-number">5.</span> <span class="nav-text">配置编译相关参数</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Bazel-build"><span class="nav-number">6.</span> <span class="nav-text">Bazel build</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#仅支持-CPU"><span class="nav-number">6.1.</span> <span class="nav-text">仅支持 CPU</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#GPU-支持"><span class="nav-number">6.2.</span> <span class="nav-text">GPU 支持</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#pip-安装"><span class="nav-number">7.</span> <span class="nav-text">pip 安装</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#python环境测试"><span class="nav-number">8.</span> <span class="nav-text">python环境测试</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#彩蛋"><span class="nav-number">9.</span> <span class="nav-text">彩蛋</span></a></li></ol></div>
             
           </div>
         </section>
