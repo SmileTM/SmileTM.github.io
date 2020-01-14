@@ -285,6 +285,127 @@
             
               
                 
+                <a class="post-title-link" href="/2020/01/14/Create-TFRecord/" itemprop="url">
+                  Create-TFRecord
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2020-01-14T16:59:01+08:00" content="2020-01-14">
+              2020-01-14
+            </time>
+          </span>
+
+          
+
+          
+            
+          
+
+          
+
+          
+          
+             <span id="/2020/01/14/Create-TFRecord/" class="leancloud_visitors" data-flag-title="Create-TFRecord">
+               &nbsp; | &nbsp;
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               <span class="post-meta-item-text">阅读次数 </span>
+               <span class="leancloud-visitors-count"></span>
+              </span>
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <p>TFRecord是一种高效的数据存储格式，尤其是在处理大数据集时，我们无法对数据进行一次读取，这时我们就可以将文件存储为TFRecord，然后再进行读取。这样可以可以提高数据移动、读取、处理等速度。<br>在对小数据集进行读取时，可以直接使用<code>tf.data</code> API来进行处理。</p>
+<p>在TFRecord中是将每个样本example 以字典的方式进行存储。</p>
+<p>主要的数据类型如下：</p>
+<ul>
+<li>int64：<code>tf.train.Feature(int64_list = tf.train.Int64List(value=输入))</code></li>
+<li>float32：<code>tf.train.Feature(float_list = tf.train.FloatList(value=输入))</code></li>
+<li>string：<code>tf.train.Feature(bytes_list=tf.train.BytesList(value=输入))</code></li>
+<li>注：输入必须是list(向量)</li>
+</ul>
+<p>这里我们举一个NLP中常见例子。</p>
+<ul>
+<li>这里有10个句子<code>sentence</code>，每个句子有128个<code>token_id</code>。</li>
+<li>每个句子对应的10个标签<code>label</code>。</li>
+<li>每个句子中对应的<code>token weight (mask)</code></li>
+<li>每个句子经过<code>Embedding</code>后的 句子<code>matrix</code>，<code>tensor</code>(两者是同一个东西，只是为了后面介绍两种不同的存储方式。)</li>
+</ul>
+<p>那么我们怎样将这些转换为<code>TFRecord</code>呢？</p>
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2020/01/14/Create-TFRecord/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
                 <a class="post-title-link" href="/2019/12/29/Tensorflow-distribute/" itemprop="url">
                   Tensorflow-distribute
                 </a>
@@ -1275,111 +1396,6 @@
 
 
     
-      
-
-  
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2019/09/19/tf-ImageDataGenerator/" itemprop="url">
-                  tf_ImageDataGenerator
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            <span class="post-meta-item-icon">
-              <i class="fa fa-calendar-o"></i>
-            </span>
-            <span class="post-meta-item-text">发表于</span>
-            <time itemprop="dateCreated" datetime="2019-09-19T21:19:54+08:00" content="2019-09-19">
-              2019-09-19
-            </time>
-          </span>
-
-          
-
-          
-            
-          
-
-          
-
-          
-          
-             <span id="/2019/09/19/tf-ImageDataGenerator/" class="leancloud_visitors" data-flag-title="tf_ImageDataGenerator">
-               &nbsp; | &nbsp;
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               <span class="post-meta-item-text">阅读次数 </span>
-               <span class="leancloud-visitors-count"></span>
-              </span>
-          
-
-          
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <h1 id="ImageDataGenerator"><a href="#ImageDataGenerator" class="headerlink" title="ImageDataGenerator"></a>ImageDataGenerator</h1><p>本文章介绍了，直接通过Tensorflow 的ImageDataGenerator 来直接根据相应文件所在的标签目录 进行加载数据，并自动根据文件夹名字 进行自动分类，避免了人工进行标注。</p>
-          <div class="post-more-link text-center">
-            <a class="btn" href="/2019/09/19/tf-ImageDataGenerator/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-        
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
   </section>
 
   
@@ -1425,7 +1441,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">26</span>
+              <span class="site-state-item-count">27</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>
