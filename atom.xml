@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://yoursite.com/"/>
-  <updated>2020-01-14T14:05:43.112Z</updated>
+  <updated>2020-01-14T14:13:34.256Z</updated>
   <id>http://yoursite.com/</id>
   
   <author>
@@ -20,7 +20,7 @@
     <link href="http://yoursite.com/2020/01/14/Create-TFRecord/"/>
     <id>http://yoursite.com/2020/01/14/Create-TFRecord/</id>
     <published>2020-01-14T08:59:01.000Z</published>
-    <updated>2020-01-14T14:05:43.112Z</updated>
+    <updated>2020-01-14T14:13:34.256Z</updated>
     
     <content type="html"><![CDATA[<p>TFRecord是一种高效的数据存储格式，尤其是在处理大数据集时，我们无法对数据进行一次读取，这时我们就可以将文件存储为TFRecord，然后再进行读取。这样可以可以提高数据移动、读取、处理等速度。<br>在对小数据集进行读取时，可以直接使用<code>tf.data</code> API来进行处理。</p>
 <p>在TFRecord中是将每个样本example 以字典的方式进行存储。</p>
@@ -65,26 +65,31 @@
 <h1 id="Read-TFRecord-py"><a href="#Read-TFRecord-py" class="headerlink" title="Read_TFRecord.py"></a>Read_TFRecord.py</h1><p>在得到了<code>TFRecord</code>后，我们又改如何解析呢？</p>
 <p>解析大致也可以分为几个步骤:</p>
 <ol>
-<li>通过<code>tf.data.TFRecordDataset</code>对TFRecord进行读取。</li>
-<li>在前面创建TFRecord时，我们需要创建feature字典，同样在解析时也需要定义一个feature_description字典，告诉程序，TFRecord中的数据类型。<br><strong>定长特征解析</strong>：<code>tf.FixedLenFeature(shape, dtype, default_value)</code><ul>
+<li><p>通过<code>tf.data.TFRecordDataset</code>对TFRecord进行读取。</p>
+</li>
+<li><p>在前面创建TFRecord时，我们需要创建feature字典，同样在解析时也需要定义一个feature_description字典，告诉程序，TFRecord中的数据类型。</p>
+<p><strong>定长特征解析</strong>：<code>tf.FixedLenFeature(shape, dtype, default_value)</code></p>
+<ul>
 <li>shape：可当<code>reshape</code>来用，如vector的shape从(3,)改动成了(1,3)。</li>
 <li>注：如果写入的feature使用了<code>.tostring()</code> 其shape就是<code>()</code></li>
 <li>dtype：<strong>必须</strong>是<code>tf.float32</code>， <code>tf.int64</code>， <code>tf.string</code>中的一种。</li>
-<li>default_value：<code>feature</code>值缺失时所指定的值。<br><strong>不定长特征解析</strong>：<code>tf.VarLenFeature(dtype)</code></li>
-<li>注：可以不明确指定shape，但得到的tensor是SparseTensor。</li>
+<li>default_value：<code>feature</code>值缺失时所指定的值。</li>
 </ul>
 </li>
+</ol>
+<p>   <strong>不定长特征解析</strong>：<code>tf.VarLenFeature(dtype)</code></p>
+<ul>
+<li>注：可以不明确指定shape，但得到的tensor是SparseTensor。<ol>
 <li>通过<code>tf.io.parse_single_example</code>对 1 中得到的raw_data进行解析。</li>
 <li>对解析后的数据，对应的部分进一步进行还原。</li>
 </ol>
+</li>
+</ul>
 <p>在解析TFRecord时，需要注意：</p>
 <ul>
-<li><p><code>tf.io.FixedLenFeature</code> 中要明确传入数据的形状。</p>
-</li>
-<li><p><code>tf.io.VarLenFeature</code>虽然不用传入数据形状，但需要通过<code>tf.sparse.to_dense</code>对对应数据进行解析</p>
-</li>
-<li><p>其中由于tensor是前面是通过转换为字符类型进行存储的，因此需要进行解码。</p>
-</li>
+<li><code>tf.io.FixedLenFeature</code> 中要明确传入数据的形状。</li>
+<li><code>tf.io.VarLenFeature</code>虽然不用传入数据形状，但需要通过<code>tf.sparse.to_dense</code>对对应数据进行解析</li>
+<li>其中由于tensor是前面是通过转换为字符类型进行存储的，因此需要进行解码。</li>
 </ul>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">import</span> tensorflow <span class="keyword">as</span> tf</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">parse_function</span><span class="params">(example)</span>:</span></div><div class="line">    <span class="comment"># 这里的dtype 类型只有 float32, int64, string</span></div><div class="line">    feature_description = &#123;</div><div class="line">        <span class="string">'text'</span>: tf.io.FixedLenFeature(shape=(<span class="number">128</span>,), dtype=tf.int64),</div><div class="line">        <span class="string">'label'</span>: tf.io.FixedLenFeature(shape=(), dtype=tf.int64),</div><div class="line">        <span class="string">'weight'</span>: tf.io.FixedLenFeature(shape=(<span class="number">128</span>,), dtype=tf.float32),</div><div class="line">        <span class="string">'matrix'</span>: tf.io.VarLenFeature(dtype=tf.float32),</div><div class="line">        <span class="string">'matrix_shape'</span>: tf.io.VarLenFeature(dtype=tf.int64),</div><div class="line">        <span class="string">'tensor'</span>: tf.io.FixedLenFeature(shape=(), dtype=tf.string),</div><div class="line">        <span class="string">'tensor_shape'</span>: tf.io.FixedLenFeature(shape=(<span class="number">2</span>,), dtype=tf.int64)</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    parse_example = tf.io.parse_single_example(example, feature_description)</div><div class="line"> </div><div class="line">    <span class="comment"># 对parse_example中的对应数据进一步解析</span></div><div class="line">    parse_example[<span class="string">'matrix'</span>] = tf.sparse.to_dense(parse_example[<span class="string">'matrix'</span>])</div><div class="line">    parse_example[<span class="string">'matrix_shape'</span>] = tf.sparse.to_dense(parse_example[<span class="string">'matrix_shape'</span>])</div><div class="line">		<span class="comment"># 由于tensor是前面是通过转换为字符类型进行存储的，因此需要进行解码</span></div><div class="line">    parse_example[<span class="string">'tensor'</span>] = tf.io.decode_raw(parse_example[<span class="string">'tensor'</span>], tf.int64)</div><div class="line">		<span class="comment"># 将相应矩阵进行reshape</span></div><div class="line">    parse_example[<span class="string">'matrix'</span>] = tf.reshape(parse_example[<span class="string">'matrix'</span>], parse_example[<span class="string">'matrix_shape'</span>])</div><div class="line">    parse_example[<span class="string">'tensor'</span>] = tf.reshape(parse_example[<span class="string">'tensor'</span>], parse_example[<span class="string">'tensor_shape'</span>])</div><div class="line">    <span class="keyword">return</span> parse_example</div><div class="line"></div><div class="line"></div><div class="line"><span class="keyword">if</span> __name__ == <span class="string">'__main__'</span>:</div><div class="line">    tfrecord_save_path = <span class="string">'data.tfrecord'</span></div><div class="line"></div><div class="line">    raw_dataset = tf.data.TFRecordDataset(tfrecord_save_path)</div><div class="line"></div><div class="line">    dataset = raw_dataset.map(parse_function)</div><div class="line"></div><div class="line">    <span class="comment"># dataset = dataset.shuffle()</span></div><div class="line">    <span class="comment"># dataset = dataset.batch()</span></div><div class="line">    <span class="keyword">for</span> data <span class="keyword">in</span> dataset:</div><div class="line">        print(data)</div></pre></td></tr></table></figure>
 <h1 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h1><p><a href="https://zhuanlan.zhihu.com/p/33223782" target="_blank" rel="noopener">https://zhuanlan.zhihu.com/p/33223782</a></p>
