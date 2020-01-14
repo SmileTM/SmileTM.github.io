@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://yoursite.com/"/>
-  <updated>2020-01-14T13:58:21.009Z</updated>
+  <updated>2020-01-14T14:05:43.112Z</updated>
   <id>http://yoursite.com/</id>
   
   <author>
@@ -20,7 +20,7 @@
     <link href="http://yoursite.com/2020/01/14/Create-TFRecord/"/>
     <id>http://yoursite.com/2020/01/14/Create-TFRecord/</id>
     <published>2020-01-14T08:59:01.000Z</published>
-    <updated>2020-01-14T13:58:21.009Z</updated>
+    <updated>2020-01-14T14:05:43.112Z</updated>
     
     <content type="html"><![CDATA[<p>TFRecord是一种高效的数据存储格式，尤其是在处理大数据集时，我们无法对数据进行一次读取，这时我们就可以将文件存储为TFRecord，然后再进行读取。这样可以可以提高数据移动、读取、处理等速度。<br>在对小数据集进行读取时，可以直接使用<code>tf.data</code> API来进行处理。</p>
 <p>在TFRecord中是将每个样本example 以字典的方式进行存储。</p>
@@ -63,31 +63,19 @@
 <p>具体代码如下：</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">import</span> tensorflow <span class="keyword">as</span> tf</div><div class="line"><span class="keyword">from</span> pathlib <span class="keyword">import</span> Path</div><div class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</div><div class="line"></div><div class="line"><span class="comment"># 随机生成相应数据</span></div><div class="line">senteces = np.random.randint(<span class="number">0</span>,<span class="number">512</span>,(<span class="number">10</span>,<span class="number">128</span>))</div><div class="line">senteces_label = np.random.randint(<span class="number">0</span>,<span class="number">2</span>,(<span class="number">10</span>))</div><div class="line">senteces_weight = [[<span class="number">1.0</span>]*<span class="number">128</span>]*<span class="number">10</span></div><div class="line">tensors = np.random.randn(<span class="number">10</span>,<span class="number">128</span>,<span class="number">512</span>)</div><div class="line">matrixs = np.random.randn(<span class="number">10</span>,<span class="number">128</span>,<span class="number">512</span>)</div><div class="line"></div><div class="line"></div><div class="line">tfrecord_save_path = <span class="string">'data.tfrecord'</span></div><div class="line"></div><div class="line"><span class="keyword">with</span> tf.io.TFRecordWriter(tfrecord_save_path) <span class="keyword">as</span> tfwriter:</div><div class="line">    <span class="keyword">for</span> text,label ,weight, tensor, matrix <span class="keyword">in</span> zip(senteces ,senteces_label,senteces_weight, tensors, matrixs):</div><div class="line">        example = tf.train.Example(features=tf.train.Features(</div><div class="line">            feature=&#123;</div><div class="line">                <span class="string">'text'</span>:tf.train.Feature(int64_list=tf.train.Int64List(value=text.tolist())),</div><div class="line">                <span class="string">'label'</span>:tf.train.Feature(int64_list=tf.train.Int64List(value=[label])),</div><div class="line">                <span class="string">'weight'</span>:tf.train.Feature(float_list=tf.train.FloatList(value=weight)),</div><div class="line"></div><div class="line">                <span class="comment">#当需要存入矩阵时，有两种方法 一种是将矩阵Flatten 然后在读取的时候进行 形状reshape</span></div><div class="line">                <span class="string">'matrix'</span>: tf.train.Feature(float_list=tf.train.FloatList(value=matrix.reshape(<span class="number">-1</span>))),</div><div class="line">                <span class="string">'matrix_shape'</span>: tf.train.Feature(int64_list=tf.train.Int64List(value=matrix.shape)),</div><div class="line"></div><div class="line">                <span class="comment"># 存入矩阵时，会使得矩阵形状丢失 因此 需要额外记录矩阵的形状，以便还原。</span></div><div class="line"></div><div class="line">                <span class="comment">#另一种方法 是将矩阵转换为字符类型存储,随后在还原。</span></div><div class="line">                <span class="comment"># 两种方法都会导致 形状丢失，都需要进行矩阵形状存储</span></div><div class="line">                <span class="string">'tensor'</span>: tf.train.Feature(bytes_list=tf.train.BytesList(value=[tensor.tostring()])),</div><div class="line">                <span class="string">'tensor_shape'</span>: tf.train.Feature(int64_list=tf.train.Int64List(value=tensor.shape))</div><div class="line"></div><div class="line">            &#125;</div><div class="line">        ))</div><div class="line"></div><div class="line">        tfwriter.write(example.SerializeToString())</div></pre></td></tr></table></figure>
 <h1 id="Read-TFRecord-py"><a href="#Read-TFRecord-py" class="headerlink" title="Read_TFRecord.py"></a>Read_TFRecord.py</h1><p>在得到了<code>TFRecord</code>后，我们又改如何解析呢？</p>
-<p>解析大致也可以分为几个步骤</p>
+<p>解析大致也可以分为几个步骤:</p>
 <ol>
-<li><p>通过<code>tf.data.TFRecordDataset</code>对TFRecord进行读取。</p>
-</li>
-<li><p>在前面创建TFRecord时，我们需要创建feature字典，同样在解析时也需要定义一个feature_description字典，告诉程序，TFRecord中的数据类型。</p>
-<p><strong>定长特征解析</strong>：<code>tf.FixedLenFeature(shape, dtype, default_value)</code></p>
-<ul>
-<li><p>shape：可当<code>reshape</code>来用，如vector的shape从(3,)改动成了(1,3)。</p>
-</li>
-<li><p>注：如果写入的feature使用了<code>.tostring()</code> 其shape就是<code>()</code></p>
-</li>
-<li><p>dtype：<strong>必须</strong>是<code>tf.float32</code>， <code>tf.int64</code>， <code>tf.string</code>中的一种。</p>
-</li>
-<li><p>default_value：<code>feature</code>值缺失时所指定的值。</p>
-</li>
-</ul>
-<p><strong>不定长特征解析</strong>：<code>tf.VarLenFeature(dtype)</code></p>
-<ul>
+<li>通过<code>tf.data.TFRecordDataset</code>对TFRecord进行读取。</li>
+<li>在前面创建TFRecord时，我们需要创建feature字典，同样在解析时也需要定义一个feature_description字典，告诉程序，TFRecord中的数据类型。<br><strong>定长特征解析</strong>：<code>tf.FixedLenFeature(shape, dtype, default_value)</code><ul>
+<li>shape：可当<code>reshape</code>来用，如vector的shape从(3,)改动成了(1,3)。</li>
+<li>注：如果写入的feature使用了<code>.tostring()</code> 其shape就是<code>()</code></li>
+<li>dtype：<strong>必须</strong>是<code>tf.float32</code>， <code>tf.int64</code>， <code>tf.string</code>中的一种。</li>
+<li>default_value：<code>feature</code>值缺失时所指定的值。<br><strong>不定长特征解析</strong>：<code>tf.VarLenFeature(dtype)</code></li>
 <li>注：可以不明确指定shape，但得到的tensor是SparseTensor。</li>
 </ul>
 </li>
-<li><p>通过<code>tf.io.parse_single_example</code>对 1 中得到的raw_data进行解析。</p>
-</li>
-<li><p>对解析后的数据，对应的部分进一步进行还原。</p>
-</li>
+<li>通过<code>tf.io.parse_single_example</code>对 1 中得到的raw_data进行解析。</li>
+<li>对解析后的数据，对应的部分进一步进行还原。</li>
 </ol>
 <p>在解析TFRecord时，需要注意：</p>
 <ul>
