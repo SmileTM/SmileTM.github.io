@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://yoursite.com/"/>
-  <updated>2020-03-04T14:40:41.439Z</updated>
+  <updated>2020-03-04T14:52:24.075Z</updated>
   <id>http://yoursite.com/</id>
   
   <author>
@@ -20,9 +20,11 @@
     <link href="http://yoursite.com/2020/03/04/SGD/"/>
     <id>http://yoursite.com/2020/03/04/SGD/</id>
     <published>2020-03-04T14:39:23.000Z</published>
-    <updated>2020-03-04T14:40:41.439Z</updated>
+    <updated>2020-03-04T14:52:24.075Z</updated>
     
-    <content type="html"><![CDATA[<h1 id="为什么局部下降最快的方向就是梯度的负方向？如何理解SGD算法？"><a href="#为什么局部下降最快的方向就是梯度的负方向？如何理解SGD算法？" class="headerlink" title="为什么局部下降最快的方向就是梯度的负方向？如何理解SGD算法？"></a>为什么局部下降最快的方向就是梯度的负方向？如何理解SGD算法？</h1><h2 id="局部下降最快的方向就是梯度的负方向"><a href="#局部下降最快的方向就是梯度的负方向" class="headerlink" title="局部下降最快的方向就是梯度的负方向"></a>局部下降最快的方向就是梯度的负方向</h2><h3 id="二维空间"><a href="#二维空间" class="headerlink" title="二维空间"></a>二维空间</h3><p>这里我们以最简单的<strong>二维空间</strong>进行证明：</p>
+    <content type="html"><![CDATA[<h1 id="为什么局部下降最快的方向就是梯度的负方向？如何理解SGD算法？"><a href="#为什么局部下降最快的方向就是梯度的负方向？如何理解SGD算法？" class="headerlink" title="为什么局部下降最快的方向就是梯度的负方向？如何理解SGD算法？"></a>为什么局部下降最快的方向就是梯度的负方向？如何理解SGD算法？</h1><p>在机器学习中，我们常用的优化算法就是SGD，随机梯度下降算法。这里，我就简单记录下我的理解。有很多同学只会用，却一直无法理解其中的原理。我觉得是在对 偏导(导数) 理解出现的失误，还一直停留在，<strong>导数=斜率</strong>的理解层面上。这里，我们要深刻理解<strong>导数是一种线性变换</strong>。</p>
+<a id="more"></a>
+<h2 id="局部下降最快的方向就是梯度的负方向"><a href="#局部下降最快的方向就是梯度的负方向" class="headerlink" title="局部下降最快的方向就是梯度的负方向"></a>局部下降最快的方向就是梯度的负方向</h2><h3 id="二维空间"><a href="#二维空间" class="headerlink" title="二维空间"></a>二维空间</h3><p>这里我们以最简单的<strong>二维空间</strong>进行证明：</p>
 <script type="math/tex; mode=display">
 f(x) = f(x_0) +(x-x_0)f^{'}(x_0)</script><p>由上式 ，显然得到：</p>
 <script type="math/tex; mode=display">
@@ -50,7 +52,7 @@ x=x_0 + \eta\vec{v} =x_0 -\eta f^{'}(x_0)</script>]]></content>
     
     <summary type="html">
     
-      &lt;h1 id=&quot;为什么局部下降最快的方向就是梯度的负方向？如何理解SGD算法？&quot;&gt;&lt;a href=&quot;#为什么局部下降最快的方向就是梯度的负方向？如何理解SGD算法？&quot; class=&quot;headerlink&quot; title=&quot;为什么局部下降最快的方向就是梯度的负方向？如何理解SGD算法
+      &lt;h1 id=&quot;为什么局部下降最快的方向就是梯度的负方向？如何理解SGD算法？&quot;&gt;&lt;a href=&quot;#为什么局部下降最快的方向就是梯度的负方向？如何理解SGD算法？&quot; class=&quot;headerlink&quot; title=&quot;为什么局部下降最快的方向就是梯度的负方向？如何理解SGD算法？&quot;&gt;&lt;/a&gt;为什么局部下降最快的方向就是梯度的负方向？如何理解SGD算法？&lt;/h1&gt;&lt;p&gt;在机器学习中，我们常用的优化算法就是SGD，随机梯度下降算法。这里，我就简单记录下我的理解。有很多同学只会用，却一直无法理解其中的原理。我觉得是在对 偏导(导数) 理解出现的失误，还一直停留在，&lt;strong&gt;导数=斜率&lt;/strong&gt;的理解层面上。这里，我们要深刻理解&lt;strong&gt;导数是一种线性变换&lt;/strong&gt;。&lt;/p&gt;
     
     </summary>
     

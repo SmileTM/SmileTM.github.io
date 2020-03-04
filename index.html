@@ -337,33 +337,12 @@
 
       
         
-          
-            <h1 id="为什么局部下降最快的方向就是梯度的负方向？如何理解SGD算法？"><a href="#为什么局部下降最快的方向就是梯度的负方向？如何理解SGD算法？" class="headerlink" title="为什么局部下降最快的方向就是梯度的负方向？如何理解SGD算法？"></a>为什么局部下降最快的方向就是梯度的负方向？如何理解SGD算法？</h1><h2 id="局部下降最快的方向就是梯度的负方向"><a href="#局部下降最快的方向就是梯度的负方向" class="headerlink" title="局部下降最快的方向就是梯度的负方向"></a>局部下降最快的方向就是梯度的负方向</h2><h3 id="二维空间"><a href="#二维空间" class="headerlink" title="二维空间"></a>二维空间</h3><p>这里我们以最简单的<strong>二维空间</strong>进行证明：</p>
-<script type="math/tex; mode=display">
-f(x) = f(x_0) +(x-x_0)f^{'}(x_0)</script><p>由上式 ，显然得到：</p>
-<script type="math/tex; mode=display">
-f(x) - f(x_0) = (x-x_0)f^{'}(x_0)</script><p><strong>注：</strong>这里 $x$ 是移动的新位置也就是$x=x_0+\Delta x$，$x_0$是原始位置。<br>由于我们要寻找“哪个方向下降最快”，显然$f(x) \lt f(x_0)$,所以有：</p>
-<script type="math/tex; mode=display">
-f(x)-f(x_0)\leq0</script><p>既：</p>
-<script type="math/tex; mode=display">
-f(x) - f(x_0) = (x-x_0)f^{'}(x_0)\leq0  \quad(1)</script><p><strong>注：</strong>这里我们需要注意$x-x_0$实际是一个向量，是具有方向的，方向为’x’轴(正，反)方向。<br>同理$f^{‘} (x)$也是向量。实际上在高维空间中$f^{‘} (x) = \frac{\partial f}{\partial x} $ 是$f^{‘}$函数关于’x’轴的偏导。在二维空间中，我们常说的求导(一次导数)，实际上是对指定轴的偏导，是具有<strong>方向的向量</strong>。<br>由于$x-x_0$是一个向量，于是我们设 $\vec{v}$为 $x-x_0$同方向的<strong>单位向量</strong>，$\eta$为<strong>长度标量</strong>，既$\eta=\Vert x-x_0\Vert$ 。<br>所以，由(1)式得：</p>
-<script type="math/tex; mode=display">
-x-x_0= \eta\vec{v} \\f(x) - f(x_0) = \eta\vec{v}f^{'}(x_0)\leq0 \quad (2)</script><p>要使知道哪个方向下降最快，相当于求 $\vec{v}$在哪个方向$f(x)-f(x_0)$的值最小，即求$\eta\vec{v}f^{‘}(x_0)$最小。</p>
-<p>由于我们知道</p>
-<script type="math/tex; mode=display">
-\vec{a}\bullet\vec{b} = \vert a\vert\vert b\vert \cos(\theta)</script><p>当且仅当$\theta=\pi$ 时，$\cos(\theta)=-1$为最小，即此时的$\vec{a}\bullet\vec{b}$ 的值最小。也就是说$\vec a$ 与$\vec b$ 方向相反时，$\vec{a}\bullet\vec{b}$最小。</p>
-<p>又由于$\vec{v}$是单位向量，所以当$\vec{v} = -\frac{f^{‘}(x_0)}{\Vert{f^{‘}(x_0)}\Vert}$ 时，$\vec{v}f^{‘}(x_0)$为最小，即$f(x) - f(x_0)$最小。</p>
-<p>即证得，<strong>局部下降最快的方向就是梯度的负方向</strong>。</p>
-<h3 id="高维空间"><a href="#高维空间" class="headerlink" title="高维空间"></a>高维空间</h3><p>同理在高维空间中<strong>局部下降最快的方向也是梯度的负方向</strong>。<br>只不过，梯度由各<strong>偏导向量</strong>相加求得。</p>
-<script type="math/tex; mode=display">
-\vec u=(\frac{\partial f}{\partial x},\frac{\partial f}{\partial y},····,\frac{\partial f}{\partial z})</script><p><strong>注</strong>：$\vec u$为梯度</p>
-<h2 id="最小二乘法"><a href="#最小二乘法" class="headerlink" title="最小二乘法"></a>最小二乘法</h2><p>由上面得到，当$\vec{v} = -\frac{f^{‘}(x_0)}{\Vert{f^{‘}(x_0)}\Vert}$ 时，$\vec{v}f^{‘}(x_0)$为最小，即$f(x) - f(x_0)$最小。</p>
-<p>就有:</p>
-<script type="math/tex; mode=display">
-x-x_0 = \eta\vec{v} = -\eta\frac{f^{'}(x_0)}{\Vert{f^{'}(x_0)}\Vert} \\由于\Vert{f^{'}(x_0)}\Vert 是标量，\eta也是标量，将其进行合并。\\得: x-x_0 = \eta\vec{v} = -\eta f^{'}(x_0)\\</script><p>也就得到了，最小二乘法的关键公式：</p>
-<script type="math/tex; mode=display">
-x=x_0 + \eta\vec{v} =x_0 -\eta f^{'}(x_0)</script>
-          
+          <h1 id="为什么局部下降最快的方向就是梯度的负方向？如何理解SGD算法？"><a href="#为什么局部下降最快的方向就是梯度的负方向？如何理解SGD算法？" class="headerlink" title="为什么局部下降最快的方向就是梯度的负方向？如何理解SGD算法？"></a>为什么局部下降最快的方向就是梯度的负方向？如何理解SGD算法？</h1><p>在机器学习中，我们常用的优化算法就是SGD，随机梯度下降算法。这里，我就简单记录下我的理解。有很多同学只会用，却一直无法理解其中的原理。我觉得是在对 偏导(导数) 理解出现的失误，还一直停留在，<strong>导数=斜率</strong>的理解层面上。这里，我们要深刻理解<strong>导数是一种线性变换</strong>。</p>
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2020/03/04/SGD/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
         
       
     </div>
