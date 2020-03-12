@@ -285,6 +285,110 @@
             
               
                 
+                <a class="post-title-link" href="/2020/03/12/CheckpointManager/" itemprop="url">
+                  CheckpointManager
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2020-03-12T21:52:09+08:00" content="2020-03-12">
+              2020-03-12
+            </time>
+          </span>
+
+          
+
+          
+            
+          
+
+          
+
+          
+          
+             <span id="/2020/03/12/CheckpointManager/" class="leancloud_visitors" data-flag-title="CheckpointManager">
+               &nbsp; | &nbsp;
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               <span class="post-meta-item-text">阅读次数 </span>
+               <span class="leancloud-visitors-count"></span>
+              </span>
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>简单的记录下，如何怎么结合CheckpointManager和Callback ，实现按一定周期保存最近N个模型。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div></pre></td><td class="code"><pre><div class="line">N = <span class="number">5</span></div><div class="line"><span class="comment"># 构建模型</span></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">Model</span><span class="params">(tf.keras.Model)</span>:</span></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, **kwargs)</span>:</span></div><div class="line">        super(Model, self).__init__(**kwargs)</div><div class="line">        self.d = tf.keras.layers.Dense(<span class="number">1</span>, kernel_initializer=tf.keras.initializers.ones())</div><div class="line"></div><div class="line"><span class="meta">    @tf.function</span></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">call</span><span class="params">(self, x, training=True, mask=None)</span>:</span></div><div class="line">        <span class="keyword">return</span> self.d(x)</div><div class="line"></div><div class="line"></div><div class="line"><span class="comment"># 定义回调函数</span></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">Save_Callbacks</span><span class="params">(tf.keras.callbacks.Callback)</span>:</span></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, checkpoint_manager)</span>:</span></div><div class="line">        self.checkpoint_manager = checkpoint_manager</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">on_train_batch_end</span><span class="params">(self, batch, logs=None)</span>:</span></div><div class="line">        super().on_train_batch_end(batch, logs)</div><div class="line">        self.checkpoint_manager.save()</div><div class="line"></div><div class="line">        </div><div class="line">model = Model()</div><div class="line">model.compile(loss=tf.keras.losses.binary_crossentropy,</div><div class="line">              optimizer=<span class="string">'SGD'</span>)</div><div class="line">checkpoint = tf.train.Checkpoint(model=model, optimizer=model.optimizer)</div><div class="line">checkpoint_manager = tf.train.CheckpointManager(checkpoint, <span class="string">'save'</span>, max_to_keep=N)</div><div class="line"></div><div class="line">model.fit(x=tf.ones((<span class="number">100</span>, <span class="number">3</span>)), y=tf.constant(tf.ones((<span class="number">100</span>, <span class="number">1</span>))), batch_size=<span class="number">2</span>,</div><div class="line">          callbacks=[Save_Callbacks(checkpoint_manager)])</div><div class="line">model.reset_metrics()</div><div class="line"></div><div class="line"><span class="comment"># 从最近保存的ckpt中，恢复模型</span></div><div class="line">ckpt = tf.train.Checkpoint(model=model)</div><div class="line">ckpt.restore(tf.train.latest_checkpoint(<span class="string">'save'</span>))</div><div class="line">print(model(tf.ones((<span class="number">2</span>, <span class="number">3</span>))))</div></pre></td></tr></table></figure>
+
+          
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
                 <a class="post-title-link" href="/2020/03/04/SGD/" itemprop="url">
                   SGD
                 </a>
@@ -1286,115 +1390,6 @@
 
 
     
-      
-
-  
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2019/09/28/那些年走过的坑-tf2-gpu安装/" itemprop="url">
-                  那些年走过的坑TF2.0-GPU安装
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            <span class="post-meta-item-icon">
-              <i class="fa fa-calendar-o"></i>
-            </span>
-            <span class="post-meta-item-text">发表于</span>
-            <time itemprop="dateCreated" datetime="2019-09-28T10:20:02+08:00" content="2019-09-28">
-              2019-09-28
-            </time>
-          </span>
-
-          
-
-          
-            
-          
-
-          
-
-          
-          
-             <span id="/2019/09/28/那些年走过的坑-tf2-gpu安装/" class="leancloud_visitors" data-flag-title="那些年走过的坑TF2.0-GPU安装">
-               &nbsp; | &nbsp;
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               <span class="post-meta-item-text">阅读次数 </span>
-               <span class="leancloud-visitors-count"></span>
-              </span>
-          
-
-          
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <p>Tensorflow2.0-gpu 的安装的复杂早有耳闻，以前一直用的都是cpu版，一直通过conda一键安装，过于安逸。</p>
-<p>哎，欠的账始终是要还的。</p>
-<p>最近，接触到实验室服务器后，开始捣鼓Tensoflow2.0-GPU，才发现各种神坑。<br>首先因为学校服务器都是共享的无法获取root权限，导致无法更新显卡驱动，使得cuda10 ，无法安装。于是只能安装cuda9 。然后问题来了，google只提供了Tensorflow2.0-GPU cuda10的版本。通过Google发现有人也提了这个问题<a href="https://github.com/tensorflow/tensorflow/issues/26418" target="_blank" rel="noopener">How to install tensorflow2.0 in cuda9?</a> 。问题中的解决方案是 通过Tensoflow2.0的源码 在cuda9上重新编译就行了。因为Google提供的是基于cuda10编译的，并不能找到cuda9。</p>
-<p>好了，有了解决方案本以为会很容易，结果又碰见权限问题。因为没有root权限，开始安装bazel编译工具时碰见了麻烦。记得以前看conda list时看见过bazel，于是Google了发现conda确实可绕过 root权限 进行bazel的安装 而且conda还会自动的帮你把bazel所需的 jdk一起安装，真的安逸。本以为会很顺利，结果编译了30分钟后，开始报错，提示该环境下没有找到keras-preprocessing ,keras-applications,numpy。（通过conda专门搭建的编译环境一时疏忽，只安装了bazel，别的都忘了安。）QAQ 白瞎了30分钟。</p>
-<p>所有依赖的包安装好后，重新开始编译，32线程开工，花了大约1个小时。</p>
-          <div class="post-more-link text-center">
-            <a class="btn" href="/2019/09/28/那些年走过的坑-tf2-gpu安装/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-        
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
   </section>
 
   
@@ -1440,7 +1435,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">29</span>
+              <span class="site-state-item-count">30</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>
@@ -1450,7 +1445,7 @@
           
             <div class="site-state-item site-state-tags">
               <a href="/tags">
-                <span class="site-state-item-count">15</span>
+                <span class="site-state-item-count">16</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>

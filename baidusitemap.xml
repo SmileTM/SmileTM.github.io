@@ -4,8 +4,25 @@
 
     
   <url>
+    <loc>http://yoursite.com/2020/03/12/CheckpointManager/</loc>
+    <lastmod>2020-03-12T13:59:54.835Z</lastmod>
+    <data>
+        <display>
+        <title>CheckpointManager</title>
+        <pubTime>2020-03-12T13:52:09.000Z</pubTime>
+        
+        <tag>Tensorflow2.0</tag>
+         
+         
+           
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
     <loc>http://yoursite.com/2020/03/04/SGD/</loc>
-    <lastmod>2020-03-04T14:52:24.075Z</lastmod>
+    <lastmod>2020-03-04T14:52:42.983Z</lastmod>
     <data>
         <display>
         <title>SGD</title>
