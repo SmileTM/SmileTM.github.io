@@ -4,6 +4,40 @@
 
     
   <url>
+    <loc>http://yoursite.com/2020/08/22/tensorflow2.0%E6%A8%A1%E5%9E%8B%E9%83%A8%E7%BD%B2/</loc>
+    <lastmod>2020-08-23T15:57:40.100Z</lastmod>
+    <data>
+        <display>
+        <title>tensorflow2.0模型部署</title>
+        <pubTime>2020-08-22T06:59:17.000Z</pubTime>
+        
+        <tag>TensorFlow2.0</tag>
+         
+         
+           
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://yoursite.com/2019/12/01/docker+tensorflow:serving/</loc>
+    <lastmod>2020-08-23T15:40:00.582Z</lastmod>
+    <data>
+        <display>
+        <title>docker+tensorflow/serving</title>
+        <pubTime>2019-12-01T03:30:40.000Z</pubTime>
+        
+        <tag>TensorFlow2.0</tag>
+         
+         
+           
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
     <loc>http://yoursite.com/2020/03/12/CheckpointManager/</loc>
     <lastmod>2020-03-12T14:00:48.447Z</lastmod>
     <data>
@@ -163,23 +197,6 @@
         <display>
         <title>TF2模型保存加载</title>
         <pubTime>2019-10-11T15:25:35.000Z</pubTime>
-        
-        <tag>TensorFlow2.0</tag>
-         
-         
-           
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>http://yoursite.com/2019/12/01/docker+tensorflow:serving/</loc>
-    <lastmod>2019-12-20T03:07:53.569Z</lastmod>
-    <data>
-        <display>
-        <title>docker+tensorflow/serving</title>
-        <pubTime>2019-12-01T03:30:40.000Z</pubTime>
         
         <tag>TensorFlow2.0</tag>
          

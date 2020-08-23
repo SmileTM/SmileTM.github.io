@@ -285,6 +285,112 @@
             
               
                 
+                <a class="post-title-link" href="/2019/10/11/TF2模型保存加载/" itemprop="url">
+                  TF2模型保存加载
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2019-10-11T23:25:35+08:00" content="2019-10-11">
+              2019-10-11
+            </time>
+          </span>
+
+          
+
+          
+            
+          
+
+          
+
+          
+          
+             <span id="/2019/10/11/TF2模型保存加载/" class="leancloud_visitors" data-flag-title="TF2模型保存加载">
+               &nbsp; | &nbsp;
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               <span class="post-meta-item-text">阅读次数 </span>
+               <span class="leancloud-visitors-count"></span>
+              </span>
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <p>在TF2中保存加载模型，有多种方式。下面介绍下，最主要的几种方式，以及在模型中有Custom Layer时如何保存和加载模型。</p>
+<p>由于Google官方在有Custom Layer层 的模型 保存/加载 介绍的非常不全面。这里统一详细介绍下。</p>
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2019/10/11/TF2模型保存加载/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
                 <a class="post-title-link" href="/2019/09/28/那些年走过的坑-tf2-gpu安装/" itemprop="url">
                   那些年走过的坑TF2.0-GPU安装
                 </a>
@@ -1234,133 +1340,11 @@
 
 
     
-      
-
-  
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2018/01/08/深度学习基础知识/" itemprop="url">
-                  深度学习基础知识
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            <span class="post-meta-item-icon">
-              <i class="fa fa-calendar-o"></i>
-            </span>
-            <span class="post-meta-item-text">发表于</span>
-            <time itemprop="dateCreated" datetime="2018-01-08T15:54:18+08:00" content="2018-01-08">
-              2018-01-08
-            </time>
-          </span>
-
-          
-
-          
-            
-          
-
-          
-
-          
-          
-             <span id="/2018/01/08/深度学习基础知识/" class="leancloud_visitors" data-flag-title="深度学习基础知识">
-               &nbsp; | &nbsp;
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               <span class="post-meta-item-text">阅读次数 </span>
-               <span class="leancloud-visitors-count"></span>
-              </span>
-          
-
-          
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <h3 id="NG深度学习中用到的函数"><a href="#NG深度学习中用到的函数" class="headerlink" title="NG深度学习中用到的函数"></a>NG深度学习中用到的函数</h3><p> <strong><em>sigmoid</em>函数</strong></p>
-<script type="math/tex; mode=display">
-\text{For } x \in \mathbb{R}^n \text{,     } sigmoid(x) = sigmoid\begin{pmatrix}
-    x_1  \\
-    x_2  \\
-    ...  \\
-    x_n  \\
-\end{pmatrix} = \begin{pmatrix}
-    \frac{1}{1+e^{-x_1}}  \\
-    \frac{1}{1+e^{-x_2}}  \\
-    ...  \\
-    \frac{1}{1+e^{-x_n}}  \\
-\end{pmatrix}\tag{1}</script><p> python代码实现：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">sigmoid</span><span class="params">(x)</span>:</span></div><div class="line">  s = <span class="number">1</span> / (<span class="number">1</span> + np.exp(-x))</div><div class="line">  <span class="keyword">return</span> s</div></pre></td></tr></table></figure>
-<p><strong>Sigmoid gradient(梯度，求导)</strong></p>
-<p>经过dS = ds/dx的求导运算发现dS = s*(1-s) </p>
-<script type="math/tex; mode=display">
-sigmoid\_derivative(x) = \sigma'(x) = \sigma(x) (1 - \sigma(x))\tag{2}</script><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">sigmoid_derivative</span><span class="params">(x)</span>:</span></div><div class="line">  s = sigmoid(x)</div><div class="line">  ds = s*(<span class="number">1</span>-s)</div><div class="line">  <span class="keyword">return</span> ds</div></pre></td></tr></table></figure>
-          <div class="post-more-link text-center">
-            <a class="btn" href="/2018/01/08/深度学习基础知识/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-        
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
   </section>
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/">3</a><a class="extend next" rel="next" href="/page/3/"><i class="fa fa-angle-right"></i></a>
+    <a class="extend prev" rel="prev" href="/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/">3</a><a class="page-number" href="/page/4/">4</a><a class="extend next" rel="next" href="/page/3/"><i class="fa fa-angle-right"></i></a>
   </nav>
 
 
@@ -1401,7 +1385,7 @@ sigmoid\_derivative(x) = \sigma'(x) = \sigma(x) (1 - \sigma(x))\tag{2}</script><
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">30</span>
+              <span class="site-state-item-count">31</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>
