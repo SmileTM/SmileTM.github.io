@@ -100,7 +100,7 @@
 <meta property="og:site_name" content="SmileTM博客">
 <meta property="og:description" content="tf.wheretf.where(condition, x=None, y=None, name=None) 如果x，y均为空，则返回满足条件的索引indices 12a = tf.Variable([[1,2,3,4],[3,4,2,1]])tf.where(a&amp;gt;3) out: 123&amp;lt;tf.Tensor: shape=(2, 2), dtype=int64, numpy=array">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2020-10-27T14:02:59.714Z">
+<meta property="og:updated_time" content="2020-10-27T14:08:45.953Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="tensorflow语法糖">
 <meta name="twitter:description" content="tf.wheretf.where(condition, x=None, y=None, name=None) 如果x，y均为空，则返回满足条件的索引indices 12a = tf.Variable([[1,2,3,4],[3,4,2,1]])tf.where(a&amp;gt;3) out: 123&amp;lt;tf.Tensor: shape=(2, 2), dtype=int64, numpy=array">
@@ -342,6 +342,7 @@
 <figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">a = tf.Variable([[<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>],[<span class="number">3</span>,<span class="number">4</span>,<span class="number">2</span>,<span class="number">1</span>]])</div><div class="line">b = tf.zeros_like(a)</div><div class="line">tf.where(a&gt;<span class="number">3</span>, b, a)</div></pre></td></tr></table></figure>
 <p><strong>out:</strong></p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">&lt;tf.Tensor: shape=(<span class="number">2</span>, <span class="number">4</span>), dtype=int32, numpy=</div><div class="line">array([[<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">0</span>],</div><div class="line">       [<span class="number">3</span>, <span class="number">0</span>, <span class="number">2</span>, <span class="number">1</span>]], dtype=int32)&gt;</div></pre></td></tr></table></figure>
+<a id="more"></a>
 <h1 id="tf-stack"><a href="#tf-stack" class="headerlink" title="tf.stack"></a>tf.stack</h1><p>tf.stack(values, axis=0, name=”stack”)</p>
 <p>向量堆叠函数</p>
 <p>values.shape = (A, B, C)</p>
