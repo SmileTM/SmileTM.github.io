@@ -4,31 +4,14 @@
 
     
   <url>
-    <loc>http://yoursite.com/2020/08/22/tensorflow2.0%E6%A8%A1%E5%9E%8B%E9%83%A8%E7%BD%B2/</loc>
-    <lastmod>2020-08-23T16:55:14.418Z</lastmod>
+    <loc>http://yoursite.com/2020/10/21/tf-sugar/</loc>
+    <lastmod>2020-10-27T14:02:59.714Z</lastmod>
     <data>
         <display>
-        <title>tensorflow2.0模型部署</title>
-        <pubTime>2020-08-22T06:59:17.000Z</pubTime>
+        <title>tensorflow语法糖</title>
+        <pubTime>2020-10-21T13:32:32.000Z</pubTime>
         
-        <tag>TensorFlow2.0</tag>
-         
-         
-           
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>http://yoursite.com/2019/12/01/docker+tensorflow:serving/</loc>
-    <lastmod>2020-08-23T15:40:00.582Z</lastmod>
-    <data>
-        <display>
-        <title>docker+tensorflow/serving</title>
-        <pubTime>2019-12-01T03:30:40.000Z</pubTime>
-        
-        <tag>TensorFlow2.0</tag>
+        <tag>Tensorflow2.x</tag>
          
          
            
@@ -39,13 +22,217 @@
     
   <url>
     <loc>http://yoursite.com/2020/03/12/CheckpointManager/</loc>
-    <lastmod>2020-03-12T14:00:48.447Z</lastmod>
+    <lastmod>2020-10-27T13:54:12.011Z</lastmod>
     <data>
         <display>
         <title>CheckpointManager</title>
         <pubTime>2020-03-12T13:52:09.000Z</pubTime>
         
-        <tag>Tensorflow2.0</tag>
+        <tag>Tensorflow2.x</tag>
+         
+         
+           
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://yoursite.com/2020/01/14/Create-TFRecord/</loc>
+    <lastmod>2020-10-27T13:54:01.419Z</lastmod>
+    <data>
+        <display>
+        <title>Create-TFRecord</title>
+        <pubTime>2020-01-14T08:59:01.000Z</pubTime>
+        
+        <tag>TensorFlow2.x</tag>
+         
+         
+           
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://yoursite.com/2020/01/30/keras%E8%87%AA%E5%8A%A8%E7%82%BC%E4%B8%B9%E5%99%A8/</loc>
+    <lastmod>2020-10-27T13:53:49.799Z</lastmod>
+    <data>
+        <display>
+        <title>keras自动炼丹器</title>
+        <pubTime>2020-01-29T17:17:13.000Z</pubTime>
+        
+        <tag>TensorFlow2.x</tag>
+         
+         
+           
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://yoursite.com/2019/09/19/tf-ImageDataGenerator/</loc>
+    <lastmod>2020-10-27T13:53:41.676Z</lastmod>
+    <data>
+        <display>
+        <title>tf_ImageDataGenerator</title>
+        <pubTime>2019-09-19T13:19:54.000Z</pubTime>
+        
+        <tag>TensorFlow2.x</tag>
+         
+         
+           
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://yoursite.com/2019/09/21/tf%E6%96%87%E6%9C%AC%E5%A4%84%E7%90%86/</loc>
+    <lastmod>2020-10-27T13:52:41.009Z</lastmod>
+    <data>
+        <display>
+        <title>tf文本处理</title>
+        <pubTime>2019-09-21T12:40:41.000Z</pubTime>
+        
+        <tag>TensorFlow2.x</tag>
+         
+         
+           
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://yoursite.com/2019/09/28/%E9%82%A3%E4%BA%9B%E5%B9%B4%E8%B5%B0%E8%BF%87%E7%9A%84%E5%9D%91-tf2-gpu%E5%AE%89%E8%A3%85/</loc>
+    <lastmod>2020-10-27T13:52:32.270Z</lastmod>
+    <data>
+        <display>
+        <title>那些年走过的坑TF2.0-GPU安装</title>
+        <pubTime>2019-09-28T02:20:02.000Z</pubTime>
+        
+        <tag>TensorFlow2.x</tag>
+         
+         
+           
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://yoursite.com/2019/09/22/Custom-layers/</loc>
+    <lastmod>2020-10-27T13:52:24.832Z</lastmod>
+    <data>
+        <display>
+        <title>Custom layers</title>
+        <pubTime>2019-09-22T11:08:09.000Z</pubTime>
+        
+        <tag>TensorFlow2.x</tag>
+         
+         
+           
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://yoursite.com/2019/10/11/TF2%E6%A8%A1%E5%9E%8B%E4%BF%9D%E5%AD%98%E5%8A%A0%E8%BD%BD/</loc>
+    <lastmod>2020-10-27T13:52:12.928Z</lastmod>
+    <data>
+        <display>
+        <title>TF2模型保存加载</title>
+        <pubTime>2019-10-11T15:25:35.000Z</pubTime>
+        
+        <tag>TensorFlow2.x</tag>
+         
+         
+           
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://yoursite.com/2019/12/01/docker+tensorflow:serving/</loc>
+    <lastmod>2020-10-27T13:51:44.676Z</lastmod>
+    <data>
+        <display>
+        <title>docker+tensorflow/serving</title>
+        <pubTime>2019-12-01T03:30:40.000Z</pubTime>
+        
+        <tag>TensorFlow2.x</tag>
+         
+         
+           
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://yoursite.com/2019/12/19/tensorflow-addons/</loc>
+    <lastmod>2020-10-27T13:51:29.731Z</lastmod>
+    <data>
+        <display>
+        <title>tensorflow_addons</title>
+        <pubTime>2019-12-19T07:23:40.000Z</pubTime>
+        
+        <tag>TensorFlow2.x</tag>
+         
+         
+           
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://yoursite.com/2019/12/29/Tensorflow-distribute/</loc>
+    <lastmod>2020-10-27T13:51:17.651Z</lastmod>
+    <data>
+        <display>
+        <title>Tensorflow-distribute</title>
+        <pubTime>2019-12-29T13:46:30.000Z</pubTime>
+        
+        <tag>TensorFlow2.x</tag>
+         
+         
+           
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://yoursite.com/2020/08/22/tensorflow2.0%E6%A8%A1%E5%9E%8B%E9%83%A8%E7%BD%B2/</loc>
+    <lastmod>2020-10-27T13:51:04.330Z</lastmod>
+    <data>
+        <display>
+        <title>tensorflow2.0模型部署</title>
+        <pubTime>2020-08-22T06:59:17.000Z</pubTime>
+        
+        <tag>TensorFlow2.x</tag>
+         
+         
+           
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://yoursite.com/2019/11/27/%E8%AF%84%E4%BC%B0%E6%96%B9%E6%B3%95/</loc>
+    <lastmod>2020-10-20T14:10:23.239Z</lastmod>
+    <data>
+        <display>
+        <title>评估方法</title>
+        <pubTime>2019-11-26T16:19:02.000Z</pubTime>
+        
+        <tag>NLP</tag>
          
          
            
@@ -63,159 +250,6 @@
         <pubTime>2020-03-04T14:39:23.000Z</pubTime>
         
         <tag>ML</tag>
-         
-         
-           
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>http://yoursite.com/2020/01/30/keras%E8%87%AA%E5%8A%A8%E7%82%BC%E4%B8%B9%E5%99%A8/</loc>
-    <lastmod>2020-01-29T17:18:19.527Z</lastmod>
-    <data>
-        <display>
-        <title>keras自动炼丹器</title>
-        <pubTime>2020-01-29T17:17:13.000Z</pubTime>
-        
-        <tag>TensorFlow2.0</tag>
-         
-         
-           
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>http://yoursite.com/2020/01/14/Create-TFRecord/</loc>
-    <lastmod>2020-01-14T14:23:43.079Z</lastmod>
-    <data>
-        <display>
-        <title>Create-TFRecord</title>
-        <pubTime>2020-01-14T08:59:01.000Z</pubTime>
-        
-        <tag>TensorFlow2.0</tag>
-         
-         
-           
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>http://yoursite.com/2019/09/28/%E9%82%A3%E4%BA%9B%E5%B9%B4%E8%B5%B0%E8%BF%87%E7%9A%84%E5%9D%91-tf2-gpu%E5%AE%89%E8%A3%85/</loc>
-    <lastmod>2020-01-10T04:01:37.252Z</lastmod>
-    <data>
-        <display>
-        <title>那些年走过的坑TF2.0-GPU安装</title>
-        <pubTime>2019-09-28T02:20:02.000Z</pubTime>
-        
-        <tag>TensorFlow2.0</tag>
-         
-         
-           
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>http://yoursite.com/2019/12/29/Tensorflow-distribute/</loc>
-    <lastmod>2019-12-30T08:49:52.865Z</lastmod>
-    <data>
-        <display>
-        <title>Tensorflow-distribute</title>
-        <pubTime>2019-12-29T13:46:30.000Z</pubTime>
-        
-        <tag>TensorFlow2.0</tag>
-         
-         
-           
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>http://yoursite.com/2019/12/19/tensorflow-addons/</loc>
-    <lastmod>2019-12-29T13:29:36.918Z</lastmod>
-    <data>
-        <display>
-        <title>tensorflow_addons</title>
-        <pubTime>2019-12-19T07:23:40.000Z</pubTime>
-        
-        <tag>TensorFlow2.0</tag>
-         
-         
-           
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>http://yoursite.com/2019/09/19/tf-ImageDataGenerator/</loc>
-    <lastmod>2019-12-20T03:08:25.274Z</lastmod>
-    <data>
-        <display>
-        <title>tf_ImageDataGenerator</title>
-        <pubTime>2019-09-19T13:19:54.000Z</pubTime>
-        
-        <tag>TensorFlow2.0</tag>
-         
-         
-           
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>http://yoursite.com/2019/09/21/tf%E6%96%87%E6%9C%AC%E5%A4%84%E7%90%86/</loc>
-    <lastmod>2019-12-20T03:08:17.664Z</lastmod>
-    <data>
-        <display>
-        <title>tf文本处理</title>
-        <pubTime>2019-09-21T12:40:41.000Z</pubTime>
-        
-        <tag>TensorFlow2.0</tag>
-         
-         
-           
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>http://yoursite.com/2019/10/11/TF2%E6%A8%A1%E5%9E%8B%E4%BF%9D%E5%AD%98%E5%8A%A0%E8%BD%BD/</loc>
-    <lastmod>2019-12-20T03:08:07.685Z</lastmod>
-    <data>
-        <display>
-        <title>TF2模型保存加载</title>
-        <pubTime>2019-10-11T15:25:35.000Z</pubTime>
-        
-        <tag>TensorFlow2.0</tag>
-         
-         
-           
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>http://yoursite.com/2019/09/22/Custom-layers/</loc>
-    <lastmod>2019-12-20T03:07:40.991Z</lastmod>
-    <data>
-        <display>
-        <title>Custom layers</title>
-        <pubTime>2019-09-22T11:08:09.000Z</pubTime>
-        
-        <tag>TensorFlow2.0</tag>
          
          
            
@@ -248,23 +282,6 @@
         <display>
         <title>NMT-Attention</title>
         <pubTime>2019-12-13T01:51:02.000Z</pubTime>
-        
-        <tag>NLP</tag>
-         
-         
-           
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>http://yoursite.com/2019/11/27/%E8%AF%84%E4%BC%B0%E6%96%B9%E6%B3%95/</loc>
-    <lastmod>2019-11-27T06:01:21.273Z</lastmod>
-    <data>
-        <display>
-        <title>评估方法</title>
-        <pubTime>2019-11-26T16:19:02.000Z</pubTime>
         
         <tag>NLP</tag>
          

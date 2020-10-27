@@ -285,6 +285,164 @@
             
               
                 
+                <a class="post-title-link" href="/2020/10/21/tf-sugar/" itemprop="url">
+                  tensorflow语法糖
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2020-10-21T21:32:32+08:00" content="2020-10-21">
+              2020-10-21
+            </time>
+          </span>
+
+          
+
+          
+            
+          
+
+          
+
+          
+          
+             <span id="/2020/10/21/tf-sugar/" class="leancloud_visitors" data-flag-title="tensorflow语法糖">
+               &nbsp; | &nbsp;
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               <span class="post-meta-item-text">阅读次数 </span>
+               <span class="leancloud-visitors-count"></span>
+              </span>
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h1 id="tf-where"><a href="#tf-where" class="headerlink" title="tf.where"></a>tf.where</h1><p>tf.where(condition, x=None, y=None, name=None)</p>
+<p>如果x，y均为空，则返回满足条件的索引indices</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">a = tf.Variable([[<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>],[<span class="number">3</span>,<span class="number">4</span>,<span class="number">2</span>,<span class="number">1</span>]])</div><div class="line">tf.where(a&gt;<span class="number">3</span>)</div></pre></td></tr></table></figure>
+<p><strong>out:</strong></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">&lt;tf.Tensor: shape=(<span class="number">2</span>, <span class="number">2</span>), dtype=int64, numpy=</div><div class="line">array([[<span class="number">0</span>, <span class="number">3</span>],</div><div class="line">       [<span class="number">1</span>, <span class="number">1</span>]])&gt;</div></pre></td></tr></table></figure>
+<p>如果x，y均不为空，则 满足条件位置的值为x相应位置的值，其余为y相应位置的值。(非常实用)</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">a = tf.Variable([[<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>],[<span class="number">3</span>,<span class="number">4</span>,<span class="number">2</span>,<span class="number">1</span>]])</div><div class="line">b = tf.zeros_like(a)</div><div class="line">tf.where(a&gt;<span class="number">3</span>, b, a)</div></pre></td></tr></table></figure>
+<p><strong>out:</strong></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">&lt;tf.Tensor: shape=(<span class="number">2</span>, <span class="number">4</span>), dtype=int32, numpy=</div><div class="line">array([[<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">0</span>],</div><div class="line">       [<span class="number">3</span>, <span class="number">0</span>, <span class="number">2</span>, <span class="number">1</span>]], dtype=int32)&gt;</div></pre></td></tr></table></figure>
+<h1 id="tf-stack"><a href="#tf-stack" class="headerlink" title="tf.stack"></a>tf.stack</h1><p>tf.stack(values, axis=0, name=”stack”)</p>
+<p>向量堆叠函数</p>
+<p>values.shape = (A, B, C)</p>
+<p>if <code>axis == 0</code> then the <code>output</code> tensor will have the shape <code>(N, A, B, C)</code>.<br>if <code>axis == 1</code> then the <code>output</code> tensor will have the shape <code>(A, N, B, C)</code>.</p>
+<p><strong>example:</strong></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">a = tf.Variable([[<span class="number">1</span>,<span class="number">2</span>,<span class="number">0</span>],[<span class="number">1</span>,<span class="number">2</span>,<span class="number">1</span>]])   <span class="comment"># shape = (2,3)</span></div><div class="line">b = tf.Variable([[<span class="number">4</span>,<span class="number">5</span>,<span class="number">0</span>],[<span class="number">4</span>,<span class="number">5</span>,<span class="number">1</span>]])   <span class="comment"># shape = (2,3)</span></div><div class="line">c = tf.Variable([[<span class="number">7</span>,<span class="number">8</span>,<span class="number">0</span>],[<span class="number">7</span>,<span class="number">8</span>,<span class="number">1</span>]])   <span class="comment"># shape = (2,3)</span></div><div class="line">d = tf.Variable([[<span class="number">10</span>,<span class="number">11</span>,<span class="number">0</span>],[<span class="number">10</span>,<span class="number">11</span>,<span class="number">1</span>]])   <span class="comment"># shape = (2,3)</span></div><div class="line">stack_tensors_0 = tf.stack([a,b,c,d],axis=<span class="number">0</span>)  <span class="comment"># shape = (4,2,3)</span></div><div class="line">stack_tensors_1 = tf.stack([a,b,c,d],axis=<span class="number">1</span>)   <span class="comment"># shape = (2,4,3)</span></div></pre></td></tr></table></figure>
+<p><strong>out:</strong></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div></pre></td><td class="code"><pre><div class="line">stack_tensors_0</div><div class="line">&lt;tf.Tensor: shape=(<span class="number">4</span>, <span class="number">2</span>, <span class="number">3</span>), dtype=int32, numpy=</div><div class="line">array([[[ <span class="number">1</span>,  <span class="number">2</span>,  <span class="number">0</span>],</div><div class="line">        [ <span class="number">1</span>,  <span class="number">2</span>,  <span class="number">1</span>]],</div><div class="line">       [[ <span class="number">4</span>,  <span class="number">5</span>,  <span class="number">0</span>],</div><div class="line">        [ <span class="number">4</span>,  <span class="number">5</span>,  <span class="number">1</span>]],</div><div class="line">       [[ <span class="number">7</span>,  <span class="number">8</span>,  <span class="number">0</span>],</div><div class="line">        [ <span class="number">7</span>,  <span class="number">8</span>,  <span class="number">1</span>]],</div><div class="line">       [[<span class="number">10</span>, <span class="number">11</span>,  <span class="number">0</span>],</div><div class="line">        [<span class="number">10</span>, <span class="number">11</span>,  <span class="number">1</span>]]], dtype=int32)&gt;</div><div class="line"></div><div class="line"></div><div class="line">stack_tensors_1</div><div class="line">&lt;tf.Tensor: shape=(<span class="number">2</span>, <span class="number">4</span>, <span class="number">3</span>), dtype=int32, numpy=</div><div class="line">array([[[ <span class="number">1</span>,  <span class="number">2</span>,  <span class="number">0</span>],</div><div class="line">        [ <span class="number">4</span>,  <span class="number">5</span>,  <span class="number">0</span>],</div><div class="line">        [ <span class="number">7</span>,  <span class="number">8</span>,  <span class="number">0</span>],</div><div class="line">        [<span class="number">10</span>, <span class="number">11</span>,  <span class="number">0</span>]],</div><div class="line">       [[ <span class="number">1</span>,  <span class="number">2</span>,  <span class="number">1</span>],</div><div class="line">        [ <span class="number">4</span>,  <span class="number">5</span>,  <span class="number">1</span>],</div><div class="line">        [ <span class="number">7</span>,  <span class="number">8</span>,  <span class="number">1</span>],</div><div class="line">        [<span class="number">10</span>, <span class="number">11</span>,  <span class="number">1</span>]]], dtype=int32)&gt;</div></pre></td></tr></table></figure>
+<h1 id="tf-gather"><a href="#tf-gather" class="headerlink" title="tf.gather"></a>tf.gather</h1><p>gather_v2(params,indices,validate_indices=None,axis=None,batch_dims=0,name=None)</p>
+<p>根据索引，根据axis进行向量提取。只能根据一维度进行提取。</p>
+<p><strong>example:</strong></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">a = tf.Variable([[<span class="number">1</span>,<span class="number">1</span>,<span class="number">1</span>],[<span class="number">2</span>,<span class="number">2</span>,<span class="number">2</span>],[<span class="number">3</span>,<span class="number">3</span>,<span class="number">3</span>]])</div><div class="line">gather_tensor = tf.gather(a,[<span class="number">2</span>,<span class="number">1</span>,<span class="number">1</span>,<span class="number">0</span>])</div></pre></td></tr></table></figure>
+<p><strong>out:</strong></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">&lt;tf.Tensor: shape=(<span class="number">4</span>, <span class="number">3</span>), dtype=int32, numpy=</div><div class="line">array([[<span class="number">3</span>, <span class="number">3</span>, <span class="number">3</span>],</div><div class="line">       [<span class="number">2</span>, <span class="number">2</span>, <span class="number">2</span>],</div><div class="line">       [<span class="number">2</span>, <span class="number">2</span>, <span class="number">2</span>],</div><div class="line">       [<span class="number">1</span>, <span class="number">1</span>, <span class="number">1</span>]], dtype=int32)&gt;</div></pre></td></tr></table></figure>
+<h1 id="tf-gather-nd"><a href="#tf-gather-nd" class="headerlink" title="tf.gather_nd"></a>tf.gather_nd</h1><p>gather_nd_v2(params, indices, batch_dims=0, name=None)</p>
+<p>根据多维度进行提取</p>
+<p><strong>example:</strong></p>
+<p>假设text 有2个sequence，每个sequence有2个单词，经过Embedding 后的维度为4维。<br>根据每个sequence的序列进行抽取。</p>
+<p>第0个sequence抽取序列为[1,1,0,0] </p>
+<p>第1个sequence抽取序列为[0,1,0,1] </p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">text = tf.Variable([[[<span class="number">1</span>,<span class="number">1</span>,<span class="number">1</span>,<span class="number">1</span>],[<span class="number">2</span>,<span class="number">2</span>,<span class="number">2</span>,<span class="number">2</span>]],[[<span class="number">3</span>,<span class="number">3</span>,<span class="number">3</span>,<span class="number">3</span>],[<span class="number">4</span>,<span class="number">4</span>,<span class="number">4</span>,<span class="number">4</span>]]])  <span class="comment">#shape (2,2,4)</span></div><div class="line">index=tf.Variable([[[<span class="number">0</span>,<span class="number">1</span>],[<span class="number">0</span>,<span class="number">1</span>],[<span class="number">0</span>,<span class="number">0</span>],[<span class="number">0</span>,<span class="number">0</span>]],[[<span class="number">1</span>,<span class="number">0</span>],[<span class="number">1</span>,<span class="number">1</span>],[<span class="number">1</span>,<span class="number">0</span>],[<span class="number">1</span>,<span class="number">1</span>]]])</div><div class="line">gather_nd_tensor = tf.gather_nd(text,index)</div></pre></td></tr></table></figure>
+<p><strong>out:</strong></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">gather_nd_tensor  <span class="comment">#shape (2,4,4)</span></div><div class="line">&lt;tf.Tensor: shape=(<span class="number">2</span>, <span class="number">4</span>, <span class="number">4</span>), dtype=int32, numpy=</div><div class="line">array([[[<span class="number">2</span>, <span class="number">2</span>, <span class="number">2</span>, <span class="number">2</span>],</div><div class="line">        [<span class="number">2</span>, <span class="number">2</span>, <span class="number">2</span>, <span class="number">2</span>],</div><div class="line">        [<span class="number">1</span>, <span class="number">1</span>, <span class="number">1</span>, <span class="number">1</span>],</div><div class="line">        [<span class="number">1</span>, <span class="number">1</span>, <span class="number">1</span>, <span class="number">1</span>]],</div><div class="line">       [[<span class="number">3</span>, <span class="number">3</span>, <span class="number">3</span>, <span class="number">3</span>],</div><div class="line">        [<span class="number">4</span>, <span class="number">4</span>, <span class="number">4</span>, <span class="number">4</span>],</div><div class="line">        [<span class="number">3</span>, <span class="number">3</span>, <span class="number">3</span>, <span class="number">3</span>],</div><div class="line">        [<span class="number">4</span>, <span class="number">4</span>, <span class="number">4</span>, <span class="number">4</span>]]], dtype=int32)&gt;</div></pre></td></tr></table></figure>
+<h1 id="tf-slice"><a href="#tf-slice" class="headerlink" title="tf.slice"></a>tf.slice</h1><p>slice(input_, begin, size, name=None)</p>
+<p>tf切片函数</p>
+<p><strong>example:</strong></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">t = tf.constant([[[<span class="number">1</span>, <span class="number">1</span>, <span class="number">1</span>], [<span class="number">2</span>, <span class="number">2</span>, <span class="number">2</span>]],</div><div class="line">                 [[<span class="number">3</span>, <span class="number">3</span>, <span class="number">3</span>], [<span class="number">4</span>, <span class="number">4</span>, <span class="number">4</span>]],</div><div class="line">                 [[<span class="number">5</span>, <span class="number">5</span>, <span class="number">5</span>], [<span class="number">6</span>, <span class="number">6</span>, <span class="number">6</span>]]])</div><div class="line">tf.slice(t, [<span class="number">1</span>, <span class="number">0</span>, <span class="number">0</span>], [<span class="number">1</span>, <span class="number">1</span>, <span class="number">3</span>])  <span class="comment">#抽取 axis0=1，0&lt;=axis1&lt;1, 0&lt;=axis2&lt;3 的部分</span></div></pre></td></tr></table></figure>
+<p><strong>out:</strong></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">&lt;tf.Tensor: shape=(<span class="number">1</span>, <span class="number">1</span>, <span class="number">3</span>), dtype=int32, numpy=array([[[<span class="number">3</span>, <span class="number">3</span>, <span class="number">3</span>]]], dtype=int32)&gt;</div></pre></td></tr></table></figure>
+<h1 id="tf-cond"><a href="#tf-cond" class="headerlink" title="tf.cond"></a>tf.cond</h1><p>tf.cond(pred, true_fn=None, false_fn=None, name=None)</p>
+<p>tf条件函数</p>
+<p>可以利用tf.cond来动态选择层。在TF2.x中 可以直接用if条件进行替代。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">a=<span class="number">10</span></div><div class="line">b=<span class="number">20</span></div><div class="line">cond_layer = tf.cond(a&gt;b,<span class="keyword">lambda</span> :tf.keras.layers.Dense(a),<span class="keyword">lambda</span> :tf.keras.layers.Dense(b))</div></pre></td></tr></table></figure>
+<h1 id="tf-cumsum"><a href="#tf-cumsum" class="headerlink" title="tf.cumsum"></a>tf.cumsum</h1><p>tf.cumsum(x, axis=0, exclusive=False, reverse=False, name=None)</p>
+<p>按轴累加器</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">tf.cumsum([a,b,c]) = [a,a+b,a+b+c]</div><div class="line">tf.cumsum([a,b,c],reverse=<span class="keyword">False</span>) = [a+b+c,a+b,a]</div><div class="line">tf.cumsum([a,b,c],exclusive=<span class="keyword">True</span>) = [<span class="number">0</span>,a,a+b]</div></pre></td></tr></table></figure>
+<p><strong>example:</strong></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">a = tf.ones((<span class="number">4</span>,<span class="number">3</span>))</div><div class="line">cumsum_1 = tf.cumsum(a)   </div><div class="line">cumsum_2 = tf.cumsum(a, axis=<span class="number">1</span>)</div><div class="line">cumsum_3 = tf.cumsum(a,exclusive=<span class="keyword">True</span>)</div></pre></td></tr></table></figure>
+<p><strong>out:</strong></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div></pre></td><td class="code"><pre><div class="line">cumsum_1</div><div class="line">&lt;tf.Tensor: shape=(<span class="number">4</span>, <span class="number">3</span>), dtype=float32, numpy=</div><div class="line">array([[<span class="number">1.</span>, <span class="number">1.</span>, <span class="number">1.</span>],</div><div class="line">       [<span class="number">2.</span>, <span class="number">2.</span>, <span class="number">2.</span>],</div><div class="line">       [<span class="number">3.</span>, <span class="number">3.</span>, <span class="number">3.</span>],</div><div class="line">       [<span class="number">4.</span>, <span class="number">4.</span>, <span class="number">4.</span>]], dtype=float32)&gt;</div><div class="line"></div><div class="line">cumsum_2</div><div class="line">&lt;tf.Tensor: shape=(<span class="number">4</span>, <span class="number">3</span>), dtype=float32, numpy=</div><div class="line">array([[<span class="number">1.</span>, <span class="number">2.</span>, <span class="number">3.</span>],</div><div class="line">       [<span class="number">1.</span>, <span class="number">2.</span>, <span class="number">3.</span>],</div><div class="line">       [<span class="number">1.</span>, <span class="number">2.</span>, <span class="number">3.</span>],</div><div class="line">       [<span class="number">1.</span>, <span class="number">2.</span>, <span class="number">3.</span>]], dtype=float32)&gt;</div><div class="line"></div><div class="line">cumsum_3</div><div class="line">&lt;tf.Tensor: shape=(<span class="number">4</span>, <span class="number">3</span>), dtype=float32, numpy=</div><div class="line">array([[<span class="number">0.</span>, <span class="number">0.</span>, <span class="number">0.</span>],</div><div class="line">       [<span class="number">1.</span>, <span class="number">1.</span>, <span class="number">1.</span>],</div><div class="line">       [<span class="number">2.</span>, <span class="number">2.</span>, <span class="number">2.</span>],</div><div class="line">       [<span class="number">3.</span>, <span class="number">3.</span>, <span class="number">3.</span>]], dtype=float32)&gt;</div></pre></td></tr></table></figure>
+<h1 id="tf-clip-by-value"><a href="#tf-clip-by-value" class="headerlink" title="tf.clip_by_value"></a>tf.clip_by_value</h1><p>clip_by_value(t, clip_value_min, clip_value_max,name=None)</p>
+<p>tf剪支函数</p>
+<p>将t中 小于clip_value_min的替换成clip_value_min，大于 clip_value_max 替换成 clip_value_max</p>
+<p><strong>example：</strong></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">t = tf.Variable([[<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>],[<span class="number">5</span>,<span class="number">6</span>,<span class="number">7</span>,<span class="number">8</span>]])</div><div class="line">clip_tensor= tf.clip_by_value(t,<span class="number">3</span>,<span class="number">5</span>)</div></pre></td></tr></table></figure>
+<p><strong>out：</strong></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">clip_tensor</div><div class="line">&lt;tf.Tensor: shape=(<span class="number">2</span>, <span class="number">4</span>), dtype=int32, numpy=</div><div class="line">array([[<span class="number">3</span>, <span class="number">3</span>, <span class="number">3</span>, <span class="number">4</span>],</div><div class="line">       [<span class="number">5</span>, <span class="number">5</span>, <span class="number">5</span>, <span class="number">5</span>]], dtype=int32)&gt;</div></pre></td></tr></table></figure>
+
+          
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
                 <a class="post-title-link" href="/2020/08/22/tensorflow2.0模型部署/" itemprop="url">
                   tensorflow2.0模型部署
                 </a>
@@ -1258,137 +1416,6 @@
 
 
     
-      
-
-  
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2019/11/27/评估方法/" itemprop="url">
-                  评估方法
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            <span class="post-meta-item-icon">
-              <i class="fa fa-calendar-o"></i>
-            </span>
-            <span class="post-meta-item-text">发表于</span>
-            <time itemprop="dateCreated" datetime="2019-11-27T00:19:02+08:00" content="2019-11-27">
-              2019-11-27
-            </time>
-          </span>
-
-          
-
-          
-            
-          
-
-          
-
-          
-          
-             <span id="/2019/11/27/评估方法/" class="leancloud_visitors" data-flag-title="评估方法">
-               &nbsp; | &nbsp;
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               <span class="post-meta-item-text">阅读次数 </span>
-               <span class="leancloud-visitors-count"></span>
-              </span>
-          
-
-          
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <h1 id="混淆矩阵、准确率、精确率、召回率、F值、ROC曲线、AUC、PR曲线-Sklearn-metrics评估方法"><a href="#混淆矩阵、准确率、精确率、召回率、F值、ROC曲线、AUC、PR曲线-Sklearn-metrics评估方法" class="headerlink" title="混淆矩阵、准确率、精确率、召回率、F值、ROC曲线、AUC、PR曲线-Sklearn.metrics评估方法"></a>混淆矩阵、准确率、精确率、召回率、F值、ROC曲线、AUC、PR曲线-Sklearn.metrics评估方法</h1><h2 id="混淆矩阵"><a href="#混淆矩阵" class="headerlink" title="混淆矩阵"></a>混淆矩阵</h2><ul>
-<li>TN ：真实为0，预测为0</li>
-<li>FP ：真实为0，预测为1</li>
-<li>FN ：真实为1，预测为0</li>
-<li>TP ：真实为1，预测为1</li>
-</ul>
-<table>
-  <tr>
-    <td rowspan="2" colspan="2">混淆矩阵</td>
-    <td colspan="2">预测</td>
-  </tr>
-  <tr>
-    <td>0</td>
-    <td>1</td>    
-  </tr>
-  <tr>
-    <td rowspan="2">真实</td>
-    <td>0</td>
-    <td>TN</td>
-    <td>FP</td>
-  </tr>
-  <tr>
-    <td>1</td>
-    <td>FN</td>
-    <td>TP</td>
-  </tr>
-</table>
-          <div class="post-more-link text-center">
-            <a class="btn" href="/2019/11/27/评估方法/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-        
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
   </section>
 
   
@@ -1434,7 +1461,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">31</span>
+              <span class="site-state-item-count">32</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>

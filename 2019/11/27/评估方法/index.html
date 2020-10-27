@@ -102,7 +102,7 @@
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="http://yoursite.com/images/ROC.png">
 <meta property="og:image" content="http://yoursite.com/images/PR.png">
-<meta property="og:updated_time" content="2019-11-27T06:01:21.273Z">
+<meta property="og:updated_time" content="2020-10-20T14:10:23.239Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="评估方法">
 <meta name="twitter:description" content="混淆矩阵、准确率、精确率、召回率、F值、ROC曲线、AUC、PR曲线-Sklearn.metrics评估方法混淆矩阵 TN ：真实为0，预测为0 FP ：真实为0，预测为1 FN ：真实为1，预测为0 TP ：真实为1，预测为1          混淆矩阵     预测           0     1               真实     0     TN     FP">
@@ -396,10 +396,10 @@ Recall = \frac{TP}{TP+FN}</script><figure class="highlight python"><table><tr><t
 F1 = 2*\frac{Precison*Recall}{Precision+Recall}</script><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">from</span> sklearn.metrics <span class="keyword">import</span> f1_score</div><div class="line">f1_score=f1_score(yr,yp)</div></pre></td></tr></table></figure>
 <p>f1_score = 0.7272727272727272</p>
 <h2 id="ROC曲线"><a href="#ROC曲线" class="headerlink" title="ROC曲线"></a>ROC曲线</h2><p>计算ROC前 我们需要了解两个变量FPR（横轴）和TPR（纵轴）。</p>
-<p>FPR (False Positive Rate)：真实的反例中，被预测为正例的比率</p>
+<p>FPR (False Positive Rate)假阳性率：真实的反例中，被预测为正例的比率</p>
 <p>TN+FP 为样本中所有负例的个数</p>
 <script type="math/tex; mode=display">
-FPR = \frac{FP}{TN+FP}</script><p>TPR (True Positive Rate): 真实的正例中，被预测为正例的比率</p>
+FPR = \frac{FP}{TN+FP}</script><p>TPR (True Positive Rate)真阳性率: 真实的正例中，被预测为正例的比率</p>
 <p>TP+FN 为样本中所有正例的个数</p>
 <script type="math/tex; mode=display">
 TPR = \frac{TP}{TP+FN}</script><p>理想分类器下 FPR=0，TPR=1。</p>
@@ -526,7 +526,7 @@ TPR = \frac{TP}{TP+FN}</script><p>理想分类器下 FPR=0，TPR=1。</p>
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">31</span>
+              <span class="site-state-item-count">32</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>

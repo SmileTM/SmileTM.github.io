@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://yoursite.com/"/>
-  <updated>2020-08-23T16:55:14.418Z</updated>
+  <updated>2020-10-27T14:02:59.714Z</updated>
   <id>http://yoursite.com/</id>
   
   <author>
@@ -16,11 +16,87 @@
   <generator uri="http://hexo.io/">Hexo</generator>
   
   <entry>
+    <title>tensorflow语法糖</title>
+    <link href="http://yoursite.com/2020/10/21/tf-sugar/"/>
+    <id>http://yoursite.com/2020/10/21/tf-sugar/</id>
+    <published>2020-10-21T13:32:32.000Z</published>
+    <updated>2020-10-27T14:02:59.714Z</updated>
+    
+    <content type="html"><![CDATA[<h1 id="tf-where"><a href="#tf-where" class="headerlink" title="tf.where"></a>tf.where</h1><p>tf.where(condition, x=None, y=None, name=None)</p>
+<p>如果x，y均为空，则返回满足条件的索引indices</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">a = tf.Variable([[<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>],[<span class="number">3</span>,<span class="number">4</span>,<span class="number">2</span>,<span class="number">1</span>]])</div><div class="line">tf.where(a&gt;<span class="number">3</span>)</div></pre></td></tr></table></figure>
+<p><strong>out:</strong></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">&lt;tf.Tensor: shape=(<span class="number">2</span>, <span class="number">2</span>), dtype=int64, numpy=</div><div class="line">array([[<span class="number">0</span>, <span class="number">3</span>],</div><div class="line">       [<span class="number">1</span>, <span class="number">1</span>]])&gt;</div></pre></td></tr></table></figure>
+<p>如果x，y均不为空，则 满足条件位置的值为x相应位置的值，其余为y相应位置的值。(非常实用)</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">a = tf.Variable([[<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>],[<span class="number">3</span>,<span class="number">4</span>,<span class="number">2</span>,<span class="number">1</span>]])</div><div class="line">b = tf.zeros_like(a)</div><div class="line">tf.where(a&gt;<span class="number">3</span>, b, a)</div></pre></td></tr></table></figure>
+<p><strong>out:</strong></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">&lt;tf.Tensor: shape=(<span class="number">2</span>, <span class="number">4</span>), dtype=int32, numpy=</div><div class="line">array([[<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">0</span>],</div><div class="line">       [<span class="number">3</span>, <span class="number">0</span>, <span class="number">2</span>, <span class="number">1</span>]], dtype=int32)&gt;</div></pre></td></tr></table></figure>
+<h1 id="tf-stack"><a href="#tf-stack" class="headerlink" title="tf.stack"></a>tf.stack</h1><p>tf.stack(values, axis=0, name=”stack”)</p>
+<p>向量堆叠函数</p>
+<p>values.shape = (A, B, C)</p>
+<p>if <code>axis == 0</code> then the <code>output</code> tensor will have the shape <code>(N, A, B, C)</code>.<br>if <code>axis == 1</code> then the <code>output</code> tensor will have the shape <code>(A, N, B, C)</code>.</p>
+<p><strong>example:</strong></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">a = tf.Variable([[<span class="number">1</span>,<span class="number">2</span>,<span class="number">0</span>],[<span class="number">1</span>,<span class="number">2</span>,<span class="number">1</span>]])   <span class="comment"># shape = (2,3)</span></div><div class="line">b = tf.Variable([[<span class="number">4</span>,<span class="number">5</span>,<span class="number">0</span>],[<span class="number">4</span>,<span class="number">5</span>,<span class="number">1</span>]])   <span class="comment"># shape = (2,3)</span></div><div class="line">c = tf.Variable([[<span class="number">7</span>,<span class="number">8</span>,<span class="number">0</span>],[<span class="number">7</span>,<span class="number">8</span>,<span class="number">1</span>]])   <span class="comment"># shape = (2,3)</span></div><div class="line">d = tf.Variable([[<span class="number">10</span>,<span class="number">11</span>,<span class="number">0</span>],[<span class="number">10</span>,<span class="number">11</span>,<span class="number">1</span>]])   <span class="comment"># shape = (2,3)</span></div><div class="line">stack_tensors_0 = tf.stack([a,b,c,d],axis=<span class="number">0</span>)  <span class="comment"># shape = (4,2,3)</span></div><div class="line">stack_tensors_1 = tf.stack([a,b,c,d],axis=<span class="number">1</span>)   <span class="comment"># shape = (2,4,3)</span></div></pre></td></tr></table></figure>
+<p><strong>out:</strong></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div></pre></td><td class="code"><pre><div class="line">stack_tensors_0</div><div class="line">&lt;tf.Tensor: shape=(<span class="number">4</span>, <span class="number">2</span>, <span class="number">3</span>), dtype=int32, numpy=</div><div class="line">array([[[ <span class="number">1</span>,  <span class="number">2</span>,  <span class="number">0</span>],</div><div class="line">        [ <span class="number">1</span>,  <span class="number">2</span>,  <span class="number">1</span>]],</div><div class="line">       [[ <span class="number">4</span>,  <span class="number">5</span>,  <span class="number">0</span>],</div><div class="line">        [ <span class="number">4</span>,  <span class="number">5</span>,  <span class="number">1</span>]],</div><div class="line">       [[ <span class="number">7</span>,  <span class="number">8</span>,  <span class="number">0</span>],</div><div class="line">        [ <span class="number">7</span>,  <span class="number">8</span>,  <span class="number">1</span>]],</div><div class="line">       [[<span class="number">10</span>, <span class="number">11</span>,  <span class="number">0</span>],</div><div class="line">        [<span class="number">10</span>, <span class="number">11</span>,  <span class="number">1</span>]]], dtype=int32)&gt;</div><div class="line"></div><div class="line"></div><div class="line">stack_tensors_1</div><div class="line">&lt;tf.Tensor: shape=(<span class="number">2</span>, <span class="number">4</span>, <span class="number">3</span>), dtype=int32, numpy=</div><div class="line">array([[[ <span class="number">1</span>,  <span class="number">2</span>,  <span class="number">0</span>],</div><div class="line">        [ <span class="number">4</span>,  <span class="number">5</span>,  <span class="number">0</span>],</div><div class="line">        [ <span class="number">7</span>,  <span class="number">8</span>,  <span class="number">0</span>],</div><div class="line">        [<span class="number">10</span>, <span class="number">11</span>,  <span class="number">0</span>]],</div><div class="line">       [[ <span class="number">1</span>,  <span class="number">2</span>,  <span class="number">1</span>],</div><div class="line">        [ <span class="number">4</span>,  <span class="number">5</span>,  <span class="number">1</span>],</div><div class="line">        [ <span class="number">7</span>,  <span class="number">8</span>,  <span class="number">1</span>],</div><div class="line">        [<span class="number">10</span>, <span class="number">11</span>,  <span class="number">1</span>]]], dtype=int32)&gt;</div></pre></td></tr></table></figure>
+<h1 id="tf-gather"><a href="#tf-gather" class="headerlink" title="tf.gather"></a>tf.gather</h1><p>gather_v2(params,indices,validate_indices=None,axis=None,batch_dims=0,name=None)</p>
+<p>根据索引，根据axis进行向量提取。只能根据一维度进行提取。</p>
+<p><strong>example:</strong></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">a = tf.Variable([[<span class="number">1</span>,<span class="number">1</span>,<span class="number">1</span>],[<span class="number">2</span>,<span class="number">2</span>,<span class="number">2</span>],[<span class="number">3</span>,<span class="number">3</span>,<span class="number">3</span>]])</div><div class="line">gather_tensor = tf.gather(a,[<span class="number">2</span>,<span class="number">1</span>,<span class="number">1</span>,<span class="number">0</span>])</div></pre></td></tr></table></figure>
+<p><strong>out:</strong></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">&lt;tf.Tensor: shape=(<span class="number">4</span>, <span class="number">3</span>), dtype=int32, numpy=</div><div class="line">array([[<span class="number">3</span>, <span class="number">3</span>, <span class="number">3</span>],</div><div class="line">       [<span class="number">2</span>, <span class="number">2</span>, <span class="number">2</span>],</div><div class="line">       [<span class="number">2</span>, <span class="number">2</span>, <span class="number">2</span>],</div><div class="line">       [<span class="number">1</span>, <span class="number">1</span>, <span class="number">1</span>]], dtype=int32)&gt;</div></pre></td></tr></table></figure>
+<h1 id="tf-gather-nd"><a href="#tf-gather-nd" class="headerlink" title="tf.gather_nd"></a>tf.gather_nd</h1><p>gather_nd_v2(params, indices, batch_dims=0, name=None)</p>
+<p>根据多维度进行提取</p>
+<p><strong>example:</strong></p>
+<p>假设text 有2个sequence，每个sequence有2个单词，经过Embedding 后的维度为4维。<br>根据每个sequence的序列进行抽取。</p>
+<p>第0个sequence抽取序列为[1,1,0,0] </p>
+<p>第1个sequence抽取序列为[0,1,0,1] </p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">text = tf.Variable([[[<span class="number">1</span>,<span class="number">1</span>,<span class="number">1</span>,<span class="number">1</span>],[<span class="number">2</span>,<span class="number">2</span>,<span class="number">2</span>,<span class="number">2</span>]],[[<span class="number">3</span>,<span class="number">3</span>,<span class="number">3</span>,<span class="number">3</span>],[<span class="number">4</span>,<span class="number">4</span>,<span class="number">4</span>,<span class="number">4</span>]]])  <span class="comment">#shape (2,2,4)</span></div><div class="line">index=tf.Variable([[[<span class="number">0</span>,<span class="number">1</span>],[<span class="number">0</span>,<span class="number">1</span>],[<span class="number">0</span>,<span class="number">0</span>],[<span class="number">0</span>,<span class="number">0</span>]],[[<span class="number">1</span>,<span class="number">0</span>],[<span class="number">1</span>,<span class="number">1</span>],[<span class="number">1</span>,<span class="number">0</span>],[<span class="number">1</span>,<span class="number">1</span>]]])</div><div class="line">gather_nd_tensor = tf.gather_nd(text,index)</div></pre></td></tr></table></figure>
+<p><strong>out:</strong></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">gather_nd_tensor  <span class="comment">#shape (2,4,4)</span></div><div class="line">&lt;tf.Tensor: shape=(<span class="number">2</span>, <span class="number">4</span>, <span class="number">4</span>), dtype=int32, numpy=</div><div class="line">array([[[<span class="number">2</span>, <span class="number">2</span>, <span class="number">2</span>, <span class="number">2</span>],</div><div class="line">        [<span class="number">2</span>, <span class="number">2</span>, <span class="number">2</span>, <span class="number">2</span>],</div><div class="line">        [<span class="number">1</span>, <span class="number">1</span>, <span class="number">1</span>, <span class="number">1</span>],</div><div class="line">        [<span class="number">1</span>, <span class="number">1</span>, <span class="number">1</span>, <span class="number">1</span>]],</div><div class="line">       [[<span class="number">3</span>, <span class="number">3</span>, <span class="number">3</span>, <span class="number">3</span>],</div><div class="line">        [<span class="number">4</span>, <span class="number">4</span>, <span class="number">4</span>, <span class="number">4</span>],</div><div class="line">        [<span class="number">3</span>, <span class="number">3</span>, <span class="number">3</span>, <span class="number">3</span>],</div><div class="line">        [<span class="number">4</span>, <span class="number">4</span>, <span class="number">4</span>, <span class="number">4</span>]]], dtype=int32)&gt;</div></pre></td></tr></table></figure>
+<h1 id="tf-slice"><a href="#tf-slice" class="headerlink" title="tf.slice"></a>tf.slice</h1><p>slice(input_, begin, size, name=None)</p>
+<p>tf切片函数</p>
+<p><strong>example:</strong></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">t = tf.constant([[[<span class="number">1</span>, <span class="number">1</span>, <span class="number">1</span>], [<span class="number">2</span>, <span class="number">2</span>, <span class="number">2</span>]],</div><div class="line">                 [[<span class="number">3</span>, <span class="number">3</span>, <span class="number">3</span>], [<span class="number">4</span>, <span class="number">4</span>, <span class="number">4</span>]],</div><div class="line">                 [[<span class="number">5</span>, <span class="number">5</span>, <span class="number">5</span>], [<span class="number">6</span>, <span class="number">6</span>, <span class="number">6</span>]]])</div><div class="line">tf.slice(t, [<span class="number">1</span>, <span class="number">0</span>, <span class="number">0</span>], [<span class="number">1</span>, <span class="number">1</span>, <span class="number">3</span>])  <span class="comment">#抽取 axis0=1，0&lt;=axis1&lt;1, 0&lt;=axis2&lt;3 的部分</span></div></pre></td></tr></table></figure>
+<p><strong>out:</strong></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">&lt;tf.Tensor: shape=(<span class="number">1</span>, <span class="number">1</span>, <span class="number">3</span>), dtype=int32, numpy=array([[[<span class="number">3</span>, <span class="number">3</span>, <span class="number">3</span>]]], dtype=int32)&gt;</div></pre></td></tr></table></figure>
+<h1 id="tf-cond"><a href="#tf-cond" class="headerlink" title="tf.cond"></a>tf.cond</h1><p>tf.cond(pred, true_fn=None, false_fn=None, name=None)</p>
+<p>tf条件函数</p>
+<p>可以利用tf.cond来动态选择层。在TF2.x中 可以直接用if条件进行替代。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">a=<span class="number">10</span></div><div class="line">b=<span class="number">20</span></div><div class="line">cond_layer = tf.cond(a&gt;b,<span class="keyword">lambda</span> :tf.keras.layers.Dense(a),<span class="keyword">lambda</span> :tf.keras.layers.Dense(b))</div></pre></td></tr></table></figure>
+<h1 id="tf-cumsum"><a href="#tf-cumsum" class="headerlink" title="tf.cumsum"></a>tf.cumsum</h1><p>tf.cumsum(x, axis=0, exclusive=False, reverse=False, name=None)</p>
+<p>按轴累加器</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">tf.cumsum([a,b,c]) = [a,a+b,a+b+c]</div><div class="line">tf.cumsum([a,b,c],reverse=<span class="keyword">False</span>) = [a+b+c,a+b,a]</div><div class="line">tf.cumsum([a,b,c],exclusive=<span class="keyword">True</span>) = [<span class="number">0</span>,a,a+b]</div></pre></td></tr></table></figure>
+<p><strong>example:</strong></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">a = tf.ones((<span class="number">4</span>,<span class="number">3</span>))</div><div class="line">cumsum_1 = tf.cumsum(a)   </div><div class="line">cumsum_2 = tf.cumsum(a, axis=<span class="number">1</span>)</div><div class="line">cumsum_3 = tf.cumsum(a,exclusive=<span class="keyword">True</span>)</div></pre></td></tr></table></figure>
+<p><strong>out:</strong></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div></pre></td><td class="code"><pre><div class="line">cumsum_1</div><div class="line">&lt;tf.Tensor: shape=(<span class="number">4</span>, <span class="number">3</span>), dtype=float32, numpy=</div><div class="line">array([[<span class="number">1.</span>, <span class="number">1.</span>, <span class="number">1.</span>],</div><div class="line">       [<span class="number">2.</span>, <span class="number">2.</span>, <span class="number">2.</span>],</div><div class="line">       [<span class="number">3.</span>, <span class="number">3.</span>, <span class="number">3.</span>],</div><div class="line">       [<span class="number">4.</span>, <span class="number">4.</span>, <span class="number">4.</span>]], dtype=float32)&gt;</div><div class="line"></div><div class="line">cumsum_2</div><div class="line">&lt;tf.Tensor: shape=(<span class="number">4</span>, <span class="number">3</span>), dtype=float32, numpy=</div><div class="line">array([[<span class="number">1.</span>, <span class="number">2.</span>, <span class="number">3.</span>],</div><div class="line">       [<span class="number">1.</span>, <span class="number">2.</span>, <span class="number">3.</span>],</div><div class="line">       [<span class="number">1.</span>, <span class="number">2.</span>, <span class="number">3.</span>],</div><div class="line">       [<span class="number">1.</span>, <span class="number">2.</span>, <span class="number">3.</span>]], dtype=float32)&gt;</div><div class="line"></div><div class="line">cumsum_3</div><div class="line">&lt;tf.Tensor: shape=(<span class="number">4</span>, <span class="number">3</span>), dtype=float32, numpy=</div><div class="line">array([[<span class="number">0.</span>, <span class="number">0.</span>, <span class="number">0.</span>],</div><div class="line">       [<span class="number">1.</span>, <span class="number">1.</span>, <span class="number">1.</span>],</div><div class="line">       [<span class="number">2.</span>, <span class="number">2.</span>, <span class="number">2.</span>],</div><div class="line">       [<span class="number">3.</span>, <span class="number">3.</span>, <span class="number">3.</span>]], dtype=float32)&gt;</div></pre></td></tr></table></figure>
+<h1 id="tf-clip-by-value"><a href="#tf-clip-by-value" class="headerlink" title="tf.clip_by_value"></a>tf.clip_by_value</h1><p>clip_by_value(t, clip_value_min, clip_value_max,name=None)</p>
+<p>tf剪支函数</p>
+<p>将t中 小于clip_value_min的替换成clip_value_min，大于 clip_value_max 替换成 clip_value_max</p>
+<p><strong>example：</strong></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">t = tf.Variable([[<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>],[<span class="number">5</span>,<span class="number">6</span>,<span class="number">7</span>,<span class="number">8</span>]])</div><div class="line">clip_tensor= tf.clip_by_value(t,<span class="number">3</span>,<span class="number">5</span>)</div></pre></td></tr></table></figure>
+<p><strong>out：</strong></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">clip_tensor</div><div class="line">&lt;tf.Tensor: shape=(<span class="number">2</span>, <span class="number">4</span>), dtype=int32, numpy=</div><div class="line">array([[<span class="number">3</span>, <span class="number">3</span>, <span class="number">3</span>, <span class="number">4</span>],</div><div class="line">       [<span class="number">5</span>, <span class="number">5</span>, <span class="number">5</span>, <span class="number">5</span>]], dtype=int32)&gt;</div></pre></td></tr></table></figure>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;h1 id=&quot;tf-where&quot;&gt;&lt;a href=&quot;#tf-where&quot; class=&quot;headerlink&quot; title=&quot;tf.where&quot;&gt;&lt;/a&gt;tf.where&lt;/h1&gt;&lt;p&gt;tf.where(condition, x=None, y=None, name=None)
+    
+    </summary>
+    
+    
+      <category term="Tensorflow2.x" scheme="http://yoursite.com/tags/Tensorflow2-x/"/>
+    
+  </entry>
+  
+  <entry>
     <title>tensorflow2.0模型部署</title>
     <link href="http://yoursite.com/2020/08/22/tensorflow2.0%E6%A8%A1%E5%9E%8B%E9%83%A8%E7%BD%B2/"/>
     <id>http://yoursite.com/2020/08/22/tensorflow2.0模型部署/</id>
     <published>2020-08-22T06:59:17.000Z</published>
-    <updated>2020-08-23T16:55:14.418Z</updated>
+    <updated>2020-10-27T13:51:04.330Z</updated>
     
     <content type="html"><![CDATA[<p>模型训练完后，往往需要将模型应用到生产环境中。最常见的就是通过TensorFlow Serving来将模型部署到服务器端，以便客户端进行访问。</p>
 <a id="more"></a>
@@ -103,9 +179,9 @@
 <h3 id="请求服务-2"><a href="#请求服务-2" class="headerlink" title="请求服务"></a>请求服务</h3><p><strong>train</strong></p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">curl -d &apos;&#123;&quot;inputs&quot;: &#123;&quot;a&quot;:[[1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0]],&quot;b&quot;:[[1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0]],&quot;mode&quot;:&quot;train&quot;&#125;&#125;&apos; -X POST http://localhost:8503/v1/models/custom_model:predict</div></pre></td></tr></table></figure>
 <p>返回</p>
-<p>​<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">&#123;</div><div class="line">    &quot;outputs&quot;: &#123;</div><div class="line">        &quot;output_1&quot;: [</div><div class="line">            [</div><div class="line">                2.90094423</div><div class="line">            ]</div><div class="line">        ],</div><div class="line">        &quot;output_2&quot;: &quot;train&quot;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">&#123;</div><div class="line">    &quot;outputs&quot;: &#123;</div><div class="line">        &quot;output_1&quot;: [</div><div class="line">            [</div><div class="line">                2.90094423</div><div class="line">            ]</div><div class="line">        ],</div><div class="line">        &quot;output_2&quot;: &quot;train&quot;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
 <p><strong>predict</strong></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">curl -d &apos;&#123;&quot;inputs&quot;: &#123;&quot;a&quot;:[[1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0]],&quot;b&quot;:[[1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0]],&quot;mode&quot;:&quot;predict&quot;&#125;&#125;&apos; -X POST http://localhost:8503/v1/models/custom_model:predict</div></pre></td></tr></table></figure>
+<p>​<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">curl -d &apos;&#123;&quot;inputs&quot;: &#123;&quot;a&quot;:[[1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0]],&quot;b&quot;:[[1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0]],&quot;mode&quot;:&quot;predict&quot;&#125;&#125;&apos; -X POST http://localhost:8503/v1/models/custom_model:predict</div></pre></td></tr></table></figure></p>
 <p>返回</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line">&#123;</div><div class="line">    &quot;outputs&quot;: &#123;</div><div class="line">        &quot;output_1&quot;: [</div><div class="line">            [</div><div class="line">                0.699072063,</div><div class="line">                0.756825566,</div><div class="line">                1.35330391,</div><div class="line">                -2.21226835,</div><div class="line">                1.43654501,</div><div class="line">                1.50765,</div><div class="line">                -1.43798947,</div><div class="line">                -0.434436381,</div><div class="line">                -0.289675713,</div><div class="line">                2.53842211</div><div class="line">            ]</div><div class="line">        ],</div><div class="line">        &quot;output_2&quot;: &quot;predict&quot;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
 <h1 id="客户端中程序调用"><a href="#客户端中程序调用" class="headerlink" title="客户端中程序调用"></a>客户端中程序调用</h1><p>这里以上文custom_model v2 为例子。 </p>
@@ -124,7 +200,7 @@
     </summary>
     
     
-      <category term="TensorFlow2.0" scheme="http://yoursite.com/tags/TensorFlow2-0/"/>
+      <category term="TensorFlow2.x" scheme="http://yoursite.com/tags/TensorFlow2-x/"/>
     
   </entry>
   
@@ -133,7 +209,7 @@
     <link href="http://yoursite.com/2020/03/12/CheckpointManager/"/>
     <id>http://yoursite.com/2020/03/12/CheckpointManager/</id>
     <published>2020-03-12T13:52:09.000Z</published>
-    <updated>2020-03-12T14:00:48.447Z</updated>
+    <updated>2020-10-27T13:54:12.011Z</updated>
     
     <content type="html"><![CDATA[<p>简单的记录下，如何怎么结合CheckpointManager和Callback ，实现按一定周期保存最近N个模型。</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div></pre></td><td class="code"><pre><div class="line">N = <span class="number">5</span></div><div class="line"><span class="comment"># 构建模型</span></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">Model</span><span class="params">(tf.keras.Model)</span>:</span></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, **kwargs)</span>:</span></div><div class="line">        super(Model, self).__init__(**kwargs)</div><div class="line">        self.d = tf.keras.layers.Dense(<span class="number">1</span>, kernel_initializer=tf.keras.initializers.ones())</div><div class="line"></div><div class="line"><span class="meta">    @tf.function</span></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">call</span><span class="params">(self, x, training=True, mask=None)</span>:</span></div><div class="line">        <span class="keyword">return</span> self.d(x)</div><div class="line"></div><div class="line"></div><div class="line"><span class="comment"># 定义回调函数</span></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">Save_Callbacks</span><span class="params">(tf.keras.callbacks.Callback)</span>:</span></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, checkpoint_manager)</span>:</span></div><div class="line">        self.checkpoint_manager = checkpoint_manager</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">on_train_batch_end</span><span class="params">(self, batch, logs=None)</span>:</span></div><div class="line">        super().on_train_batch_end(batch, logs)</div><div class="line">        self.checkpoint_manager.save()</div><div class="line"></div><div class="line">        </div><div class="line">model = Model()</div><div class="line">model.compile(loss=tf.keras.losses.binary_crossentropy,</div><div class="line">              optimizer=<span class="string">'SGD'</span>)</div><div class="line">checkpoint = tf.train.Checkpoint(model=model, optimizer=model.optimizer)</div><div class="line">checkpoint_manager = tf.train.CheckpointManager(checkpoint, <span class="string">'save'</span>, max_to_keep=N)</div><div class="line"></div><div class="line">model.fit(x=tf.ones((<span class="number">100</span>, <span class="number">3</span>)), y=tf.constant(tf.ones((<span class="number">100</span>, <span class="number">1</span>))), batch_size=<span class="number">2</span>,</div><div class="line">          callbacks=[Save_Callbacks(checkpoint_manager)])</div><div class="line">model.reset_metrics()</div><div class="line"></div><div class="line"><span class="comment"># 从最近保存的ckpt中，恢复模型</span></div><div class="line">ckpt = tf.train.Checkpoint(model=model)</div><div class="line">ckpt.restore(tf.train.latest_checkpoint(<span class="string">'save'</span>))</div><div class="line">print(model(tf.ones((<span class="number">2</span>, <span class="number">3</span>))))</div></pre></td></tr></table></figure>
@@ -147,7 +223,7 @@
     </summary>
     
     
-      <category term="Tensorflow2.0" scheme="http://yoursite.com/tags/Tensorflow2-0/"/>
+      <category term="Tensorflow2.x" scheme="http://yoursite.com/tags/Tensorflow2-x/"/>
     
   </entry>
   
@@ -202,7 +278,7 @@ x=x_0 + \eta\vec{v} =x_0 -\eta f^{'}(x_0)</script>]]></content>
     <link href="http://yoursite.com/2020/01/30/keras%E8%87%AA%E5%8A%A8%E7%82%BC%E4%B8%B9%E5%99%A8/"/>
     <id>http://yoursite.com/2020/01/30/keras自动炼丹器/</id>
     <published>2020-01-29T17:17:13.000Z</published>
-    <updated>2020-01-29T17:18:19.527Z</updated>
+    <updated>2020-10-27T13:53:49.799Z</updated>
     
     <content type="html"><![CDATA[<p>keras自动炼丹器</p>
 <p>占坑 待更新</p>
@@ -218,7 +294,7 @@ x=x_0 + \eta\vec{v} =x_0 -\eta f^{'}(x_0)</script>]]></content>
     </summary>
     
     
-      <category term="TensorFlow2.0" scheme="http://yoursite.com/tags/TensorFlow2-0/"/>
+      <category term="TensorFlow2.x" scheme="http://yoursite.com/tags/TensorFlow2-x/"/>
     
   </entry>
   
@@ -227,7 +303,7 @@ x=x_0 + \eta\vec{v} =x_0 -\eta f^{'}(x_0)</script>]]></content>
     <link href="http://yoursite.com/2020/01/14/Create-TFRecord/"/>
     <id>http://yoursite.com/2020/01/14/Create-TFRecord/</id>
     <published>2020-01-14T08:59:01.000Z</published>
-    <updated>2020-01-14T14:23:43.079Z</updated>
+    <updated>2020-10-27T13:54:01.419Z</updated>
     
     <content type="html"><![CDATA[<p>TFRecord是一种高效的数据存储格式，尤其是在处理大数据集时，我们无法对数据进行一次读取，这时我们就可以将文件存储为TFRecord，然后再进行读取。这样可以可以提高数据移动、读取、处理等速度。<br>在对小数据集进行读取时，可以直接使用<code>tf.data</code> API来进行处理。</p>
 <p>在TFRecord中是将每个样本example 以字典的方式进行存储。</p>
@@ -316,7 +392,7 @@ x=x_0 + \eta\vec{v} =x_0 -\eta f^{'}(x_0)</script>]]></content>
     </summary>
     
     
-      <category term="TensorFlow2.0" scheme="http://yoursite.com/tags/TensorFlow2-0/"/>
+      <category term="TensorFlow2.x" scheme="http://yoursite.com/tags/TensorFlow2-x/"/>
     
   </entry>
   
@@ -325,7 +401,7 @@ x=x_0 + \eta\vec{v} =x_0 -\eta f^{'}(x_0)</script>]]></content>
     <link href="http://yoursite.com/2019/12/29/Tensorflow-distribute/"/>
     <id>http://yoursite.com/2019/12/29/Tensorflow-distribute/</id>
     <published>2019-12-29T13:46:30.000Z</published>
-    <updated>2019-12-30T08:49:52.865Z</updated>
+    <updated>2020-10-27T13:51:17.651Z</updated>
     
     <content type="html"><![CDATA[<h1 id="Tensorflow-distribute"><a href="#Tensorflow-distribute" class="headerlink" title="Tensorflow distribute"></a>Tensorflow distribute</h1><p>Tensorflow2.0 单机多卡设置。</p>
 <p>Tensorflow2.0 多GPU设置。</p>
@@ -389,7 +465,7 @@ x=x_0 + \eta\vec{v} =x_0 -\eta f^{'}(x_0)</script>]]></content>
     </summary>
     
     
-      <category term="TensorFlow2.0" scheme="http://yoursite.com/tags/TensorFlow2-0/"/>
+      <category term="TensorFlow2.x" scheme="http://yoursite.com/tags/TensorFlow2-x/"/>
     
   </entry>
   
@@ -398,7 +474,7 @@ x=x_0 + \eta\vec{v} =x_0 -\eta f^{'}(x_0)</script>]]></content>
     <link href="http://yoursite.com/2019/12/19/tensorflow-addons/"/>
     <id>http://yoursite.com/2019/12/19/tensorflow-addons/</id>
     <published>2019-12-19T07:23:40.000Z</published>
-    <updated>2019-12-29T13:29:36.918Z</updated>
+    <updated>2020-10-27T13:51:29.731Z</updated>
     
     <content type="html"><![CDATA[<h1 id="Build-tensorflow-addons-with-custom-cuda-cudnn-version"><a href="#Build-tensorflow-addons-with-custom-cuda-cudnn-version" class="headerlink" title="Build tensorflow/addons with custom cuda/cudnn  version"></a>Build tensorflow/addons with custom cuda/cudnn  version</h1><p>There have four steps to  “Build tensorflow/addons with custom cuda/cudnn  version”.</p>
 <p>your can use conda to duild.</p>
@@ -440,7 +516,7 @@ x=x_0 + \eta\vec{v} =x_0 -\eta f^{'}(x_0)</script>]]></content>
     </summary>
     
     
-      <category term="TensorFlow2.0" scheme="http://yoursite.com/tags/TensorFlow2-0/"/>
+      <category term="TensorFlow2.x" scheme="http://yoursite.com/tags/TensorFlow2-x/"/>
     
   </entry>
   
@@ -561,7 +637,7 @@ x=x_0 + \eta\vec{v} =x_0 -\eta f^{'}(x_0)</script>]]></content>
     <link href="http://yoursite.com/2019/12/01/docker+tensorflow:serving/"/>
     <id>http://yoursite.com/2019/12/01/docker+tensorflow:serving/</id>
     <published>2019-12-01T03:30:40.000Z</published>
-    <updated>2020-08-23T15:40:00.582Z</updated>
+    <updated>2020-10-27T13:51:44.676Z</updated>
     
     <content type="html"><![CDATA[<p>Tensorflow在部署上也提供的许多多方便的方法。其中最为方便的，就是通过Docker+Tensorflow_Serving 进行部署。在这里仅仅只对docker + tensorflow/serving + rest api 进行简单介绍。</p>
 <a id="more"></a>
@@ -605,7 +681,7 @@ x=x_0 + \eta\vec{v} =x_0 -\eta f^{'}(x_0)</script>]]></content>
     </summary>
     
     
-      <category term="TensorFlow2.0" scheme="http://yoursite.com/tags/TensorFlow2-0/"/>
+      <category term="TensorFlow2.x" scheme="http://yoursite.com/tags/TensorFlow2-x/"/>
     
   </entry>
   
@@ -614,7 +690,7 @@ x=x_0 + \eta\vec{v} =x_0 -\eta f^{'}(x_0)</script>]]></content>
     <link href="http://yoursite.com/2019/11/27/%E8%AF%84%E4%BC%B0%E6%96%B9%E6%B3%95/"/>
     <id>http://yoursite.com/2019/11/27/评估方法/</id>
     <published>2019-11-26T16:19:02.000Z</published>
-    <updated>2019-11-27T06:01:21.273Z</updated>
+    <updated>2020-10-20T14:10:23.239Z</updated>
     
     <content type="html"><![CDATA[<h1 id="混淆矩阵、准确率、精确率、召回率、F值、ROC曲线、AUC、PR曲线-Sklearn-metrics评估方法"><a href="#混淆矩阵、准确率、精确率、召回率、F值、ROC曲线、AUC、PR曲线-Sklearn-metrics评估方法" class="headerlink" title="混淆矩阵、准确率、精确率、召回率、F值、ROC曲线、AUC、PR曲线-Sklearn.metrics评估方法"></a>混淆矩阵、准确率、精确率、召回率、F值、ROC曲线、AUC、PR曲线-Sklearn.metrics评估方法</h1><h2 id="混淆矩阵"><a href="#混淆矩阵" class="headerlink" title="混淆矩阵"></a>混淆矩阵</h2><ul>
 <li>TN ：真实为0，预测为0</li>
@@ -676,10 +752,10 @@ Recall = \frac{TP}{TP+FN}</script><figure class="highlight python"><table><tr><t
 F1 = 2*\frac{Precison*Recall}{Precision+Recall}</script><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">from</span> sklearn.metrics <span class="keyword">import</span> f1_score</div><div class="line">f1_score=f1_score(yr,yp)</div></pre></td></tr></table></figure>
 <p>f1_score = 0.7272727272727272</p>
 <h2 id="ROC曲线"><a href="#ROC曲线" class="headerlink" title="ROC曲线"></a>ROC曲线</h2><p>计算ROC前 我们需要了解两个变量FPR（横轴）和TPR（纵轴）。</p>
-<p>FPR (False Positive Rate)：真实的反例中，被预测为正例的比率</p>
+<p>FPR (False Positive Rate)假阳性率：真实的反例中，被预测为正例的比率</p>
 <p>TN+FP 为样本中所有负例的个数</p>
 <script type="math/tex; mode=display">
-FPR = \frac{FP}{TN+FP}</script><p>TPR (True Positive Rate): 真实的正例中，被预测为正例的比率</p>
+FPR = \frac{FP}{TN+FP}</script><p>TPR (True Positive Rate)真阳性率: 真实的正例中，被预测为正例的比率</p>
 <p>TP+FN 为样本中所有正例的个数</p>
 <script type="math/tex; mode=display">
 TPR = \frac{TP}{TP+FN}</script><p>理想分类器下 FPR=0，TPR=1。</p>
@@ -739,7 +815,7 @@ TPR = \frac{TP}{TP+FN}</script><p>理想分类器下 FPR=0，TPR=1。</p>
     <link href="http://yoursite.com/2019/10/11/TF2%E6%A8%A1%E5%9E%8B%E4%BF%9D%E5%AD%98%E5%8A%A0%E8%BD%BD/"/>
     <id>http://yoursite.com/2019/10/11/TF2模型保存加载/</id>
     <published>2019-10-11T15:25:35.000Z</published>
-    <updated>2019-12-20T03:08:07.685Z</updated>
+    <updated>2020-10-27T13:52:12.928Z</updated>
     
     <content type="html"><![CDATA[<p>在TF2中保存加载模型，有多种方式。下面介绍下，最主要的几种方式，以及在模型中有Custom Layer时如何保存和加载模型。</p>
 <p>由于Google官方在有Custom Layer层 的模型 保存/加载 介绍的非常不全面。这里统一详细介绍下。</p>
@@ -804,7 +880,7 @@ TPR = \frac{TP}{TP+FN}</script><p>理想分类器下 FPR=0，TPR=1。</p>
     </summary>
     
     
-      <category term="TensorFlow2.0" scheme="http://yoursite.com/tags/TensorFlow2-0/"/>
+      <category term="TensorFlow2.x" scheme="http://yoursite.com/tags/TensorFlow2-x/"/>
     
   </entry>
   
@@ -813,7 +889,7 @@ TPR = \frac{TP}{TP+FN}</script><p>理想分类器下 FPR=0，TPR=1。</p>
     <link href="http://yoursite.com/2019/09/28/%E9%82%A3%E4%BA%9B%E5%B9%B4%E8%B5%B0%E8%BF%87%E7%9A%84%E5%9D%91-tf2-gpu%E5%AE%89%E8%A3%85/"/>
     <id>http://yoursite.com/2019/09/28/那些年走过的坑-tf2-gpu安装/</id>
     <published>2019-09-28T02:20:02.000Z</published>
-    <updated>2020-01-10T04:01:37.252Z</updated>
+    <updated>2020-10-27T13:52:32.270Z</updated>
     
     <content type="html"><![CDATA[<p>Tensorflow2.0-gpu 的安装的复杂早有耳闻，以前一直用的都是cpu版，一直通过conda一键安装，过于安逸。</p>
 <p>哎，欠的账始终是要还的。</p>
@@ -945,7 +1021,7 @@ TPR = \frac{TP}{TP+FN}</script><p>理想分类器下 FPR=0，TPR=1。</p>
     </summary>
     
     
-      <category term="TensorFlow2.0" scheme="http://yoursite.com/tags/TensorFlow2-0/"/>
+      <category term="TensorFlow2.x" scheme="http://yoursite.com/tags/TensorFlow2-x/"/>
     
   </entry>
   
@@ -954,7 +1030,7 @@ TPR = \frac{TP}{TP+FN}</script><p>理想分类器下 FPR=0，TPR=1。</p>
     <link href="http://yoursite.com/2019/09/22/Custom-layers/"/>
     <id>http://yoursite.com/2019/09/22/Custom-layers/</id>
     <published>2019-09-22T11:08:09.000Z</published>
-    <updated>2019-12-20T03:07:40.991Z</updated>
+    <updated>2020-10-27T13:52:24.832Z</updated>
     
     <content type="html"><![CDATA[<h1 id="Custom-layers"><a href="#Custom-layers" class="headerlink" title="Custom layers"></a>Custom layers</h1><p>自定义成层只需要 继承tf.keras.layers.Layer 类即可：</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">MyDense</span><span class="params">(tf.keras.layers.Layer)</span>:</span></div><div class="line">    <span class="comment"># init 可以进行所有与输入无关的初始化</span></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self,units =<span class="number">32</span>)</span>:</span></div><div class="line">        super(MyDense, self).__init__()</div><div class="line">        self.units = units</div><div class="line">    <span class="comment"># build 可以知道输入张量的形状，并可以进行其余的初始化</span></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">build</span><span class="params">(self, input_shape)</span>:</span></div><div class="line">        self.w1 = self.add_weight(shape=(input_shape[<span class="number">-1</span>], self.units),</div><div class="line">                                  initializer=tf.keras.initializers.he_normal(),</div><div class="line">                                  trainable=<span class="keyword">True</span>)</div><div class="line">        self.b1 = self.add_weight(shape=(self.units),</div><div class="line">                                  initializer=tf.keras.initializers.zeros(),</div><div class="line">                                  trainable=<span class="keyword">True</span>)</div><div class="line">    <span class="comment"># 在这里进行正向计算</span></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">call</span><span class="params">(self, inputs)</span>:</span></div><div class="line">        <span class="keyword">return</span> inputs@self.w1+self.b1</div></pre></td></tr></table></figure>
@@ -985,7 +1061,7 @@ TPR = \frac{TP}{TP+FN}</script><p>理想分类器下 FPR=0，TPR=1。</p>
     </summary>
     
     
-      <category term="TensorFlow2.0" scheme="http://yoursite.com/tags/TensorFlow2-0/"/>
+      <category term="TensorFlow2.x" scheme="http://yoursite.com/tags/TensorFlow2-x/"/>
     
   </entry>
   
@@ -994,7 +1070,7 @@ TPR = \frac{TP}{TP+FN}</script><p>理想分类器下 FPR=0，TPR=1。</p>
     <link href="http://yoursite.com/2019/09/21/tf%E6%96%87%E6%9C%AC%E5%A4%84%E7%90%86/"/>
     <id>http://yoursite.com/2019/09/21/tf文本处理/</id>
     <published>2019-09-21T12:40:41.000Z</published>
-    <updated>2019-12-20T03:08:17.664Z</updated>
+    <updated>2020-10-27T13:52:41.009Z</updated>
     
     <content type="html"><![CDATA[<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">import</span> tensorflow <span class="keyword">as</span> tf</div><div class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</div><div class="line"><span class="keyword">import</span> pandas <span class="keyword">as</span> pd</div><div class="line"><span class="keyword">from</span> tensorflow.keras.preprocessing.text <span class="keyword">import</span> Tokenizer</div><div class="line"><span class="keyword">from</span> tensorflow.keras.preprocessing.sequence <span class="keyword">import</span> pad_sequences</div><div class="line"></div><div class="line"><span class="comment"># 利用pandas 读取csv文件数据</span></div><div class="line">data = pd.read_csv(<span class="string">'./bbc-text.csv'</span>)</div><div class="line"><span class="comment"># 将data转换为numpy数据</span></div><div class="line">data = data.to_numpy()</div><div class="line"><span class="comment"># 对数据进行提取</span></div><div class="line">labels = data[:, <span class="number">0</span>]</div><div class="line">sentences = data[:, <span class="number">1</span>]</div><div class="line"><span class="comment"># 创建分词器</span></div><div class="line"></div><div class="line"><span class="comment"># 这里设置分词器容量为100， 若超过100 则剩余的用&lt;oov&gt; 表示</span></div><div class="line"><span class="comment"># stokenizer = Tokenizer(100,oov_token='&lt;oov&gt;')</span></div><div class="line"></div><div class="line">stokenizer = Tokenizer()</div><div class="line">stokenizer.fit_on_texts(sentences)</div><div class="line"></div><div class="line"><span class="comment"># 输出词 词索引</span></div><div class="line">word_index = stokenizer.word_index</div><div class="line">print(word_index)</div><div class="line"></div><div class="line"><span class="comment"># 将文本转换为相应的 序列</span></div><div class="line">sequences = stokenizer.texts_to_sequences(sentences)</div><div class="line">print(sequences[<span class="number">0</span>])</div><div class="line"></div><div class="line"><span class="comment"># 将小于指定长度的文本序列进行 0 填充，默认为前面填充,可用参数有padding = ‘post’/'pre'，truncating = 'post'/'pre'</span></div><div class="line"><span class="comment"># pad_sequences(sequences, padding=None,truncating=None)</span></div><div class="line">padded = pad_sequences(sequences)</div><div class="line"></div><div class="line"></div><div class="line">print(padded[<span class="number">0</span>])</div></pre></td></tr></table></figure>
 <p>输出：</p>
@@ -1008,7 +1084,7 @@ TPR = \frac{TP}{TP+FN}</script><p>理想分类器下 FPR=0，TPR=1。</p>
     </summary>
     
     
-      <category term="TensorFlow2.0" scheme="http://yoursite.com/tags/TensorFlow2-0/"/>
+      <category term="TensorFlow2.x" scheme="http://yoursite.com/tags/TensorFlow2-x/"/>
     
   </entry>
   
@@ -1017,7 +1093,7 @@ TPR = \frac{TP}{TP+FN}</script><p>理想分类器下 FPR=0，TPR=1。</p>
     <link href="http://yoursite.com/2019/09/19/tf-ImageDataGenerator/"/>
     <id>http://yoursite.com/2019/09/19/tf-ImageDataGenerator/</id>
     <published>2019-09-19T13:19:54.000Z</published>
-    <updated>2019-12-20T03:08:25.274Z</updated>
+    <updated>2020-10-27T13:53:41.676Z</updated>
     
     <content type="html"><![CDATA[<h1 id="ImageDataGenerator"><a href="#ImageDataGenerator" class="headerlink" title="ImageDataGenerator"></a>ImageDataGenerator</h1><p>本文章介绍了，直接通过Tensorflow 的ImageDataGenerator 来直接根据相应文件所在的标签目录 进行加载数据，并自动根据文件夹名字 进行自动分类，避免了人工进行标注。</p>
 <a id="more"></a>
@@ -1057,7 +1133,7 @@ TPR = \frac{TP}{TP+FN}</script><p>理想分类器下 FPR=0，TPR=1。</p>
     </summary>
     
     
-      <category term="TensorFlow2.0" scheme="http://yoursite.com/tags/TensorFlow2-0/"/>
+      <category term="TensorFlow2.x" scheme="http://yoursite.com/tags/TensorFlow2-x/"/>
     
   </entry>
   
@@ -1348,42 +1424,6 @@ X_{hidden} = Activate(Linear(Linear(X_{attention})))</script><p>下面是Bert源
     
     
       <category term="Ros" scheme="http://yoursite.com/tags/Ros/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>Hexo+NexT+LaTex配置</title>
-    <link href="http://yoursite.com/2018/01/09/Hexo+NexT+LaTex%E9%85%8D%E7%BD%AE/"/>
-    <id>http://yoursite.com/2018/01/09/Hexo+NexT+LaTex配置/</id>
-    <published>2018-01-09T03:24:59.000Z</published>
-    <updated>2018-01-09T03:58:41.491Z</updated>
-    
-    <content type="html"><![CDATA[<p>在Hexo博客中书写LaTex公式时遇到渲染问题，一开始无法识别LaTex公式，然后就是无法正常渲染矩阵。</p>
-<p>结合网上不清晰的教程，得出结论要在Hexo上渲染LaTex，要通过MathJax来渲染，摸索了一晚，终于成功了。</p>
-<a id="more"></a>
-<p>现给出解决方案</p>
-<p><strong>第一步</strong>：</p>
-<p>打开Hexo目录中Themes主题中的_config.yml配置文件，我用的是NexT主题，路径为/Hexo/themes/next/_config.yml 该配置文件中有自带的MathJax开关 大概在225行左右，然后将其修改为下面代码。  </p>
-<p>我就是 这个开关没找到 直接在文件最后 添加，结果无效。就这个问题困扰了几个小时。</p>
-<figure class="highlight yaml"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># MathJax Support</span></div><div class="line"><span class="attr">mathjax:</span></div><div class="line"><span class="attr">  enable:</span> <span class="literal">true</span></div><div class="line"><span class="attr">  cdn:</span> //cdnjs.cloudflare.com/ajax/libs/mathjax/<span class="number">2.7</span><span class="number">.1</span>/MathJax.js?config=TeX-AMS-MML_HTMLorMML</div></pre></td></tr></table></figure>
-<p>修改完成后，试着重启Hexo,并启动本地服务查看</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">hexo clean</div><div class="line">hexo g</div><div class="line">hexo ser</div></pre></td></tr></table></figure>
-<p><strong>第二步</strong>：</p>
-<p>你会发现，有些LaTex公式正常渲染，有些却不能，特别是矩阵 都默认一行显示，经过一番折腾 发现是默认渲染器与LaTex公式的代码冲突，我们应该更换渲染器即可：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">npm uninstall hexo-renderer-marked</div><div class="line">npm install hexo-renderer-kramed --save</div></pre></td></tr></table></figure>
-<p>修改完后，再试着重新部署，LaTex完美渲染。</p>
-<p>大功告成。</p>
-]]></content>
-    
-    <summary type="html">
-    
-      &lt;p&gt;在Hexo博客中书写LaTex公式时遇到渲染问题，一开始无法识别LaTex公式，然后就是无法正常渲染矩阵。&lt;/p&gt;
-&lt;p&gt;结合网上不清晰的教程，得出结论要在Hexo上渲染LaTex，要通过MathJax来渲染，摸索了一晚，终于成功了。&lt;/p&gt;
-    
-    </summary>
-    
-    
-      <category term="Hexo+NexT+LaTex配置" scheme="http://yoursite.com/tags/Hexo-NexT-LaTex%E9%85%8D%E7%BD%AE/"/>
     
   </entry>
   
