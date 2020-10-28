@@ -285,8 +285,8 @@
             
               
                 
-                <a class="post-title-link" href="/2020/10/28/tensorflow2.x 打印学习率/" itemprop="url">
-                  TensorFlow2.x 打印学习率
+                <a class="post-title-link" href="/2020/10/28/TensorFlow2.x 打印学习率/" itemprop="url">
+                  TensorFlow2.x 实时打印学习率
                 </a>
               
             
@@ -314,7 +314,7 @@
 
           
           
-             <span id="/2020/10/28/tensorflow2.x 打印学习率/" class="leancloud_visitors" data-flag-title="TensorFlow2.x 打印学习率">
+             <span id="/2020/10/28/TensorFlow2.x 打印学习率/" class="leancloud_visitors" data-flag-title="TensorFlow2.x 实时打印学习率">
                &nbsp; | &nbsp;
                <span class="post-meta-item-icon">
                  <i class="fa fa-eye"></i>
@@ -344,7 +344,7 @@
 <p>学习率曲线图</p>
 <p><img src="/images/adamw_lr.png" alt="adamw_lr"></p>
           <div class="post-more-link text-center">
-            <a class="btn" href="/2020/10/28/tensorflow2.x 打印学习率/#more" rel="contents">
+            <a class="btn" href="/2020/10/28/TensorFlow2.x 打印学习率/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -508,8 +508,8 @@
             
               
                 
-                <a class="post-title-link" href="/2020/08/22/tensorflow2.0模型部署/" itemprop="url">
-                  tensorflow2.0模型部署
+                <a class="post-title-link" href="/2020/08/22/TensorFlow2.x模型部署/" itemprop="url">
+                  TensorFlow2.x模型部署
                 </a>
               
             
@@ -537,7 +537,7 @@
 
           
           
-             <span id="/2020/08/22/tensorflow2.0模型部署/" class="leancloud_visitors" data-flag-title="tensorflow2.0模型部署">
+             <span id="/2020/08/22/TensorFlow2.x模型部署/" class="leancloud_visitors" data-flag-title="TensorFlow2.x模型部署">
                &nbsp; | &nbsp;
                <span class="post-meta-item-icon">
                  <i class="fa fa-eye"></i>
@@ -562,7 +562,7 @@
         
           <p>模型训练完后，往往需要将模型应用到生产环境中。最常见的就是通过TensorFlow Serving来将模型部署到服务器端，以便客户端进行访问。</p>
           <div class="post-more-link text-center">
-            <a class="btn" href="/2020/08/22/tensorflow2.0模型部署/#more" rel="contents">
+            <a class="btn" href="/2020/08/22/TensorFlow2.x模型部署/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -1048,8 +1048,8 @@
             
               
                 
-                <a class="post-title-link" href="/2019/12/29/Tensorflow-distribute/" itemprop="url">
-                  Tensorflow-distribute
+                <a class="post-title-link" href="/2019/12/29/TensorFlow2.x-distribute/" itemprop="url">
+                  TensorFlow2.x-distribute
                 </a>
               
             
@@ -1077,7 +1077,7 @@
 
           
           
-             <span id="/2019/12/29/Tensorflow-distribute/" class="leancloud_visitors" data-flag-title="Tensorflow-distribute">
+             <span id="/2019/12/29/TensorFlow2.x-distribute/" class="leancloud_visitors" data-flag-title="TensorFlow2.x-distribute">
                &nbsp; | &nbsp;
                <span class="post-meta-item-icon">
                  <i class="fa fa-eye"></i>
@@ -1122,7 +1122,7 @@
 <p>其中，最主要的 就是下面3个函数。</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># 创建strategy</span></div><div class="line">strategy = tf.distribute.MirroredStrategy() </div><div class="line"></div><div class="line"><span class="comment"># 将train_step 分发到各个GPU， 并得到各GPU返回的句柄</span></div><div class="line">loss = strategy.experimental_run_v2(train_step, args=(<span class="keyword">None</span>,))</div><div class="line"></div><div class="line"><span class="comment"># 根据返回的句柄，将各GPU计算的loss进行汇总</span></div><div class="line">strategy.reduce(tf.distribute.ReduceOp.SUM, loss, axis=<span class="keyword">None</span>)</div></pre></td></tr></table></figure>
           <div class="post-more-link text-center">
-            <a class="btn" href="/2019/12/29/Tensorflow-distribute/#more" rel="contents">
+            <a class="btn" href="/2019/12/29/TensorFlow2.x-distribute/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>

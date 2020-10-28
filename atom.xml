@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://yoursite.com/"/>
-  <updated>2020-10-28T11:13:23.956Z</updated>
+  <updated>2020-10-28T11:15:54.822Z</updated>
   <id>http://yoursite.com/</id>
   
   <author>
@@ -16,11 +16,11 @@
   <generator uri="http://hexo.io/">Hexo</generator>
   
   <entry>
-    <title>TensorFlow2.x 打印学习率</title>
-    <link href="http://yoursite.com/2020/10/28/tensorflow2.x%20%E6%89%93%E5%8D%B0%E5%AD%A6%E4%B9%A0%E7%8E%87/"/>
-    <id>http://yoursite.com/2020/10/28/tensorflow2.x 打印学习率/</id>
+    <title>TensorFlow2.x 实时打印学习率</title>
+    <link href="http://yoursite.com/2020/10/28/TensorFlow2.x%20%E6%89%93%E5%8D%B0%E5%AD%A6%E4%B9%A0%E7%8E%87/"/>
+    <id>http://yoursite.com/2020/10/28/TensorFlow2.x 打印学习率/</id>
     <published>2020-10-28T11:00:31.000Z</published>
-    <updated>2020-10-28T11:13:23.956Z</updated>
+    <updated>2020-10-28T11:15:54.822Z</updated>
     
     <content type="html"><![CDATA[<p>在TensorFlow2.x中，通过下面代码，显示当前学习率。</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">optimizer._decayed_lr(tf.float32).numpy()</div></pre></td></tr></table></figure>
@@ -132,11 +132,11 @@
   </entry>
   
   <entry>
-    <title>tensorflow2.0模型部署</title>
-    <link href="http://yoursite.com/2020/08/22/tensorflow2.0%E6%A8%A1%E5%9E%8B%E9%83%A8%E7%BD%B2/"/>
-    <id>http://yoursite.com/2020/08/22/tensorflow2.0模型部署/</id>
+    <title>TensorFlow2.x模型部署</title>
+    <link href="http://yoursite.com/2020/08/22/TensorFlow2.x%E6%A8%A1%E5%9E%8B%E9%83%A8%E7%BD%B2/"/>
+    <id>http://yoursite.com/2020/08/22/TensorFlow2.x模型部署/</id>
     <published>2020-08-22T06:59:17.000Z</published>
-    <updated>2020-10-27T13:51:04.330Z</updated>
+    <updated>2020-10-28T11:14:51.442Z</updated>
     
     <content type="html"><![CDATA[<p>模型训练完后，往往需要将模型应用到生产环境中。最常见的就是通过TensorFlow Serving来将模型部署到服务器端，以便客户端进行访问。</p>
 <a id="more"></a>
@@ -221,9 +221,9 @@
 <p>返回</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">&#123;</div><div class="line">    &quot;outputs&quot;: &#123;</div><div class="line">        &quot;output_1&quot;: [</div><div class="line">            [</div><div class="line">                2.90094423</div><div class="line">            ]</div><div class="line">        ],</div><div class="line">        &quot;output_2&quot;: &quot;train&quot;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
 <p><strong>predict</strong></p>
-<p>​<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">curl -d &apos;&#123;&quot;inputs&quot;: &#123;&quot;a&quot;:[[1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0]],&quot;b&quot;:[[1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0]],&quot;mode&quot;:&quot;predict&quot;&#125;&#125;&apos; -X POST http://localhost:8503/v1/models/custom_model:predict</div></pre></td></tr></table></figure></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">curl -d &apos;&#123;&quot;inputs&quot;: &#123;&quot;a&quot;:[[1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0]],&quot;b&quot;:[[1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0]],&quot;mode&quot;:&quot;predict&quot;&#125;&#125;&apos; -X POST http://localhost:8503/v1/models/custom_model:predict</div></pre></td></tr></table></figure>
 <p>返回</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line">&#123;</div><div class="line">    &quot;outputs&quot;: &#123;</div><div class="line">        &quot;output_1&quot;: [</div><div class="line">            [</div><div class="line">                0.699072063,</div><div class="line">                0.756825566,</div><div class="line">                1.35330391,</div><div class="line">                -2.21226835,</div><div class="line">                1.43654501,</div><div class="line">                1.50765,</div><div class="line">                -1.43798947,</div><div class="line">                -0.434436381,</div><div class="line">                -0.289675713,</div><div class="line">                2.53842211</div><div class="line">            ]</div><div class="line">        ],</div><div class="line">        &quot;output_2&quot;: &quot;predict&quot;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>​<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line">&#123;</div><div class="line">    &quot;outputs&quot;: &#123;</div><div class="line">        &quot;output_1&quot;: [</div><div class="line">            [</div><div class="line">                0.699072063,</div><div class="line">                0.756825566,</div><div class="line">                1.35330391,</div><div class="line">                -2.21226835,</div><div class="line">                1.43654501,</div><div class="line">                1.50765,</div><div class="line">                -1.43798947,</div><div class="line">                -0.434436381,</div><div class="line">                -0.289675713,</div><div class="line">                2.53842211</div><div class="line">            ]</div><div class="line">        ],</div><div class="line">        &quot;output_2&quot;: &quot;predict&quot;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
 <h1 id="客户端中程序调用"><a href="#客户端中程序调用" class="headerlink" title="客户端中程序调用"></a>客户端中程序调用</h1><p>这里以上文custom_model v2 为例子。 </p>
 <p>准备数据</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</div><div class="line"><span class="keyword">import</span> json</div><div class="line"></div><div class="line">a = np.ones((<span class="number">1</span>, <span class="number">10</span>))</div><div class="line">b = np.ones((<span class="number">1</span>, <span class="number">10</span>))</div><div class="line">mode = <span class="string">"train"</span></div><div class="line">data = &#123;<span class="string">"inputs"</span>: &#123;<span class="string">"a"</span>: a.tolist(), <span class="string">"b"</span>: b.tolist(), <span class="string">"mode"</span>: mode&#125;&#125;</div><div class="line">data = json.dumps(data)</div></pre></td></tr></table></figure>
@@ -437,11 +437,11 @@ x=x_0 + \eta\vec{v} =x_0 -\eta f^{'}(x_0)</script>]]></content>
   </entry>
   
   <entry>
-    <title>Tensorflow-distribute</title>
-    <link href="http://yoursite.com/2019/12/29/Tensorflow-distribute/"/>
-    <id>http://yoursite.com/2019/12/29/Tensorflow-distribute/</id>
+    <title>TensorFlow2.x-distribute</title>
+    <link href="http://yoursite.com/2019/12/29/TensorFlow2.x-distribute/"/>
+    <id>http://yoursite.com/2019/12/29/TensorFlow2.x-distribute/</id>
     <published>2019-12-29T13:46:30.000Z</published>
-    <updated>2020-10-27T13:51:17.651Z</updated>
+    <updated>2020-10-28T11:15:12.508Z</updated>
     
     <content type="html"><![CDATA[<h1 id="Tensorflow-distribute"><a href="#Tensorflow-distribute" class="headerlink" title="Tensorflow distribute"></a>Tensorflow distribute</h1><p>Tensorflow2.0 单机多卡设置。</p>
 <p>Tensorflow2.0 多GPU设置。</p>

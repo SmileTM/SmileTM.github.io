@@ -95,14 +95,14 @@
 <meta name="description" content="模型训练完后，往往需要将模型应用到生产环境中。最常见的就是通过TensorFlow Serving来将模型部署到服务器端，以便客户端进行访问。">
 <meta name="keywords" content="TensorFlow2.x">
 <meta property="og:type" content="article">
-<meta property="og:title" content="tensorflow2.0模型部署">
-<meta property="og:url" content="http://yoursite.com/2020/08/22/tensorflow2.0模型部署/index.html">
+<meta property="og:title" content="TensorFlow2.x模型部署">
+<meta property="og:url" content="http://yoursite.com/2020/08/22/TensorFlow2.x模型部署/index.html">
 <meta property="og:site_name" content="SmileTM博客">
 <meta property="og:description" content="模型训练完后，往往需要将模型应用到生产环境中。最常见的就是通过TensorFlow Serving来将模型部署到服务器端，以便客户端进行访问。">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2020-10-27T13:51:04.330Z">
+<meta property="og:updated_time" content="2020-10-28T11:14:51.442Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="tensorflow2.0模型部署">
+<meta name="twitter:title" content="TensorFlow2.x模型部署">
 <meta name="twitter:description" content="模型训练完后，往往需要将模型应用到生产环境中。最常见的就是通过TensorFlow Serving来将模型部署到服务器端，以便客户端进行访问。">
 
 
@@ -121,7 +121,7 @@
   };
 </script>
 
-  <title> tensorflow2.0模型部署 | SmileTM博客 </title><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+  <title> TensorFlow2.x模型部署 | SmileTM博客 </title><!-- hexo-inject:begin --><!-- hexo-inject:end -->
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
@@ -284,7 +284,7 @@
             
             
               
-                tensorflow2.0模型部署
+                TensorFlow2.x模型部署
               
             
           </h1>
@@ -311,7 +311,7 @@
 
           
           
-             <span id="/2020/08/22/tensorflow2.0模型部署/" class="leancloud_visitors" data-flag-title="tensorflow2.0模型部署">
+             <span id="/2020/08/22/TensorFlow2.x模型部署/" class="leancloud_visitors" data-flag-title="TensorFlow2.x模型部署">
                &nbsp; | &nbsp;
                <span class="post-meta-item-icon">
                  <i class="fa fa-eye"></i>
@@ -416,9 +416,9 @@
 <p>返回</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">&#123;</div><div class="line">    &quot;outputs&quot;: &#123;</div><div class="line">        &quot;output_1&quot;: [</div><div class="line">            [</div><div class="line">                2.90094423</div><div class="line">            ]</div><div class="line">        ],</div><div class="line">        &quot;output_2&quot;: &quot;train&quot;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
 <p><strong>predict</strong></p>
-<p>​<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">curl -d &apos;&#123;&quot;inputs&quot;: &#123;&quot;a&quot;:[[1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0]],&quot;b&quot;:[[1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0]],&quot;mode&quot;:&quot;predict&quot;&#125;&#125;&apos; -X POST http://localhost:8503/v1/models/custom_model:predict</div></pre></td></tr></table></figure></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">curl -d &apos;&#123;&quot;inputs&quot;: &#123;&quot;a&quot;:[[1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0]],&quot;b&quot;:[[1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0]],&quot;mode&quot;:&quot;predict&quot;&#125;&#125;&apos; -X POST http://localhost:8503/v1/models/custom_model:predict</div></pre></td></tr></table></figure>
 <p>返回</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line">&#123;</div><div class="line">    &quot;outputs&quot;: &#123;</div><div class="line">        &quot;output_1&quot;: [</div><div class="line">            [</div><div class="line">                0.699072063,</div><div class="line">                0.756825566,</div><div class="line">                1.35330391,</div><div class="line">                -2.21226835,</div><div class="line">                1.43654501,</div><div class="line">                1.50765,</div><div class="line">                -1.43798947,</div><div class="line">                -0.434436381,</div><div class="line">                -0.289675713,</div><div class="line">                2.53842211</div><div class="line">            ]</div><div class="line">        ],</div><div class="line">        &quot;output_2&quot;: &quot;predict&quot;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>​<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line">&#123;</div><div class="line">    &quot;outputs&quot;: &#123;</div><div class="line">        &quot;output_1&quot;: [</div><div class="line">            [</div><div class="line">                0.699072063,</div><div class="line">                0.756825566,</div><div class="line">                1.35330391,</div><div class="line">                -2.21226835,</div><div class="line">                1.43654501,</div><div class="line">                1.50765,</div><div class="line">                -1.43798947,</div><div class="line">                -0.434436381,</div><div class="line">                -0.289675713,</div><div class="line">                2.53842211</div><div class="line">            ]</div><div class="line">        ],</div><div class="line">        &quot;output_2&quot;: &quot;predict&quot;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
 <h1 id="客户端中程序调用"><a href="#客户端中程序调用" class="headerlink" title="客户端中程序调用"></a>客户端中程序调用</h1><p>这里以上文custom_model v2 为例子。 </p>
 <p>准备数据</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</div><div class="line"><span class="keyword">import</span> json</div><div class="line"></div><div class="line">a = np.ones((<span class="number">1</span>, <span class="number">10</span>))</div><div class="line">b = np.ones((<span class="number">1</span>, <span class="number">10</span>))</div><div class="line">mode = <span class="string">"train"</span></div><div class="line">data = &#123;<span class="string">"inputs"</span>: &#123;<span class="string">"a"</span>: a.tolist(), <span class="string">"b"</span>: b.tolist(), <span class="string">"mode"</span>: mode&#125;&#125;</div><div class="line">data = json.dumps(data)</div></pre></td></tr></table></figure>

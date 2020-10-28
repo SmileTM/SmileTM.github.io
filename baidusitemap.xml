@@ -4,12 +4,46 @@
 
     
   <url>
-    <loc>http://yoursite.com/2020/10/28/tensorflow2.x%20%E6%89%93%E5%8D%B0%E5%AD%A6%E4%B9%A0%E7%8E%87/</loc>
-    <lastmod>2020-10-28T11:13:23.956Z</lastmod>
+    <loc>http://yoursite.com/2020/10/28/TensorFlow2.x%20%E6%89%93%E5%8D%B0%E5%AD%A6%E4%B9%A0%E7%8E%87/</loc>
+    <lastmod>2020-10-28T11:15:54.822Z</lastmod>
     <data>
         <display>
-        <title>TensorFlow2.x 打印学习率</title>
+        <title>TensorFlow2.x 实时打印学习率</title>
         <pubTime>2020-10-28T11:00:31.000Z</pubTime>
+        
+        <tag>TensorFlow2.x</tag>
+         
+         
+           
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://yoursite.com/2019/12/29/TensorFlow2.x-distribute/</loc>
+    <lastmod>2020-10-28T11:15:12.508Z</lastmod>
+    <data>
+        <display>
+        <title>TensorFlow2.x-distribute</title>
+        <pubTime>2019-12-29T13:46:30.000Z</pubTime>
+        
+        <tag>TensorFlow2.x</tag>
+         
+         
+           
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://yoursite.com/2020/08/22/TensorFlow2.x%E6%A8%A1%E5%9E%8B%E9%83%A8%E7%BD%B2/</loc>
+    <lastmod>2020-10-28T11:14:51.442Z</lastmod>
+    <data>
+        <display>
+        <title>TensorFlow2.x模型部署</title>
+        <pubTime>2020-08-22T06:59:17.000Z</pubTime>
         
         <tag>TensorFlow2.x</tag>
          
@@ -197,40 +231,6 @@
         <display>
         <title>tensorflow_addons</title>
         <pubTime>2019-12-19T07:23:40.000Z</pubTime>
-        
-        <tag>TensorFlow2.x</tag>
-         
-         
-           
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>http://yoursite.com/2019/12/29/Tensorflow-distribute/</loc>
-    <lastmod>2020-10-27T13:51:17.651Z</lastmod>
-    <data>
-        <display>
-        <title>Tensorflow-distribute</title>
-        <pubTime>2019-12-29T13:46:30.000Z</pubTime>
-        
-        <tag>TensorFlow2.x</tag>
-         
-         
-           
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>http://yoursite.com/2020/08/22/tensorflow2.0%E6%A8%A1%E5%9E%8B%E9%83%A8%E7%BD%B2/</loc>
-    <lastmod>2020-10-27T13:51:04.330Z</lastmod>
-    <data>
-        <display>
-        <title>tensorflow2.0模型部署</title>
-        <pubTime>2020-08-22T06:59:17.000Z</pubTime>
         
         <tag>TensorFlow2.x</tag>
          
