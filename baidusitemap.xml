@@ -5,11 +5,28 @@
     
   <url>
     <loc>http://yoursite.com/2020/10/28/TensorFlow2.x%20%E6%89%93%E5%8D%B0%E5%AD%A6%E4%B9%A0%E7%8E%87/</loc>
-    <lastmod>2020-10-28T11:15:54.822Z</lastmod>
+    <lastmod>2020-10-28T11:21:45.830Z</lastmod>
     <data>
         <display>
         <title>TensorFlow2.x 实时打印学习率</title>
         <pubTime>2020-10-28T11:00:31.000Z</pubTime>
+        
+        <tag>TensorFlow2.x</tag>
+         
+         
+           
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://yoursite.com/2020/10/21/tf-sugar/</loc>
+    <lastmod>2020-10-28T11:18:10.549Z</lastmod>
+    <data>
+        <display>
+        <title>TensorFlow2.x 语法糖</title>
+        <pubTime>2020-10-21T13:32:32.000Z</pubTime>
         
         <tag>TensorFlow2.x</tag>
          
@@ -44,23 +61,6 @@
         <display>
         <title>TensorFlow2.x模型部署</title>
         <pubTime>2020-08-22T06:59:17.000Z</pubTime>
-        
-        <tag>TensorFlow2.x</tag>
-         
-         
-           
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>http://yoursite.com/2020/10/21/tf-sugar/</loc>
-    <lastmod>2020-10-28T11:02:58.704Z</lastmod>
-    <data>
-        <display>
-        <title>tensorflow语法糖</title>
-        <pubTime>2020-10-21T13:32:32.000Z</pubTime>
         
         <tag>TensorFlow2.x</tag>
          

@@ -92,19 +92,19 @@
 
 
 
-<meta name="description" content="在TensorFlow2.x中，通过下面代码，显示当前学习率。 1optimizer._decayed_lr(tf.float32).numpy() 以下代码展示了在TensorFlow2.x中，如何实时打印当前学习率。这里以bert使用的adamw为例，模型构建部分省略。 123456789101112131415161718import tensorflow as tfimport optim">
+<meta name="description" content="在TensorFlow2.x中，通过下面代码，显示当前学习率。 1optimizer._decayed_lr(tf.float32).numpy() 以下代码展示了在TensorFlow2.x中，如何实时打印当前学习率。这里以bert使用的adamw为例，模型构建部分省略。">
 <meta name="keywords" content="TensorFlow2.x">
 <meta property="og:type" content="article">
 <meta property="og:title" content="TensorFlow2.x 实时打印学习率">
 <meta property="og:url" content="http://yoursite.com/2020/10/28/TensorFlow2.x 打印学习率/index.html">
 <meta property="og:site_name" content="SmileTM博客">
-<meta property="og:description" content="在TensorFlow2.x中，通过下面代码，显示当前学习率。 1optimizer._decayed_lr(tf.float32).numpy() 以下代码展示了在TensorFlow2.x中，如何实时打印当前学习率。这里以bert使用的adamw为例，模型构建部分省略。 123456789101112131415161718import tensorflow as tfimport optim">
+<meta property="og:description" content="在TensorFlow2.x中，通过下面代码，显示当前学习率。 1optimizer._decayed_lr(tf.float32).numpy() 以下代码展示了在TensorFlow2.x中，如何实时打印当前学习率。这里以bert使用的adamw为例，模型构建部分省略。">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="http://yoursite.com/images/adamw_lr.png">
-<meta property="og:updated_time" content="2020-10-28T11:15:54.822Z">
+<meta property="og:updated_time" content="2020-10-28T11:21:45.830Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="TensorFlow2.x 实时打印学习率">
-<meta name="twitter:description" content="在TensorFlow2.x中，通过下面代码，显示当前学习率。 1optimizer._decayed_lr(tf.float32).numpy() 以下代码展示了在TensorFlow2.x中，如何实时打印当前学习率。这里以bert使用的adamw为例，模型构建部分省略。 123456789101112131415161718import tensorflow as tfimport optim">
+<meta name="twitter:description" content="在TensorFlow2.x中，通过下面代码，显示当前学习率。 1optimizer._decayed_lr(tf.float32).numpy() 以下代码展示了在TensorFlow2.x中，如何实时打印当前学习率。这里以bert使用的adamw为例，模型构建部分省略。">
 <meta name="twitter:image" content="http://yoursite.com/images/adamw_lr.png">
 
 
@@ -338,10 +338,12 @@
         <p>在TensorFlow2.x中，通过下面代码，显示当前学习率。</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">optimizer._decayed_lr(tf.float32).numpy()</div></pre></td></tr></table></figure>
 <p>以下代码展示了在TensorFlow2.x中，如何实时打印当前学习率。<br>这里以bert使用的adamw为例，模型构建部分省略。</p>
+<a id="more"></a>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">import</span> tensorflow <span class="keyword">as</span> tf</div><div class="line"><span class="keyword">import</span> optimization   <span class="comment"># bert中的optimization adamw</span></div><div class="line"><span class="keyword">from</span> matplotlib <span class="keyword">import</span> pyplot <span class="keyword">as</span> plt</div><div class="line"><span class="keyword">from</span> tqdm <span class="keyword">import</span> tqdm</div><div class="line">init_lr = <span class="number">5e-5</span></div><div class="line">num_train_steps = <span class="number">10000</span></div><div class="line">num_warmup_steps = <span class="number">1000</span></div><div class="line">optimizer = optimization.create_optimizer(init_lr, num_train_steps, num_warmup_steps)</div><div class="line">learn_rate = []</div><div class="line"><span class="keyword">for</span> i <span class="keyword">in</span> tqdm(range(<span class="number">10000</span>)):</div><div class="line">    <span class="keyword">with</span> tf.GradientTape() <span class="keyword">as</span> tape:</div><div class="line">        logits = model(data)</div><div class="line">        loss = tf.losses.sparse_categorical_crossentropy(label, logits, from_logits=<span class="keyword">True</span>)</div><div class="line">        grads = tape.gradient(loss, model.trainable_weights)</div><div class="line">        optimizer.apply_gradients(zip(grads, model.trainable_weights))</div><div class="line">    learn_rate.append(optimizer._decayed_lr(tf.float32).numpy())</div><div class="line">plt.plot(learn_rate)</div><div class="line">plt.show()</div></pre></td></tr></table></figure>
 <p>学习率曲线图</p>
 <p><img src="/images/adamw_lr.png" alt="adamw_lr"></p>
-<a id="more"></a>
+<p><strong>Reference :</strong><br><a href="https://stackoverflow.com/questions/58149839/learning-rate-of-custom-training-loop-for-tensorflow-2-0/58151051#58151051" target="_blank" rel="noopener">https://stackoverflow.com/questions/58149839/learning-rate-of-custom-training-loop-for-tensorflow-2-0/58151051#58151051</a></p>
+
       
     </div>
 
@@ -371,8 +373,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2020/10/21/tf-sugar/" rel="next" title="tensorflow语法糖">
-                <i class="fa fa-chevron-left"></i> tensorflow语法糖
+              <a href="/2020/10/21/tf-sugar/" rel="next" title="TensorFlow2.x 语法糖">
+                <i class="fa fa-chevron-left"></i> TensorFlow2.x 语法糖
               </a>
             
           </div>

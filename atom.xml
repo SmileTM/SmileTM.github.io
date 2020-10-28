@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://yoursite.com/"/>
-  <updated>2020-10-28T11:15:54.822Z</updated>
+  <updated>2020-10-28T11:21:45.830Z</updated>
   <id>http://yoursite.com/</id>
   
   <author>
@@ -20,24 +20,23 @@
     <link href="http://yoursite.com/2020/10/28/TensorFlow2.x%20%E6%89%93%E5%8D%B0%E5%AD%A6%E4%B9%A0%E7%8E%87/"/>
     <id>http://yoursite.com/2020/10/28/TensorFlow2.x 打印学习率/</id>
     <published>2020-10-28T11:00:31.000Z</published>
-    <updated>2020-10-28T11:15:54.822Z</updated>
+    <updated>2020-10-28T11:21:45.830Z</updated>
     
     <content type="html"><![CDATA[<p>在TensorFlow2.x中，通过下面代码，显示当前学习率。</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">optimizer._decayed_lr(tf.float32).numpy()</div></pre></td></tr></table></figure>
 <p>以下代码展示了在TensorFlow2.x中，如何实时打印当前学习率。<br>这里以bert使用的adamw为例，模型构建部分省略。</p>
+<a id="more"></a>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">import</span> tensorflow <span class="keyword">as</span> tf</div><div class="line"><span class="keyword">import</span> optimization   <span class="comment"># bert中的optimization adamw</span></div><div class="line"><span class="keyword">from</span> matplotlib <span class="keyword">import</span> pyplot <span class="keyword">as</span> plt</div><div class="line"><span class="keyword">from</span> tqdm <span class="keyword">import</span> tqdm</div><div class="line">init_lr = <span class="number">5e-5</span></div><div class="line">num_train_steps = <span class="number">10000</span></div><div class="line">num_warmup_steps = <span class="number">1000</span></div><div class="line">optimizer = optimization.create_optimizer(init_lr, num_train_steps, num_warmup_steps)</div><div class="line">learn_rate = []</div><div class="line"><span class="keyword">for</span> i <span class="keyword">in</span> tqdm(range(<span class="number">10000</span>)):</div><div class="line">    <span class="keyword">with</span> tf.GradientTape() <span class="keyword">as</span> tape:</div><div class="line">        logits = model(data)</div><div class="line">        loss = tf.losses.sparse_categorical_crossentropy(label, logits, from_logits=<span class="keyword">True</span>)</div><div class="line">        grads = tape.gradient(loss, model.trainable_weights)</div><div class="line">        optimizer.apply_gradients(zip(grads, model.trainable_weights))</div><div class="line">    learn_rate.append(optimizer._decayed_lr(tf.float32).numpy())</div><div class="line">plt.plot(learn_rate)</div><div class="line">plt.show()</div></pre></td></tr></table></figure>
 <p>学习率曲线图</p>
 <p><img src="/images/adamw_lr.png" alt="adamw_lr"></p>
-<a id="more"></a>]]></content>
+<p><strong>Reference :</strong><br><a href="https://stackoverflow.com/questions/58149839/learning-rate-of-custom-training-loop-for-tensorflow-2-0/58151051#58151051" target="_blank" rel="noopener">https://stackoverflow.com/questions/58149839/learning-rate-of-custom-training-loop-for-tensorflow-2-0/58151051#58151051</a></p>
+]]></content>
     
     <summary type="html">
     
       &lt;p&gt;在TensorFlow2.x中，通过下面代码，显示当前学习率。&lt;/p&gt;
 &lt;figure class=&quot;highlight python&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;1&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;optimizer._decayed_lr(tf.float32).numpy()&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
 &lt;p&gt;以下代码展示了在TensorFlow2.x中，如何实时打印当前学习率。&lt;br&gt;这里以bert使用的adamw为例，模型构建部分省略。&lt;/p&gt;
-&lt;figure class=&quot;highlight python&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;1&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;2&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;3&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;4&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;5&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;6&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;7&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;8&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;9&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;10&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;11&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;12&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;13&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;14&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;15&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;16&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;17&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;18&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;import&lt;/span&gt; tensorflow &lt;span class=&quot;keyword&quot;&gt;as&lt;/span&gt; tf&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;import&lt;/span&gt; optimization   &lt;span class=&quot;comment&quot;&gt;# bert中的optimization adamw&lt;/span&gt;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;from&lt;/span&gt; matplotlib &lt;span class=&quot;keyword&quot;&gt;import&lt;/span&gt; pyplot &lt;span class=&quot;keyword&quot;&gt;as&lt;/span&gt; plt&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;from&lt;/span&gt; tqdm &lt;span class=&quot;keyword&quot;&gt;import&lt;/span&gt; tqdm&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;init_lr = &lt;span class=&quot;number&quot;&gt;5e-5&lt;/span&gt;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;num_train_steps = &lt;span class=&quot;number&quot;&gt;10000&lt;/span&gt;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;num_warmup_steps = &lt;span class=&quot;number&quot;&gt;1000&lt;/span&gt;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;optimizer = optimization.create_optimizer(init_lr, num_train_steps, num_warmup_steps)&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;learn_rate = []&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;for&lt;/span&gt; i &lt;span class=&quot;keyword&quot;&gt;in&lt;/span&gt; tqdm(range(&lt;span class=&quot;number&quot;&gt;10000&lt;/span&gt;)):&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;    &lt;span class=&quot;keyword&quot;&gt;with&lt;/span&gt; tf.GradientTape() &lt;span class=&quot;keyword&quot;&gt;as&lt;/span&gt; tape:&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;        logits = model(data)&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;        loss = tf.losses.sparse_categorical_crossentropy(label, logits, from_logits=&lt;span class=&quot;keyword&quot;&gt;True&lt;/span&gt;)&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;        grads = tape.gradient(loss, model.trainable_weights)&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;        optimizer.apply_gradients(zip(grads, model.trainable_weights))&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;    learn_rate.append(optimizer._decayed_lr(tf.float32).numpy())&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;plt.plot(learn_rate)&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;plt.show()&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
-&lt;p&gt;学习率曲线图&lt;/p&gt;
-&lt;p&gt;&lt;img src=&quot;/images/adamw_lr.png&quot; alt=&quot;adamw_lr&quot;&gt;&lt;/p&gt;
     
     </summary>
     
@@ -47,11 +46,11 @@
   </entry>
   
   <entry>
-    <title>tensorflow语法糖</title>
+    <title>TensorFlow2.x 语法糖</title>
     <link href="http://yoursite.com/2020/10/21/tf-sugar/"/>
     <id>http://yoursite.com/2020/10/21/tf-sugar/</id>
     <published>2020-10-21T13:32:32.000Z</published>
-    <updated>2020-10-28T11:02:58.704Z</updated>
+    <updated>2020-10-28T11:18:10.549Z</updated>
     
     <content type="html"><![CDATA[<h1 id="tf-where"><a href="#tf-where" class="headerlink" title="tf.where"></a>tf.where</h1><p>tf.where(condition, x=None, y=None, name=None)</p>
 <p>如果x，y均为空，则返回满足条件的索引indices</p>
