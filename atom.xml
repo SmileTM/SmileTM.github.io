@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://yoursite.com/"/>
-  <updated>2020-10-28T11:21:45.830Z</updated>
+  <updated>2020-10-28T11:25:05.871Z</updated>
   <id>http://yoursite.com/</id>
   
   <author>
@@ -17,10 +17,10 @@
   
   <entry>
     <title>TensorFlow2.x 实时打印学习率</title>
-    <link href="http://yoursite.com/2020/10/28/TensorFlow2.x%20%E6%89%93%E5%8D%B0%E5%AD%A6%E4%B9%A0%E7%8E%87/"/>
-    <id>http://yoursite.com/2020/10/28/TensorFlow2.x 打印学习率/</id>
+    <link href="http://yoursite.com/2020/10/28/TensorFlow2.x%E6%89%93%E5%8D%B0%E5%AD%A6%E4%B9%A0%E7%8E%87/"/>
+    <id>http://yoursite.com/2020/10/28/TensorFlow2.x打印学习率/</id>
     <published>2020-10-28T11:00:31.000Z</published>
-    <updated>2020-10-28T11:21:45.830Z</updated>
+    <updated>2020-10-28T11:25:05.871Z</updated>
     
     <content type="html"><![CDATA[<p>在TensorFlow2.x中，通过下面代码，显示当前学习率。</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">optimizer._decayed_lr(tf.float32).numpy()</div></pre></td></tr></table></figure>
@@ -50,7 +50,7 @@
     <link href="http://yoursite.com/2020/10/21/tf-sugar/"/>
     <id>http://yoursite.com/2020/10/21/tf-sugar/</id>
     <published>2020-10-21T13:32:32.000Z</published>
-    <updated>2020-10-28T11:18:10.549Z</updated>
+    <updated>2020-10-28T11:25:00.310Z</updated>
     
     <content type="html"><![CDATA[<h1 id="tf-where"><a href="#tf-where" class="headerlink" title="tf.where"></a>tf.where</h1><p>tf.where(condition, x=None, y=None, name=None)</p>
 <p>如果x，y均为空，则返回满足条件的索引indices</p>
@@ -131,11 +131,11 @@
   </entry>
   
   <entry>
-    <title>TensorFlow2.x模型部署</title>
+    <title>TensorFlow2.x 模型部署</title>
     <link href="http://yoursite.com/2020/08/22/TensorFlow2.x%E6%A8%A1%E5%9E%8B%E9%83%A8%E7%BD%B2/"/>
     <id>http://yoursite.com/2020/08/22/TensorFlow2.x模型部署/</id>
     <published>2020-08-22T06:59:17.000Z</published>
-    <updated>2020-10-28T11:14:51.442Z</updated>
+    <updated>2020-10-28T11:25:10.844Z</updated>
     
     <content type="html"><![CDATA[<p>模型训练完后，往往需要将模型应用到生产环境中。最常见的就是通过TensorFlow Serving来将模型部署到服务器端，以便客户端进行访问。</p>
 <a id="more"></a>
