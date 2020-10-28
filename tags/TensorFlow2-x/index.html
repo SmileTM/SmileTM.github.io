@@ -277,34 +277,6 @@
 
       <h1 class="post-title">
         
-            <a class="post-title-link" href="/2020/10/21/tf-sugar/" itemprop="url">
-              
-                <span itemprop="name">tensorflow语法糖</span>
-              
-            </a>
-        
-      </h1>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2020-10-21T21:32:32+08:00"
-              content="2020-10-21" >
-          10-21
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-    
-      
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h1 class="post-title">
-        
             <a class="post-title-link" href="/2020/03/12/CheckpointManager/" itemprop="url">
               
                 <span itemprop="name">CheckpointManager</span>
@@ -367,7 +339,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">32</span>
+              <span class="site-state-item-count">33</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>
@@ -818,7 +790,21 @@
 
 </body>
 </html>
-   }
++"</a>";
+                        var content = data.content.trim().replace(/<[^>]+>/g,"");
+                        if (first_occur >= 0) {
+                            // cut out 100 characters
+                            var start = first_occur - 20;
+                            var end = first_occur + 80;
+                            if(start < 0){
+                                start = 0;
+                            }
+                            if(start == 0){
+                                end = 50;
+                            }
+                            if(end > content.length){
+                                end = content.length;
+                            }
                             var match_content = content.substring(start, end);
                             // highlight all keywords
                             keywords.forEach(function(keyword){
