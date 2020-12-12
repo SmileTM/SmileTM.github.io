@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://yoursite.com/"/>
-  <updated>2020-12-12T12:15:08.809Z</updated>
+  <updated>2020-12-12T12:23:50.165Z</updated>
   <id>http://yoursite.com/</id>
   
   <author>
@@ -20,10 +20,10 @@
     <link href="http://yoursite.com/2020/12/12/pandas-example/"/>
     <id>http://yoursite.com/2020/12/12/pandas-example/</id>
     <published>2020-12-12T11:29:48.000Z</published>
-    <updated>2020-12-12T12:15:08.809Z</updated>
+    <updated>2020-12-12T12:23:50.165Z</updated>
     
     <content type="html"><![CDATA[<p>记录下，清洗数据时，碰到的一些操作。</p>
-<h1 id="笛卡尔积"><a href="#笛卡尔积" class="headerlink" title="笛卡尔积"></a>笛卡尔积</h1><p><strong>问题：</strong><br>假设我我们有如下数据<code>表1</code>，需要根据数据<code>表1</code>，生成数据<code>表2</code>，应该如何生成呢？<br><strong>解释：</strong>根据<code>表1</code> 中的 <code>user_id</code> 与 <code>item_id</code> 进行两两组合，将未出现在<code>表1</code>中的组合的<code>label</code> 设为<code>0</code>，并与<code>表1</code>进行合并。 </p>
+<h1 id="笛卡尔积"><a href="#笛卡尔积" class="headerlink" title="笛卡尔积"></a>笛卡尔积</h1><p><strong>问题：</strong><br>假设我我们有如下数据<code>表1</code>，需要根据数据<code>表1</code>，生成数据<code>表2</code>，应该如何生成呢？<br><strong>解释：</strong>根据<code>表1</code> 中的 <code>user_id</code> 与 <code>item_id</code> 进行两两组合，将未出现在<code>表1</code>中的组合的<code>label</code> 设为<code>0</code>，并与<code>表1</code>进行合并。(与<code>表2</code>内容一样即可，不要求顺序相同。) </p>
 <p><strong>表1：</strong></p>
 <div class="table-container">
 <table>
@@ -53,67 +53,9 @@
 </tbody>
 </table>
 </div>
-<p><strong>表2：</strong></p>
-<div class="table-container">
-<table>
-<thead>
-<tr>
-<th>user_id</th>
-<th>item_id</th>
-<th>label</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>1</td>
-<td>1</td>
-<td>1</td>
-</tr>
-<tr>
-<td>2</td>
-<td>2</td>
-<td>1</td>
-</tr>
-<tr>
-<td>3</td>
-<td>3</td>
-<td>1</td>
-</tr>
-<tr>
-<td>1</td>
-<td>2</td>
-<td>0</td>
-</tr>
-<tr>
-<td>1</td>
-<td>3</td>
-<td>0</td>
-</tr>
-<tr>
-<td>2</td>
-<td>1</td>
-<td>0</td>
-</tr>
-<tr>
-<td>2</td>
-<td>3</td>
-<td>0</td>
-</tr>
-<tr>
-<td>3</td>
-<td>1</td>
-<td>0</td>
-</tr>
-<tr>
-<td>3</td>
-<td>2</td>
-<td>0</td>
-</tr>
-</tbody>
-</table>
-</div>
+<p><strong>表2：</strong><br>| user_id | item_id | label |<br>| :——-: | :——-: | :—-: |<br>|    1    |    1    |   1   |<br>|    2    |    2    |   1   |<br>|    3    |    3    |   1   |<br>|    1    |    2    |   0   |<br>|    1    |    3    |   0   |<br>|    2    |    1    |   0   |<br>|    2    |    3    |   0   |<br>|    3    |    1    |   0   |<br>|    3    |    2    |   0   |</p>
 <a id="more"></a>
-<p>要解决这一问题，我们就需要用到笛卡尔积了，具体的代码如下：</p>
+<p>要解决这一问题，我们就需要用到<strong>笛卡尔积</strong>了，具体的代码如下：</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">import</span> pandas <span class="keyword">as</span> pd</div><div class="line"><span class="comment"># 生成表1</span></div><div class="line">data = &#123;<span class="string">'user_id'</span>: [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>], <span class="string">'item_id'</span>: [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>], <span class="string">'label'</span>: [<span class="number">1</span>, <span class="number">1</span>, <span class="number">1</span>]&#125;  </div><div class="line">df1 = pd.DataFrame(data)   </div><div class="line">print(df1)</div><div class="line"><span class="comment"># 以c为键，利用merge构建笛卡尔积</span></div><div class="line">df2 = pd.merge(df1[[<span class="string">'user_id'</span>, <span class="string">'label'</span>]], df1[[<span class="string">'item_id'</span>, <span class="string">'label'</span>]], on=<span class="string">'label'</span>)</div><div class="line"><span class="comment"># 将'c'列设为全0</span></div><div class="line">df2[<span class="string">'label'</span>] = <span class="number">0</span></div><div class="line">print(df2)</div><div class="line"><span class="comment"># 将 df2 与df1 进行拼接， 利用 drop_duplicates 将 'a' 'b' 组合重复的行去掉  </span></div><div class="line">df3 = pd.concat([df1, df2]).drop_duplicates(subset=[<span class="string">'user_id'</span>, <span class="string">'item_id'</span>], keep=<span class="keyword">False</span>, ignore_index=<span class="keyword">True</span>)</div><div class="line">print(df3)</div><div class="line"><span class="comment"># 再将 df1 与 df3 进行合并, 即为所求 表2。</span></div><div class="line">df = pd.concat([df1, df3], ignore_index=<span class="keyword">True</span>)</div><div class="line">print(df)</div></pre></td></tr></table></figure>
 <p><strong>out:</strong></p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div></pre></td><td class="code"><pre><div class="line">df1:</div><div class="line">   user_id  item_id  label</div><div class="line"><span class="number">0</span>        <span class="number">1</span>        <span class="number">1</span>      <span class="number">1</span></div><div class="line"><span class="number">1</span>        <span class="number">2</span>        <span class="number">2</span>      <span class="number">1</span></div><div class="line"><span class="number">2</span>        <span class="number">3</span>        <span class="number">3</span>      <span class="number">1</span></div><div class="line"></div><div class="line">df2:</div><div class="line">   user_id  label  item_id</div><div class="line"><span class="number">0</span>        <span class="number">1</span>      <span class="number">0</span>        <span class="number">1</span></div><div class="line"><span class="number">1</span>        <span class="number">1</span>      <span class="number">0</span>        <span class="number">2</span></div><div class="line"><span class="number">2</span>        <span class="number">1</span>      <span class="number">0</span>        <span class="number">3</span></div><div class="line"><span class="number">3</span>        <span class="number">2</span>      <span class="number">0</span>        <span class="number">1</span></div><div class="line"><span class="number">4</span>        <span class="number">2</span>      <span class="number">0</span>        <span class="number">2</span></div><div class="line"><span class="number">5</span>        <span class="number">2</span>      <span class="number">0</span>        <span class="number">3</span></div><div class="line"><span class="number">6</span>        <span class="number">3</span>      <span class="number">0</span>        <span class="number">1</span></div><div class="line"><span class="number">7</span>        <span class="number">3</span>      <span class="number">0</span>        <span class="number">2</span></div><div class="line"><span class="number">8</span>        <span class="number">3</span>      <span class="number">0</span>        <span class="number">3</span></div><div class="line"></div><div class="line">df3:</div><div class="line">   user_id  item_id  label</div><div class="line"><span class="number">0</span>        <span class="number">1</span>        <span class="number">2</span>      <span class="number">0</span></div><div class="line"><span class="number">1</span>        <span class="number">1</span>        <span class="number">3</span>      <span class="number">0</span></div><div class="line"><span class="number">2</span>        <span class="number">2</span>        <span class="number">1</span>      <span class="number">0</span></div><div class="line"><span class="number">3</span>        <span class="number">2</span>        <span class="number">3</span>      <span class="number">0</span></div><div class="line"><span class="number">4</span>        <span class="number">3</span>        <span class="number">1</span>      <span class="number">0</span></div><div class="line"><span class="number">5</span>        <span class="number">3</span>        <span class="number">2</span>      <span class="number">0</span></div><div class="line"></div><div class="line">df:</div><div class="line">   user_id  item_id  label</div><div class="line"><span class="number">0</span>        <span class="number">1</span>        <span class="number">1</span>      <span class="number">1</span></div><div class="line"><span class="number">1</span>        <span class="number">2</span>        <span class="number">2</span>      <span class="number">1</span></div><div class="line"><span class="number">2</span>        <span class="number">3</span>        <span class="number">3</span>      <span class="number">1</span></div><div class="line"><span class="number">3</span>        <span class="number">1</span>        <span class="number">2</span>      <span class="number">0</span></div><div class="line"><span class="number">4</span>        <span class="number">1</span>        <span class="number">3</span>      <span class="number">0</span></div><div class="line"><span class="number">5</span>        <span class="number">2</span>        <span class="number">1</span>      <span class="number">0</span></div><div class="line"><span class="number">6</span>        <span class="number">2</span>        <span class="number">3</span>      <span class="number">0</span></div><div class="line"><span class="number">7</span>        <span class="number">3</span>        <span class="number">1</span>      <span class="number">0</span></div><div class="line"><span class="number">8</span>        <span class="number">3</span>        <span class="number">2</span>      <span class="number">0</span></div></pre></td></tr></table></figure>
@@ -122,7 +64,7 @@
     <summary type="html">
     
       &lt;p&gt;记录下，清洗数据时，碰到的一些操作。&lt;/p&gt;
-&lt;h1 id=&quot;笛卡尔积&quot;&gt;&lt;a href=&quot;#笛卡尔积&quot; class=&quot;headerlink&quot; title=&quot;笛卡尔积&quot;&gt;&lt;/a&gt;笛卡尔积&lt;/h1&gt;&lt;p&gt;&lt;strong&gt;问题：&lt;/strong&gt;&lt;br&gt;假设我我们有如下数据&lt;code&gt;表1&lt;/code&gt;，需要根据数据&lt;code&gt;表1&lt;/code&gt;，生成数据&lt;code&gt;表2&lt;/code&gt;，应该如何生成呢？&lt;br&gt;&lt;strong&gt;解释：&lt;/strong&gt;根据&lt;code&gt;表1&lt;/code&gt; 中的 &lt;code&gt;user_id&lt;/code&gt; 与 &lt;code&gt;item_id&lt;/code&gt; 进行两两组合，将未出现在&lt;code&gt;表1&lt;/code&gt;中的组合的&lt;code&gt;label&lt;/code&gt; 设为&lt;code&gt;0&lt;/code&gt;，并与&lt;code&gt;表1&lt;/code&gt;进行合并。 &lt;/p&gt;
+&lt;h1 id=&quot;笛卡尔积&quot;&gt;&lt;a href=&quot;#笛卡尔积&quot; class=&quot;headerlink&quot; title=&quot;笛卡尔积&quot;&gt;&lt;/a&gt;笛卡尔积&lt;/h1&gt;&lt;p&gt;&lt;strong&gt;问题：&lt;/strong&gt;&lt;br&gt;假设我我们有如下数据&lt;code&gt;表1&lt;/code&gt;，需要根据数据&lt;code&gt;表1&lt;/code&gt;，生成数据&lt;code&gt;表2&lt;/code&gt;，应该如何生成呢？&lt;br&gt;&lt;strong&gt;解释：&lt;/strong&gt;根据&lt;code&gt;表1&lt;/code&gt; 中的 &lt;code&gt;user_id&lt;/code&gt; 与 &lt;code&gt;item_id&lt;/code&gt; 进行两两组合，将未出现在&lt;code&gt;表1&lt;/code&gt;中的组合的&lt;code&gt;label&lt;/code&gt; 设为&lt;code&gt;0&lt;/code&gt;，并与&lt;code&gt;表1&lt;/code&gt;进行合并。(与&lt;code&gt;表2&lt;/code&gt;内容一样即可，不要求顺序相同。) &lt;/p&gt;
 &lt;p&gt;&lt;strong&gt;表1：&lt;/strong&gt;&lt;/p&gt;
 &lt;div class=&quot;table-container&quot;&gt;
 &lt;table&gt;
@@ -152,65 +94,7 @@
 &lt;/tbody&gt;
 &lt;/table&gt;
 &lt;/div&gt;
-&lt;p&gt;&lt;strong&gt;表2：&lt;/strong&gt;&lt;/p&gt;
-&lt;div class=&quot;table-container&quot;&gt;
-&lt;table&gt;
-&lt;thead&gt;
-&lt;tr&gt;
-&lt;th&gt;user_id&lt;/th&gt;
-&lt;th&gt;item_id&lt;/th&gt;
-&lt;th&gt;label&lt;/th&gt;
-&lt;/tr&gt;
-&lt;/thead&gt;
-&lt;tbody&gt;
-&lt;tr&gt;
-&lt;td&gt;1&lt;/td&gt;
-&lt;td&gt;1&lt;/td&gt;
-&lt;td&gt;1&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;2&lt;/td&gt;
-&lt;td&gt;2&lt;/td&gt;
-&lt;td&gt;1&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;3&lt;/td&gt;
-&lt;td&gt;3&lt;/td&gt;
-&lt;td&gt;1&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;1&lt;/td&gt;
-&lt;td&gt;2&lt;/td&gt;
-&lt;td&gt;0&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;1&lt;/td&gt;
-&lt;td&gt;3&lt;/td&gt;
-&lt;td&gt;0&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;2&lt;/td&gt;
-&lt;td&gt;1&lt;/td&gt;
-&lt;td&gt;0&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;2&lt;/td&gt;
-&lt;td&gt;3&lt;/td&gt;
-&lt;td&gt;0&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;3&lt;/td&gt;
-&lt;td&gt;1&lt;/td&gt;
-&lt;td&gt;0&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;3&lt;/td&gt;
-&lt;td&gt;2&lt;/td&gt;
-&lt;td&gt;0&lt;/td&gt;
-&lt;/tr&gt;
-&lt;/tbody&gt;
-&lt;/table&gt;
-&lt;/div&gt;
+&lt;p&gt;&lt;strong&gt;表2：&lt;/strong&gt;&lt;br&gt;| user_id | item_id | label |&lt;br&gt;| :——-: | :——-: | :—-: |&lt;br&gt;|    1    |    1    |   1   |&lt;br&gt;|    2    |    2    |   1   |&lt;br&gt;|    3    |    3    |   1   |&lt;br&gt;|    1    |    2    |   0   |&lt;br&gt;|    1    |    3    |   0   |&lt;br&gt;|    2    |    1    |   0   |&lt;br&gt;|    2    |    3    |   0   |&lt;br&gt;|    3    |    1    |   0   |&lt;br&gt;|    3    |    2    |   0   |&lt;/p&gt;
     
     </summary>
     
