@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://yoursite.com/"/>
-  <updated>2020-12-12T12:11:21.739Z</updated>
+  <updated>2020-12-12T12:15:08.809Z</updated>
   <id>http://yoursite.com/</id>
   
   <author>
@@ -20,11 +20,11 @@
     <link href="http://yoursite.com/2020/12/12/pandas-example/"/>
     <id>http://yoursite.com/2020/12/12/pandas-example/</id>
     <published>2020-12-12T11:29:48.000Z</published>
-    <updated>2020-12-12T12:11:21.739Z</updated>
+    <updated>2020-12-12T12:15:08.809Z</updated>
     
     <content type="html"><![CDATA[<p>记录下，清洗数据时，碰到的一些操作。</p>
-<h1 id="笛卡尔积"><a href="#笛卡尔积" class="headerlink" title="笛卡尔积"></a>笛卡尔积</h1><p>假设我我们有如下数据表1，需要根据数据表1，生成数据表2，应该如何生成呢？<br>解释：根据表1 中的 <code>user_id</code> 与 <code>item_id</code> 进行两两组合，将未出现在表1中的组合的<code>label</code> 设为<code>0</code>，并与表1 进行 合并。 </p>
-<p>表1：</p>
+<h1 id="笛卡尔积"><a href="#笛卡尔积" class="headerlink" title="笛卡尔积"></a>笛卡尔积</h1><p><strong>问题：</strong><br>假设我我们有如下数据<code>表1</code>，需要根据数据<code>表1</code>，生成数据<code>表2</code>，应该如何生成呢？<br><strong>解释：</strong>根据<code>表1</code> 中的 <code>user_id</code> 与 <code>item_id</code> 进行两两组合，将未出现在<code>表1</code>中的组合的<code>label</code> 设为<code>0</code>，并与<code>表1</code>进行合并。 </p>
+<p><strong>表1：</strong></p>
 <div class="table-container">
 <table>
 <thead>
@@ -53,7 +53,7 @@
 </tbody>
 </table>
 </div>
-<p>表2：</p>
+<p><strong>表2：</strong></p>
 <div class="table-container">
 <table>
 <thead>
@@ -122,8 +122,8 @@
     <summary type="html">
     
       &lt;p&gt;记录下，清洗数据时，碰到的一些操作。&lt;/p&gt;
-&lt;h1 id=&quot;笛卡尔积&quot;&gt;&lt;a href=&quot;#笛卡尔积&quot; class=&quot;headerlink&quot; title=&quot;笛卡尔积&quot;&gt;&lt;/a&gt;笛卡尔积&lt;/h1&gt;&lt;p&gt;假设我我们有如下数据表1，需要根据数据表1，生成数据表2，应该如何生成呢？&lt;br&gt;解释：根据表1 中的 &lt;code&gt;user_id&lt;/code&gt; 与 &lt;code&gt;item_id&lt;/code&gt; 进行两两组合，将未出现在表1中的组合的&lt;code&gt;label&lt;/code&gt; 设为&lt;code&gt;0&lt;/code&gt;，并与表1 进行 合并。 &lt;/p&gt;
-&lt;p&gt;表1：&lt;/p&gt;
+&lt;h1 id=&quot;笛卡尔积&quot;&gt;&lt;a href=&quot;#笛卡尔积&quot; class=&quot;headerlink&quot; title=&quot;笛卡尔积&quot;&gt;&lt;/a&gt;笛卡尔积&lt;/h1&gt;&lt;p&gt;&lt;strong&gt;问题：&lt;/strong&gt;&lt;br&gt;假设我我们有如下数据&lt;code&gt;表1&lt;/code&gt;，需要根据数据&lt;code&gt;表1&lt;/code&gt;，生成数据&lt;code&gt;表2&lt;/code&gt;，应该如何生成呢？&lt;br&gt;&lt;strong&gt;解释：&lt;/strong&gt;根据&lt;code&gt;表1&lt;/code&gt; 中的 &lt;code&gt;user_id&lt;/code&gt; 与 &lt;code&gt;item_id&lt;/code&gt; 进行两两组合，将未出现在&lt;code&gt;表1&lt;/code&gt;中的组合的&lt;code&gt;label&lt;/code&gt; 设为&lt;code&gt;0&lt;/code&gt;，并与&lt;code&gt;表1&lt;/code&gt;进行合并。 &lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;表1：&lt;/strong&gt;&lt;/p&gt;
 &lt;div class=&quot;table-container&quot;&gt;
 &lt;table&gt;
 &lt;thead&gt;
@@ -152,7 +152,7 @@
 &lt;/tbody&gt;
 &lt;/table&gt;
 &lt;/div&gt;
-&lt;p&gt;表2：&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;表2：&lt;/strong&gt;&lt;/p&gt;
 &lt;div class=&quot;table-container&quot;&gt;
 &lt;table&gt;
 &lt;thead&gt;
