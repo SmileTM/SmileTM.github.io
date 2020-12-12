@@ -74,7 +74,7 @@
 <link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="TensorFlow2.x," />
+  <meta name="keywords" content="pandas," />
 
 
 
@@ -92,18 +92,18 @@
 
 
 
-<meta name="description" content="TFRecord是一种高效的数据存储格式，尤其是在处理大数据集时，我们无法对数据进行一次读取，这时我们就可以将文件存储为TFRecord，然后再进行读取。这样可以可以提高数据移动、读取、处理等速度。在对小数据集进行读取时，可以直接使用tf.data API来进行处理。 在TFRecord中是将每个样本example 以字典的方式进行存储。 主要的数据类型如下：  int64：tf.train.Fe">
-<meta name="keywords" content="TensorFlow2.x">
+<meta name="description" content="记录下，清洗数据时，碰到的一些操作。 笛卡尔积假设我我们有如下数据表1，需要根据数据表1，生成数据表2，应该如何生成呢？解释：根据表1 中的 user_id 与 item_id 进行两两组合，将未出现在表1中的label 设为0，并与表1 进行 合并。  表1：     user_id item_id label     1 1 1   2 2 1   3 3 1     表2：     user">
+<meta name="keywords" content="pandas">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Create-TFRecord">
-<meta property="og:url" content="http://yoursite.com/2020/01/14/Create-TFRecord/index.html">
+<meta property="og:title" content="pandas 例子">
+<meta property="og:url" content="http://yoursite.com/2020/12/12/pandas-example/index.html">
 <meta property="og:site_name" content="SmileTM博客">
-<meta property="og:description" content="TFRecord是一种高效的数据存储格式，尤其是在处理大数据集时，我们无法对数据进行一次读取，这时我们就可以将文件存储为TFRecord，然后再进行读取。这样可以可以提高数据移动、读取、处理等速度。在对小数据集进行读取时，可以直接使用tf.data API来进行处理。 在TFRecord中是将每个样本example 以字典的方式进行存储。 主要的数据类型如下：  int64：tf.train.Fe">
+<meta property="og:description" content="记录下，清洗数据时，碰到的一些操作。 笛卡尔积假设我我们有如下数据表1，需要根据数据表1，生成数据表2，应该如何生成呢？解释：根据表1 中的 user_id 与 item_id 进行两两组合，将未出现在表1中的label 设为0，并与表1 进行 合并。  表1：     user_id item_id label     1 1 1   2 2 1   3 3 1     表2：     user">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2020-10-27T13:54:01.419Z">
+<meta property="og:updated_time" content="2020-12-12T12:01:39.480Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Create-TFRecord">
-<meta name="twitter:description" content="TFRecord是一种高效的数据存储格式，尤其是在处理大数据集时，我们无法对数据进行一次读取，这时我们就可以将文件存储为TFRecord，然后再进行读取。这样可以可以提高数据移动、读取、处理等速度。在对小数据集进行读取时，可以直接使用tf.data API来进行处理。 在TFRecord中是将每个样本example 以字典的方式进行存储。 主要的数据类型如下：  int64：tf.train.Fe">
+<meta name="twitter:title" content="pandas 例子">
+<meta name="twitter:description" content="记录下，清洗数据时，碰到的一些操作。 笛卡尔积假设我我们有如下数据表1，需要根据数据表1，生成数据表2，应该如何生成呢？解释：根据表1 中的 user_id 与 item_id 进行两两组合，将未出现在表1中的label 设为0，并与表1 进行 合并。  表1：     user_id item_id label     1 1 1   2 2 1   3 3 1     表2：     user">
 
 
 
@@ -121,7 +121,7 @@
   };
 </script>
 
-  <title> Create-TFRecord | SmileTM博客 </title><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+  <title> pandas 例子 | SmileTM博客 </title><!-- hexo-inject:begin --><!-- hexo-inject:end -->
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
@@ -284,7 +284,7 @@
             
             
               
-                Create-TFRecord
+                pandas 例子
               
             
           </h1>
@@ -296,8 +296,8 @@
               <i class="fa fa-calendar-o"></i>
             </span>
             <span class="post-meta-item-text">发表于</span>
-            <time itemprop="dateCreated" datetime="2020-01-14T16:59:01+08:00" content="2020-01-14">
-              2020-01-14
+            <time itemprop="dateCreated" datetime="2020-12-12T19:29:48+08:00" content="2020-12-12">
+              2020-12-12
             </time>
           </span>
 
@@ -311,7 +311,7 @@
 
           
           
-             <span id="/2020/01/14/Create-TFRecord/" class="leancloud_visitors" data-flag-title="Create-TFRecord">
+             <span id="/2020/12/12/pandas-example/" class="leancloud_visitors" data-flag-title="pandas 例子">
                &nbsp; | &nbsp;
                <span class="post-meta-item-icon">
                  <i class="fa fa-eye"></i>
@@ -333,68 +333,100 @@
       
 
       
-        <p>TFRecord是一种高效的数据存储格式，尤其是在处理大数据集时，我们无法对数据进行一次读取，这时我们就可以将文件存储为TFRecord，然后再进行读取。这样可以可以提高数据移动、读取、处理等速度。<br>在对小数据集进行读取时，可以直接使用<code>tf.data</code> API来进行处理。</p>
-<p>在TFRecord中是将每个样本example 以字典的方式进行存储。</p>
-<p>主要的数据类型如下：</p>
-<ul>
-<li>int64：<code>tf.train.Feature(int64_list = tf.train.Int64List(value=输入))</code></li>
-<li>float32：<code>tf.train.Feature(float_list = tf.train.FloatList(value=输入))</code></li>
-<li>string：<code>tf.train.Feature(bytes_list=tf.train.BytesList(value=输入))</code></li>
-<li>注：输入必须是list(向量)</li>
-</ul>
-<p>这里我们举一个NLP中常见例子。</p>
-<ul>
-<li>这里有10个句子<code>sentence</code>，每个句子有128个<code>token_id</code>。</li>
-<li>每个句子对应的10个标签<code>label</code>。</li>
-<li>每个句子中对应的<code>token weight (mask)</code></li>
-<li>每个句子经过<code>Embedding</code>后的 句子<code>matrix</code>，<code>tensor</code>(两者是同一个东西，只是为了后面介绍两种不同的存储方式。)</li>
-</ul>
-<p>那么我们怎样将这些转换为<code>TFRecord</code>呢？</p>
-<a id="more"></a>
-<h1 id="Create-TFRecord-py"><a href="#Create-TFRecord-py" class="headerlink" title="Create_TFRecord.py"></a>Create_TFRecord.py</h1><p>大致可以分为以下几步：</p>
-<ol>
-<li>由于TFRecord中是将每个样本当做一个<code>example</code>进行存储。所以我们先要取得每个样本对应的<code>sentence</code>,<code>label</code>, <code>weight</code>, <code>matrix</code>, <code>tensor</code>.</li>
-<li>将每个样本属性转换为对应的<code>feature</code>字典类型。（注意，这里的<code>value</code>均为<strong><code>list</code></strong>类型）<ul>
-<li>int64：<code>tf.train.Feature(int64_list = tf.train.Int64List(value=输入))</code></li>
-<li>float32：<code>tf.train.Feature(float_list = tf.train.FloatList(value=输入))</code></li>
-<li>string：<code>tf.train.Feature(bytes_list=tf.train.BytesList(value=输入))</code> </li>
-</ul>
-</li>
-<li>将feature字典包装成features。<br><code>features=tf.train.Features(feature=feature字典)</code></li>
-<li>将features转换成example<br><code>example = tf.train.Example(features=features)</code></li>
-<li>通过<code>example.SerializeToString()</code> 将example 进行序列化，并通过 <code>tfwriter.write()</code>进行写入文件。</li>
-</ol>
-<p>具体代码如下：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">import</span> tensorflow <span class="keyword">as</span> tf</div><div class="line"><span class="keyword">from</span> pathlib <span class="keyword">import</span> Path</div><div class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</div><div class="line"></div><div class="line"><span class="comment"># 随机生成相应数据</span></div><div class="line">senteces = np.random.randint(<span class="number">0</span>,<span class="number">512</span>,(<span class="number">10</span>,<span class="number">128</span>))</div><div class="line">senteces_label = np.random.randint(<span class="number">0</span>,<span class="number">2</span>,(<span class="number">10</span>))</div><div class="line">senteces_weight = [[<span class="number">1.0</span>]*<span class="number">128</span>]*<span class="number">10</span></div><div class="line">tensors = np.random.randn(<span class="number">10</span>,<span class="number">128</span>,<span class="number">512</span>)</div><div class="line">matrixs = np.random.randn(<span class="number">10</span>,<span class="number">128</span>,<span class="number">512</span>)</div><div class="line"></div><div class="line"></div><div class="line">tfrecord_save_path = <span class="string">'data.tfrecord'</span></div><div class="line"></div><div class="line"><span class="keyword">with</span> tf.io.TFRecordWriter(tfrecord_save_path) <span class="keyword">as</span> tfwriter:</div><div class="line">    <span class="keyword">for</span> text,label ,weight, tensor, matrix <span class="keyword">in</span> zip(senteces ,senteces_label,senteces_weight, tensors, matrixs):</div><div class="line">        example = tf.train.Example(features=tf.train.Features(</div><div class="line">            feature=&#123;</div><div class="line">                <span class="string">'text'</span>:tf.train.Feature(int64_list=tf.train.Int64List(value=text.tolist())),</div><div class="line">                <span class="string">'label'</span>:tf.train.Feature(int64_list=tf.train.Int64List(value=[label])),</div><div class="line">                <span class="string">'weight'</span>:tf.train.Feature(float_list=tf.train.FloatList(value=weight)),</div><div class="line"></div><div class="line">                <span class="comment">#当需要存入矩阵时，有两种方法 一种是将矩阵Flatten 然后在读取的时候进行 形状reshape</span></div><div class="line">                <span class="string">'matrix'</span>: tf.train.Feature(float_list=tf.train.FloatList(value=matrix.reshape(<span class="number">-1</span>))),</div><div class="line">                <span class="string">'matrix_shape'</span>: tf.train.Feature(int64_list=tf.train.Int64List(value=matrix.shape)),</div><div class="line"></div><div class="line">                <span class="comment"># 存入矩阵时，会使得矩阵形状丢失 因此 需要额外记录矩阵的形状，以便还原。</span></div><div class="line"></div><div class="line">                <span class="comment">#另一种方法 是将矩阵转换为字符类型存储,随后在还原。</span></div><div class="line">                <span class="comment"># 两种方法都会导致 形状丢失，都需要进行矩阵形状存储</span></div><div class="line">                <span class="string">'tensor'</span>: tf.train.Feature(bytes_list=tf.train.BytesList(value=[tensor.tostring()])),</div><div class="line">                <span class="string">'tensor_shape'</span>: tf.train.Feature(int64_list=tf.train.Int64List(value=tensor.shape))</div><div class="line"></div><div class="line">            &#125;</div><div class="line">        ))</div><div class="line"></div><div class="line">        tfwriter.write(example.SerializeToString())</div></pre></td></tr></table></figure>
-<h1 id="Read-TFRecord-py"><a href="#Read-TFRecord-py" class="headerlink" title="Read_TFRecord.py"></a>Read_TFRecord.py</h1><p>在得到了<code>TFRecord</code>后，我们又改如何解析呢？</p>
-<p>解析大致也可以分为几个步骤:</p>
-<ol>
-<li>通过<code>tf.data.TFRecordDataset</code>对TFRecord进行读取。</li>
-<li><p>在前面创建TFRecord时，我们需要创建feature字典，同样在解析时也需要定义一个feature_description字典，告诉程序，TFRecord中的数据类型。</p>
-<p><strong>定长特征解析</strong>：<code>tf.FixedLenFeature(shape, dtype, default_value)</code></p>
-<ul>
-<li>shape：可当<code>reshape</code>来用，如vector的shape从(3,)改动成了(1,3)。</li>
-<li>注：如果写入的feature使用了<code>.tostring()</code> 其shape就是<code>()</code></li>
-<li>dtype：<strong>必须</strong>是<code>tf.float32</code>， <code>tf.int64</code>， <code>tf.string</code>中的一种。</li>
-<li>default_value：<code>feature</code>值缺失时所指定的值。</li>
-</ul>
-<p><strong>不定长特征解析</strong>：<code>tf.VarLenFeature(dtype)</code></p>
-<ul>
-<li>注：可以不明确指定shape，但得到的tensor是SparseTensor。</li>
-</ul>
-</li>
-<li>通过<code>tf.io.parse_single_example</code>对 1 中得到的raw_data进行解析。</li>
-<li>对解析后的数据，对应的部分进一步进行还原。</li>
-</ol>
-<p>在解析TFRecord时，需要注意：</p>
-<ul>
-<li><code>tf.io.FixedLenFeature</code> 中要明确传入数据的形状。</li>
-<li><code>tf.io.VarLenFeature</code>虽然不用传入数据形状，但需要通过<code>tf.sparse.to_dense</code>对对应数据进行解析</li>
-<li>其中由于tensor是前面是通过转换为字符类型进行存储的，因此需要进行解码。</li>
-</ul>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">import</span> tensorflow <span class="keyword">as</span> tf</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">parse_function</span><span class="params">(example)</span>:</span></div><div class="line">    <span class="comment"># 这里的dtype 类型只有 float32, int64, string</span></div><div class="line">    feature_description = &#123;</div><div class="line">        <span class="string">'text'</span>: tf.io.FixedLenFeature(shape=(<span class="number">128</span>,), dtype=tf.int64),</div><div class="line">        <span class="string">'label'</span>: tf.io.FixedLenFeature(shape=(), dtype=tf.int64),</div><div class="line">        <span class="string">'weight'</span>: tf.io.FixedLenFeature(shape=(<span class="number">128</span>,), dtype=tf.float32),</div><div class="line">        <span class="string">'matrix'</span>: tf.io.VarLenFeature(dtype=tf.float32),</div><div class="line">        <span class="string">'matrix_shape'</span>: tf.io.VarLenFeature(dtype=tf.int64),</div><div class="line">        <span class="string">'tensor'</span>: tf.io.FixedLenFeature(shape=(), dtype=tf.string),</div><div class="line">        <span class="string">'tensor_shape'</span>: tf.io.FixedLenFeature(shape=(<span class="number">2</span>,), dtype=tf.int64)</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    parse_example = tf.io.parse_single_example(example, feature_description)</div><div class="line"> </div><div class="line">    <span class="comment"># 对parse_example中的对应数据进一步解析</span></div><div class="line">    parse_example[<span class="string">'matrix'</span>] = tf.sparse.to_dense(parse_example[<span class="string">'matrix'</span>])</div><div class="line">    parse_example[<span class="string">'matrix_shape'</span>] = tf.sparse.to_dense(parse_example[<span class="string">'matrix_shape'</span>])</div><div class="line">		<span class="comment"># 由于tensor是前面是通过转换为字符类型进行存储的，因此需要进行解码</span></div><div class="line">    parse_example[<span class="string">'tensor'</span>] = tf.io.decode_raw(parse_example[<span class="string">'tensor'</span>], tf.int64)</div><div class="line">		<span class="comment"># 将相应矩阵进行reshape</span></div><div class="line">    parse_example[<span class="string">'matrix'</span>] = tf.reshape(parse_example[<span class="string">'matrix'</span>], parse_example[<span class="string">'matrix_shape'</span>])</div><div class="line">    parse_example[<span class="string">'tensor'</span>] = tf.reshape(parse_example[<span class="string">'tensor'</span>], parse_example[<span class="string">'tensor_shape'</span>])</div><div class="line">    <span class="keyword">return</span> parse_example</div><div class="line"></div><div class="line"></div><div class="line"><span class="keyword">if</span> __name__ == <span class="string">'__main__'</span>:</div><div class="line">    tfrecord_save_path = <span class="string">'data.tfrecord'</span></div><div class="line"></div><div class="line">    raw_dataset = tf.data.TFRecordDataset(tfrecord_save_path)</div><div class="line"></div><div class="line">    dataset = raw_dataset.map(parse_function)</div><div class="line">		<span class="comment"># 在这里我们还可以对数据dataset进行shuffle和batch操作</span></div><div class="line">    <span class="comment"># dataset = dataset.shuffle()</span></div><div class="line">    <span class="comment"># dataset = dataset.batch()</span></div><div class="line">    <span class="keyword">for</span> data <span class="keyword">in</span> dataset:</div><div class="line">        print(data)</div></pre></td></tr></table></figure>
-<p><strong>Reference</strong></p>
-<p><a href="https://zhuanlan.zhihu.com/p/33223782" target="_blank" rel="noopener">https://zhuanlan.zhihu.com/p/33223782</a></p>
+        <p>记录下，清洗数据时，碰到的一些操作。</p>
+<h1 id="笛卡尔积"><a href="#笛卡尔积" class="headerlink" title="笛卡尔积"></a>笛卡尔积</h1><p>假设我我们有如下数据表1，需要根据数据表1，生成数据表2，应该如何生成呢？<br>解释：根据表1 中的 user_id 与 item_id 进行两两组合，将未出现在表1中的label 设为0，并与表1 进行 合并。 </p>
+<p>表1：</p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th style="text-align:center">user_id</th>
+<th style="text-align:center">item_id</th>
+<th style="text-align:center">label</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">1</td>
+<td style="text-align:center">1</td>
+<td style="text-align:center">1</td>
+</tr>
+<tr>
+<td style="text-align:center">2</td>
+<td style="text-align:center">2</td>
+<td style="text-align:center">1</td>
+</tr>
+<tr>
+<td style="text-align:center">3</td>
+<td style="text-align:center">3</td>
+<td style="text-align:center">1</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>表2：</p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th>user_id</th>
+<th>item_id</th>
+<th>label</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+</tr>
+<tr>
+<td>2</td>
+<td>2</td>
+<td>1</td>
+</tr>
+<tr>
+<td>3</td>
+<td>3</td>
+<td>1</td>
+</tr>
+<tr>
+<td>1</td>
+<td>2</td>
+<td>0</td>
+</tr>
+<tr>
+<td>1</td>
+<td>3</td>
+<td>0</td>
+</tr>
+<tr>
+<td>2</td>
+<td>1</td>
+<td>0</td>
+</tr>
+<tr>
+<td>2</td>
+<td>3</td>
+<td>0</td>
+</tr>
+<tr>
+<td>3</td>
+<td>1</td>
+<td>0</td>
+</tr>
+<tr>
+<td>3</td>
+<td>2</td>
+<td>0</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>要解决这一问题，我们就需要用到笛卡尔积了，具体的代码如下：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">import</span> pandas <span class="keyword">as</span> pd</div><div class="line"><span class="comment"># 生成表1</span></div><div class="line">data = &#123;<span class="string">'a'</span>: [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>], <span class="string">'b'</span>: [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>], <span class="string">'c'</span>: [<span class="number">1</span>, <span class="number">1</span>, <span class="number">1</span>]&#125;  </div><div class="line">df1 = pd.DataFrame(data)   </div><div class="line">print(df1)</div><div class="line"><span class="comment"># 以c为键，利用merge构建笛卡尔积</span></div><div class="line">df2 = pd.merge(df1[[<span class="string">'a'</span>, <span class="string">'c'</span>]], df1[[<span class="string">'b'</span>, <span class="string">'c'</span>]], on=<span class="string">'c'</span>)</div><div class="line"><span class="comment"># 将'c'列设为全0</span></div><div class="line">df2[<span class="string">'c'</span>] = <span class="number">0</span></div><div class="line">print(df2)</div><div class="line"><span class="comment"># 将 df2 与df1 进行拼接， 利用 drop_duplicates 将 'a' 'b' 组合重复的行去掉  </span></div><div class="line">df3 = pd.concat([df1, df2]).drop_duplicates(subset=[<span class="string">'a'</span>, <span class="string">'b'</span>], keep=<span class="keyword">False</span>, ignore_index=<span class="keyword">True</span>)</div><div class="line">print(df3)</div><div class="line"><span class="comment"># 再将 df1 与 df3进行合并,即为所求。</span></div><div class="line">df = pd.concat([df1, df3], ignore_index=<span class="keyword">True</span>)</div><div class="line">print(df)</div></pre></td></tr></table></figure>
+<p><strong>out:</strong></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div></pre></td><td class="code"><pre><div class="line">df1:</div><div class="line">   a  b  c</div><div class="line"><span class="number">0</span>  <span class="number">1</span>  <span class="number">1</span>  <span class="number">1</span></div><div class="line"><span class="number">1</span>  <span class="number">2</span>  <span class="number">2</span>  <span class="number">1</span></div><div class="line"><span class="number">2</span>  <span class="number">3</span>  <span class="number">3</span>  <span class="number">1</span></div><div class="line"></div><div class="line">df2:</div><div class="line">   a  c  b</div><div class="line"><span class="number">0</span>  <span class="number">1</span>  <span class="number">0</span>  <span class="number">1</span></div><div class="line"><span class="number">1</span>  <span class="number">1</span>  <span class="number">0</span>  <span class="number">2</span></div><div class="line"><span class="number">2</span>  <span class="number">1</span>  <span class="number">0</span>  <span class="number">3</span></div><div class="line"><span class="number">3</span>  <span class="number">2</span>  <span class="number">0</span>  <span class="number">1</span></div><div class="line"><span class="number">4</span>  <span class="number">2</span>  <span class="number">0</span>  <span class="number">2</span></div><div class="line"><span class="number">5</span>  <span class="number">2</span>  <span class="number">0</span>  <span class="number">3</span></div><div class="line"><span class="number">6</span>  <span class="number">3</span>  <span class="number">0</span>  <span class="number">1</span></div><div class="line"><span class="number">7</span>  <span class="number">3</span>  <span class="number">0</span>  <span class="number">2</span></div><div class="line"><span class="number">8</span>  <span class="number">3</span>  <span class="number">0</span>  <span class="number">3</span></div><div class="line"></div><div class="line">df3:</div><div class="line">   a  b  c</div><div class="line"><span class="number">0</span>  <span class="number">1</span>  <span class="number">2</span>  <span class="number">0</span></div><div class="line"><span class="number">1</span>  <span class="number">1</span>  <span class="number">3</span>  <span class="number">0</span></div><div class="line"><span class="number">2</span>  <span class="number">2</span>  <span class="number">1</span>  <span class="number">0</span></div><div class="line"><span class="number">3</span>  <span class="number">2</span>  <span class="number">3</span>  <span class="number">0</span></div><div class="line"><span class="number">4</span>  <span class="number">3</span>  <span class="number">1</span>  <span class="number">0</span></div><div class="line"><span class="number">5</span>  <span class="number">3</span>  <span class="number">2</span>  <span class="number">0</span></div><div class="line"></div><div class="line">df:</div><div class="line">   a  b  c</div><div class="line"><span class="number">0</span>  <span class="number">1</span>  <span class="number">1</span>  <span class="number">1</span></div><div class="line"><span class="number">1</span>  <span class="number">2</span>  <span class="number">2</span>  <span class="number">1</span></div><div class="line"><span class="number">2</span>  <span class="number">3</span>  <span class="number">3</span>  <span class="number">1</span></div><div class="line"><span class="number">3</span>  <span class="number">1</span>  <span class="number">2</span>  <span class="number">0</span></div><div class="line"><span class="number">4</span>  <span class="number">1</span>  <span class="number">3</span>  <span class="number">0</span></div><div class="line"><span class="number">5</span>  <span class="number">2</span>  <span class="number">1</span>  <span class="number">0</span></div><div class="line"><span class="number">6</span>  <span class="number">2</span>  <span class="number">3</span>  <span class="number">0</span></div><div class="line"><span class="number">7</span>  <span class="number">3</span>  <span class="number">1</span>  <span class="number">0</span></div><div class="line"><span class="number">8</span>  <span class="number">3</span>  <span class="number">2</span>  <span class="number">0</span></div></pre></td></tr></table></figure>
 
       
     </div>
@@ -416,7 +448,7 @@
       
         <div class="post-tags">
           
-            <a href="/tags/TensorFlow2-x/" rel="tag">#TensorFlow2.x</a>
+            <a href="/tags/pandas/" rel="tag">#pandas</a>
           
         </div>
       
@@ -425,17 +457,13 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2019/12/29/TensorFlow2.x-distribute/" rel="next" title="TensorFlow2.x-distribute">
-                <i class="fa fa-chevron-left"></i> TensorFlow2.x-distribute
+              <a href="/2020/10/28/TensorFlow2.x打印学习率/" rel="next" title="TensorFlow2.x 实时打印学习率">
+                <i class="fa fa-chevron-left"></i> TensorFlow2.x 实时打印学习率
               </a>
             
           </div>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2020/01/30/keras自动炼丹器/" rel="prev" title="keras自动炼丹器">
-                keras自动炼丹器 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -586,7 +614,7 @@
               
             
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Create-TFRecord-py"><span class="nav-number">1.</span> <span class="nav-text">Create_TFRecord.py</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Read-TFRecord-py"><span class="nav-number">2.</span> <span class="nav-text">Read_TFRecord.py</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#笛卡尔积"><span class="nav-number">1.</span> <span class="nav-text">笛卡尔积</span></a></li></ol></div>
             
           </div>
         </section>
