@@ -74,7 +74,7 @@
 <link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="Hexo, NexT" />
+  <meta name="keywords" content="re," />
 
 
 
@@ -92,16 +92,18 @@
 
 
 
-<meta name="description" content="________Talk is cheap，show me the code！！！">
-<meta property="og:type" content="website">
-<meta property="og:title" content="SmileTM博客">
-<meta property="og:url" content="http://yoursite.com/tags/ML/index.html">
+<meta name="description" content="正则表达式，真的是一段时间不用就会忘记，于是就简单记录一下日常用到的一些正则表达式的例子，以便日后复盘。 取出括号中的词这在序列标注任务中 常常会用到text：[以后][在全国范围][普遍][推广]code： 1234import retext = &quot;[以后][在全国范围][普遍][推广]&quot;words = re.findall(r&apos;\[(.*?)\]&apos;,text)print(words) out:">
+<meta name="keywords" content="re">
+<meta property="og:type" content="article">
+<meta property="og:title" content="正则记录">
+<meta property="og:url" content="http://yoursite.com/2020/12/13/re-example/index.html">
 <meta property="og:site_name" content="SmileTM博客">
-<meta property="og:description" content="________Talk is cheap，show me the code！！！">
+<meta property="og:description" content="正则表达式，真的是一段时间不用就会忘记，于是就简单记录一下日常用到的一些正则表达式的例子，以便日后复盘。 取出括号中的词这在序列标注任务中 常常会用到text：[以后][在全国范围][普遍][推广]code： 1234import retext = &quot;[以后][在全国范围][普遍][推广]&quot;words = re.findall(r&apos;\[(.*?)\]&apos;,text)print(words) out:">
 <meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2020-12-13T09:02:53.374Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="SmileTM博客">
-<meta name="twitter:description" content="________Talk is cheap，show me the code！！！">
+<meta name="twitter:title" content="正则记录">
+<meta name="twitter:description" content="正则表达式，真的是一段时间不用就会忘记，于是就简单记录一下日常用到的一些正则表达式的例子，以便日后复盘。 取出括号中的词这在序列标注任务中 常常会用到text：[以后][在全国范围][普遍][推广]code： 1234import retext = &quot;[以后][在全国范围][普遍][推广]&quot;words = re.findall(r&apos;\[(.*?)\]&apos;,text)print(words) out:">
 
 
 
@@ -119,7 +121,7 @@
   };
 </script>
 
-  <title> 标签: ML | SmileTM博客 </title><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+  <title> 正则记录 | SmileTM博客 </title><!-- hexo-inject:begin --><!-- hexo-inject:end -->
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
@@ -140,7 +142,7 @@
     
   
 
-  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="container one-collumn sidebar-position-left  ">
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="container one-collumn sidebar-position-left page-post-detail ">
     <div class="headband"></div>
 
     <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
@@ -261,46 +263,134 @@
           <div id="content" class="content">
            
 
-  <div id="posts" class="posts-collapse">
-    <div class="collection-title">
-      <h2 >
-        ML
-        <small>标签</small>
-      </h2>
-    </div>
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
 
     
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                正则记录
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2020-12-13T16:49:43+08:00" content="2020-12-13">
+              2020-12-13
+            </time>
+          </span>
+
+          
+
+          
+            
+          
+
+          
+
+          
+          
+             <span id="/2020/12/13/re-example/" class="leancloud_visitors" data-flag-title="正则记录">
+               &nbsp; | &nbsp;
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               <span class="post-meta-item-text">阅读次数 </span>
+               <span class="leancloud-visitors-count"></span>
+              </span>
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
       
 
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
+      
+        <p>正则表达式，真的是一段时间不用就会忘记，于是就简单记录一下日常用到的一些正则表达式的例子，以便日后复盘。</p>
+<h2 id="取出括号中的词"><a href="#取出括号中的词" class="headerlink" title="取出括号中的词"></a>取出括号中的词</h2><p>这在序列标注任务中 常常会用到<br><strong>text：</strong>[以后][在全国范围][普遍][推广]<br><strong>code：</strong></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">import</span> re</div><div class="line">text = <span class="string">"[以后][在全国范围][普遍][推广]"</span></div><div class="line">words = re.findall(<span class="string">r'\[(.*?)\]'</span>,text)</div><div class="line">print(words)</div></pre></td></tr></table></figure>
+<p><strong>out:</strong></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">[<span class="string">'以后'</span>, <span class="string">'在全国范围'</span>, <span class="string">'普遍'</span>, <span class="string">'推广'</span>]</div></pre></td></tr></table></figure>
+<a id="more"></a>
+      
+    </div>
 
-      <h1 class="post-title">
+    <div>
+      
         
-            <a class="post-title-link" href="/2020/03/04/SGD/" itemprop="url">
-              
-                <span itemprop="name">SGD</span>
-              
-            </a>
+      
+    </div>
+
+    <div>
+      
         
-      </h1>
 
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2020-03-04T22:39:23+08:00"
-              content="2020-03-04" >
-          03-04
-        </time>
-      </div>
+      
+    </div>
 
-    </header>
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/re/" rel="tag">#re</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2020/12/12/pandas-example/" rel="next" title="pandas 例子">
+                <i class="fa fa-chevron-left"></i> pandas 例子
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
   </article>
 
 
-    
-  </div>
 
-  
+    <div class="post-spread">
+      
+    </div>
+  </div>
 
 
 	  </div>
@@ -308,6 +398,13 @@
 
 
           
+  <div class="comments" id="comments">
+    
+      <div id="gitalk-container"></div>
+    
+
+  </div>
+
 
         </div>
         
@@ -327,8 +424,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
 
-      <section class="site-overview sidebar-panel  sidebar-panel-active ">
+      <section class="site-overview sidebar-panel ">
         <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
           <img class="site-author-image" itemprop="image"
                src="/images/avatar.png"
@@ -412,6 +518,17 @@
 
       </section>
 
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#取出括号中的词"><span class="nav-number">1.</span> <span class="nav-text">取出括号中的词</span></a></li></ol></div>
+            
+          </div>
+        </section>
       
 
     </div>
@@ -515,6 +632,10 @@
   
 
   
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.1"></script>
+
+
 
   
 
@@ -530,6 +651,21 @@
   
 
 
+
+  <link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css">
+  <script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
+   <script type="text/javascript">
+        var gitalk = new Gitalk({
+          clientID: 'ed531d5b5c361d2a4ee1',
+          clientSecret: '23d9318d301649f0513a37915b9466b68b44acd4',
+          repo: 'SmileTM.github.io',
+          owner: 'SmileTM',
+          admin: ['SmileTM'],
+          id: decodeURI(location.pathname),
+          distractionFreeMode: 'true'
+        })
+        gitalk.render('gitalk-container')           
+       </script>
 
 
   

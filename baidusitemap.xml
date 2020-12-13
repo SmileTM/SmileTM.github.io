@@ -4,8 +4,25 @@
 
     
   <url>
+    <loc>http://yoursite.com/2020/12/13/re-example/</loc>
+    <lastmod>2020-12-13T09:02:53.374Z</lastmod>
+    <data>
+        <display>
+        <title>正则记录</title>
+        <pubTime>2020-12-13T08:49:43.000Z</pubTime>
+        
+        <tag>re</tag>
+         
+         
+           
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
     <loc>http://yoursite.com/2020/12/12/pandas-example/</loc>
-    <lastmod>2020-12-12T12:26:49.654Z</lastmod>
+    <lastmod>2020-12-12T14:05:12.176Z</lastmod>
     <data>
         <display>
         <title>pandas 例子</title>
