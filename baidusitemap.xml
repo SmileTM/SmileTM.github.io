@@ -4,14 +4,14 @@
 
     
   <url>
-    <loc>http://yoursite.com/2020/12/13/re-example/</loc>
-    <lastmod>2020-12-13T09:02:53.374Z</lastmod>
+    <loc>http://yoursite.com/2020/12/12/pandas-example/</loc>
+    <lastmod>2020-12-30T14:23:36.102Z</lastmod>
     <data>
         <display>
-        <title>正则记录</title>
-        <pubTime>2020-12-13T08:49:43.000Z</pubTime>
+        <title>pandas 例子</title>
+        <pubTime>2020-12-12T11:29:48.000Z</pubTime>
         
-        <tag>re</tag>
+        <tag>pandas</tag>
          
          
            
@@ -21,14 +21,31 @@
 
     
   <url>
-    <loc>http://yoursite.com/2020/12/12/pandas-example/</loc>
-    <lastmod>2020-12-12T14:05:12.176Z</lastmod>
+    <loc>http://yoursite.com/2019/09/28/%E9%82%A3%E4%BA%9B%E5%B9%B4%E8%B5%B0%E8%BF%87%E7%9A%84%E5%9D%91-tf2-gpu%E5%AE%89%E8%A3%85/</loc>
+    <lastmod>2020-12-16T13:27:15.588Z</lastmod>
     <data>
         <display>
-        <title>pandas 例子</title>
-        <pubTime>2020-12-12T11:29:48.000Z</pubTime>
+        <title>那些年走过的坑TF2.0-GPU安装</title>
+        <pubTime>2019-09-28T02:20:02.000Z</pubTime>
         
-        <tag>pandas</tag>
+        <tag>TensorFlow2.x</tag>
+         
+         
+           
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://yoursite.com/2020/12/13/re-example/</loc>
+    <lastmod>2020-12-13T09:02:53.374Z</lastmod>
+    <data>
+        <display>
+        <title>正则记录</title>
+        <pubTime>2020-12-13T08:49:43.000Z</pubTime>
+        
+        <tag>re</tag>
          
          
            
@@ -180,23 +197,6 @@
         <display>
         <title>tf文本处理</title>
         <pubTime>2019-09-21T12:40:41.000Z</pubTime>
-        
-        <tag>TensorFlow2.x</tag>
-         
-         
-           
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>http://yoursite.com/2019/09/28/%E9%82%A3%E4%BA%9B%E5%B9%B4%E8%B5%B0%E8%BF%87%E7%9A%84%E5%9D%91-tf2-gpu%E5%AE%89%E8%A3%85/</loc>
-    <lastmod>2020-10-27T13:52:32.270Z</lastmod>
-    <data>
-        <display>
-        <title>那些年走过的坑TF2.0-GPU安装</title>
-        <pubTime>2019-09-28T02:20:02.000Z</pubTime>
         
         <tag>TensorFlow2.x</tag>
          
