@@ -18,7 +18,7 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha256-HtsXJanqjKTc8vVQjO4YMhiqFoXkfBsjBWcX91T1jr8=" crossorigin="anonymous">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
 
-<script class="next-config" data-name="main" type="application/json">{"hostname":"example.com","root":"/","images":"/images","scheme":"Muse","darkmode":true,"version":"8.17.0","exturl":false,"sidebar":{"position":"right","display":"post","padding":18,"offset":12},"copycode":{"enable":true,"style":"mac"},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":"gitalk","storage":true,"lazyload":false,"nav":null,"activeClass":"gitalk"},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
+<script class="next-config" data-name="main" type="application/json">{"hostname":"example.com","root":"/","images":"/images","scheme":"Muse","darkmode":true,"version":"8.17.0","exturl":true,"sidebar":{"position":"right","display":"post","padding":18,"offset":12},"copycode":{"enable":true,"style":"mac"},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":"gitalk","storage":true,"lazyload":false,"nav":null,"activeClass":"gitalk"},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
 
     <meta name="description" content="本文根据 Luong 论文中NMT的的一个注意力例子来进行 中-英 NMT模型的构建训练，并对该训练后的模型在Docker上进行部署。具体的可以参考Tensorflow教程NMT_with_Attenion，本文也是根据该教程来对Docker部署进一步探索。 NMT_with_Attenion也是NLP中比较经典的值得复现的一个例子。 本文架构  Model  Train  Save model">
 <meta property="og:type" content="article">
@@ -147,10 +147,10 @@
 </div>
   <div class="links-of-author animated">
       <span class="links-of-author-item">
-        <a href="https://github.com/smiletm" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;smiletm" rel="noopener me" target="_blank">GitHub</a>
+        <span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL3NtaWxldG0=" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;smiletm">GitHub</span>
       </span>
       <span class="links-of-author-item">
-        <a href="https://twitter.com/SmileTM96" title="Twitter → https:&#x2F;&#x2F;twitter.com&#x2F;SmileTM96" rel="noopener me" target="_blank">Twitter</a>
+        <span class="exturl" data-url="aHR0cHM6Ly90d2l0dGVyLmNvbS9TbWlsZVRNOTY=" title="Twitter → https:&#x2F;&#x2F;twitter.com&#x2F;SmileTM96">Twitter</span>
       </span>
   </div>
 
@@ -215,6 +215,13 @@
     </span>
 
   
+    <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span id="busuanzi_value_page_pv"></span>
+    </span>
 </div>
 
         </div>
@@ -223,7 +230,7 @@
     
     
     
-    <div class="post-body" itemprop="articleBody"><p>本文根据 <a target="_blank" rel="noopener" href="https://arxiv.org/abs/1508.04025v5">Luong 论文</a>中NMT的的一个注意力例子来进行 <a target="_blank" rel="noopener" href="http://www.manythings.org/anki/"><strong>中-英</strong></a> NMT模型的构建训练，并对该训练后的模型在Docker上进行部署。具体的可以参考Tensorflow教程<a target="_blank" rel="noopener" href="https://www.tensorflow.org/tutorials/text/nmt_with_attention">NMT_with_Attenion</a>，本文也是根据该教程来对Docker部署进一步探索。</p>
+    <div class="post-body" itemprop="articleBody"><p>本文根据 <span class="exturl" data-url="aHR0cHM6Ly9hcnhpdi5vcmcvYWJzLzE1MDguMDQwMjV2NQ==">Luong 论文<i class="fa fa-external-link-alt"></i></span>中NMT的的一个注意力例子来进行 <a target="_blank" rel="noopener" href="http://www.manythings.org/anki/"><strong>中-英</strong></a> NMT模型的构建训练，并对该训练后的模型在Docker上进行部署。具体的可以参考Tensorflow教程<span class="exturl" data-url="aHR0cHM6Ly93d3cudGVuc29yZmxvdy5vcmcvdHV0b3JpYWxzL3RleHQvbm10X3dpdGhfYXR0ZW50aW9u">NMT_with_Attenion<i class="fa fa-external-link-alt"></i></span>，本文也是根据该教程来对Docker部署进一步探索。</p>
 <p>NMT_with_Attenion也是NLP中比较经典的值得复现的一个例子。</p>
 <p>本文架构</p>
 <ul>
@@ -304,7 +311,7 @@
 
 
 <h1 id="Deploy"><a href="#Deploy" class="headerlink" title="Deploy"></a>Deploy</h1><p>部署前默认已经安装的Docker 和tensorflow&#x2F;serving的docker镜像。</p>
-<p>如果不了解，可以查看以前的文章<a target="_blank" rel="noopener" href="http://s-tm.cn/2019/12/01/docker+tensorflow:serving/">docker+tensorflow&#x2F;serving</a></p>
+<p>如果不了解，可以查看以前的文章<span class="exturl" data-url="aHR0cDovL3MtdG0uY24vMjAxOS8xMi8wMS9kb2NrZXIrdGVuc29yZmxvdzpzZXJ2aW5nLw==">docker+tensorflow&#x2F;serving<i class="fa fa-external-link-alt"></i></span></p>
 <h2 id="Deploy-in-docker"><a href="#Deploy-in-docker" class="headerlink" title="Deploy in docker"></a>Deploy in docker</h2><p>打开两个终端，分别输入下面命令，将模型部署在docker上</p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_"># </span><span class="language-bash">docker run -p 8501:8501 --name encoder --mount <span class="built_in">source</span>=path/encoder_zh,<span class="built_in">type</span>=<span class="built_in">bind</span>,target=/models/encoder -e MODEL_NAME=encoder -t tensorflow/servien</span></span><br></pre></td></tr></table></figure>
 
@@ -392,6 +399,24 @@
   </span>
   <span class="author" itemprop="copyrightHolder">SmileTM</span>
 </div>
+<div class="busuanzi-count">
+    <span class="post-meta-item" id="busuanzi_container_site_uv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
 
     </div>
   </footer>
@@ -407,6 +432,8 @@
     <i class="fa fa-arrow-up fa-lg"></i>
     <span>0%</span>
   </div>
+
+  <span class="exturl github-corner" data-url="aHR0cHM6Ly9naXRodWIuY29tL3NtaWxldG0=" title="在 GitHub 上关注我" aria-label="在 GitHub 上关注我"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></span>
 
 <noscript>
   <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
@@ -427,6 +454,7 @@
 
 
   
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
 
 
 
