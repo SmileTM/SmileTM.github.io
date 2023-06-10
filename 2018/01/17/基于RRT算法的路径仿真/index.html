@@ -18,34 +18,34 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha256-HtsXJanqjKTc8vVQjO4YMhiqFoXkfBsjBWcX91T1jr8=" crossorigin="anonymous">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
 
-<script class="next-config" data-name="main" type="application/json">{"hostname":"example.com","root":"/","images":"/images","scheme":"Muse","darkmode":true,"version":"8.17.0","exturl":true,"sidebar":{"position":"right","display":"post","padding":18,"offset":12},"copycode":{"enable":true,"style":"mac"},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":"gitalk","storage":true,"lazyload":false,"nav":null,"activeClass":"gitalk"},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
+<script class="next-config" data-name="main" type="application/json">{"hostname":"s-tm.cn","root":"/","images":"/images","scheme":"Muse","darkmode":true,"version":"8.17.0","exturl":true,"sidebar":{"position":"right","display":"post","padding":18,"offset":12},"copycode":{"enable":true,"style":"mac"},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":"gitalk","storage":true,"lazyload":false,"nav":null,"activeClass":"gitalk"},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
 
     <meta name="description" content="最近，在做毕业设计，有关Ros这方面的。于是，利用空余时间，简单的探索了一下。 环境Ubuntu 16.04 LTS + ROS  kinetic 首先为catkin创建一个工作空间 如果已装好了catkin，并且初始化好了变量环境，且创建好了工作空间，则该步骤可以跳过。 若没有，则可以按照下面步骤进行。">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Ros基于RRT算法的路径仿真">
-<meta property="og:url" content="http://example.com/2018/01/17/%E5%9F%BA%E4%BA%8ERRT%E7%AE%97%E6%B3%95%E7%9A%84%E8%B7%AF%E5%BE%84%E4%BB%BF%E7%9C%9F/index.html">
+<meta property="og:url" content="http://s-tm.cn/2018/01/17/%E5%9F%BA%E4%BA%8ERRT%E7%AE%97%E6%B3%95%E7%9A%84%E8%B7%AF%E5%BE%84%E4%BB%BF%E7%9C%9F/index.html">
 <meta property="og:site_name" content="SmileTM博客">
 <meta property="og:description" content="最近，在做毕业设计，有关Ros这方面的。于是，利用空余时间，简单的探索了一下。 环境Ubuntu 16.04 LTS + ROS  kinetic 首先为catkin创建一个工作空间 如果已装好了catkin，并且初始化好了变量环境，且创建好了工作空间，则该步骤可以跳过。 若没有，则可以按照下面步骤进行。">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="http://example.com/images/Ros/ros1.png">
-<meta property="og:image" content="http://example.com/images/Ros/ros2.png">
-<meta property="og:image" content="http://example.com/images/Ros/ros3.png">
-<meta property="og:image" content="http://example.com/images/Ros/ros4.gif">
-<meta property="og:image" content="http://example.com/images/Ros/ros5.png">
-<meta property="og:image" content="http://example.com/images/Ros/ros6.png">
+<meta property="og:image" content="http://s-tm.cn/images/Ros/ros1.png">
+<meta property="og:image" content="http://s-tm.cn/images/Ros/ros2.png">
+<meta property="og:image" content="http://s-tm.cn/images/Ros/ros3.png">
+<meta property="og:image" content="http://s-tm.cn/images/Ros/ros4.gif">
+<meta property="og:image" content="http://s-tm.cn/images/Ros/ros5.png">
+<meta property="og:image" content="http://s-tm.cn/images/Ros/ros6.png">
 <meta property="article:published_time" content="2018-01-17T10:56:32.000Z">
 <meta property="article:modified_time" content="2023-06-10T12:02:31.645Z">
 <meta property="article:author" content="SmileTM">
 <meta property="article:tag" content="Ros">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="http://example.com/images/Ros/ros1.png">
+<meta name="twitter:image" content="http://s-tm.cn/images/Ros/ros1.png">
 
 
-<link rel="canonical" href="http://example.com/2018/01/17/%E5%9F%BA%E4%BA%8ERRT%E7%AE%97%E6%B3%95%E7%9A%84%E8%B7%AF%E5%BE%84%E4%BB%BF%E7%9C%9F/">
+<link rel="canonical" href="http://s-tm.cn/2018/01/17/%E5%9F%BA%E4%BA%8ERRT%E7%AE%97%E6%B3%95%E7%9A%84%E8%B7%AF%E5%BE%84%E4%BB%BF%E7%9C%9F/">
 
 
 
-<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://example.com/2018/01/17/%E5%9F%BA%E4%BA%8ERRT%E7%AE%97%E6%B3%95%E7%9A%84%E8%B7%AF%E5%BE%84%E4%BB%BF%E7%9C%9F/","path":"2018/01/17/基于RRT算法的路径仿真/","title":"Ros基于RRT算法的路径仿真"}</script>
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://s-tm.cn/2018/01/17/%E5%9F%BA%E4%BA%8ERRT%E7%AE%97%E6%B3%95%E7%9A%84%E8%B7%AF%E5%BE%84%E4%BB%BF%E7%9C%9F/","path":"2018/01/17/基于RRT算法的路径仿真/","title":"Ros基于RRT算法的路径仿真"}</script>
 
 <script class="next-config" data-name="calendar" type="application/json">""</script>
 <title>Ros基于RRT算法的路径仿真 | SmileTM博客</title>
@@ -200,7 +200,7 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2018/01/17/%E5%9F%BA%E4%BA%8ERRT%E7%AE%97%E6%B3%95%E7%9A%84%E8%B7%AF%E5%BE%84%E4%BB%BF%E7%9C%9F/">
+    <link itemprop="mainEntityOfPage" href="http://s-tm.cn/2018/01/17/%E5%9F%BA%E4%BA%8ERRT%E7%AE%97%E6%B3%95%E7%9A%84%E8%B7%AF%E5%BE%84%E4%BB%BF%E7%9C%9F/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.png">

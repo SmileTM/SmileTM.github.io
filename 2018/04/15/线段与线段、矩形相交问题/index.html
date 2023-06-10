@@ -18,31 +18,31 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha256-HtsXJanqjKTc8vVQjO4YMhiqFoXkfBsjBWcX91T1jr8=" crossorigin="anonymous">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
 
-<script class="next-config" data-name="main" type="application/json">{"hostname":"example.com","root":"/","images":"/images","scheme":"Muse","darkmode":true,"version":"8.17.0","exturl":true,"sidebar":{"position":"right","display":"post","padding":18,"offset":12},"copycode":{"enable":true,"style":"mac"},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":"gitalk","storage":true,"lazyload":false,"nav":null,"activeClass":"gitalk"},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
+<script class="next-config" data-name="main" type="application/json">{"hostname":"s-tm.cn","root":"/","images":"/images","scheme":"Muse","darkmode":true,"version":"8.17.0","exturl":true,"sidebar":{"position":"right","display":"post","padding":18,"offset":12},"copycode":{"enable":true,"style":"mac"},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":"gitalk","storage":true,"lazyload":false,"nav":null,"activeClass":"gitalk"},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
 
     <meta name="description" content="图形学问题最近在做毕设时，遇到 判断线段是否经过矩形障碍物的图形学问题。 为了解决这一问题，我们先看看 如何判断两线段是否相交 线段与线段是否相交具体解决办法大致可以分为两个步骤。 a.快速排斥实验 若以该线段为对角线的矩形A与该障碍物矩形B不重合，则显然这两线段不相交。 但，若矩形A与矩形B重合，则并不一定代表这两线段相交。">
 <meta property="og:type" content="article">
 <meta property="og:title" content="线段与线段、矩形相交问题">
-<meta property="og:url" content="http://example.com/2018/04/15/%E7%BA%BF%E6%AE%B5%E4%B8%8E%E7%BA%BF%E6%AE%B5%E3%80%81%E7%9F%A9%E5%BD%A2%E7%9B%B8%E4%BA%A4%E9%97%AE%E9%A2%98/index.html">
+<meta property="og:url" content="http://s-tm.cn/2018/04/15/%E7%BA%BF%E6%AE%B5%E4%B8%8E%E7%BA%BF%E6%AE%B5%E3%80%81%E7%9F%A9%E5%BD%A2%E7%9B%B8%E4%BA%A4%E9%97%AE%E9%A2%98/index.html">
 <meta property="og:site_name" content="SmileTM博客">
 <meta property="og:description" content="图形学问题最近在做毕设时，遇到 判断线段是否经过矩形障碍物的图形学问题。 为了解决这一问题，我们先看看 如何判断两线段是否相交 线段与线段是否相交具体解决办法大致可以分为两个步骤。 a.快速排斥实验 若以该线段为对角线的矩形A与该障碍物矩形B不重合，则显然这两线段不相交。 但，若矩形A与矩形B重合，则并不一定代表这两线段相交。">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="http://example.com/images/Intersect/1.png">
-<meta property="og:image" content="http://example.com/images/Intersect/2.png">
-<meta property="og:image" content="http://example.com/images/Intersect/3.png">
+<meta property="og:image" content="http://s-tm.cn/images/Intersect/1.png">
+<meta property="og:image" content="http://s-tm.cn/images/Intersect/2.png">
+<meta property="og:image" content="http://s-tm.cn/images/Intersect/3.png">
 <meta property="article:published_time" content="2018-04-15T14:39:25.000Z">
 <meta property="article:modified_time" content="2023-06-10T12:02:31.644Z">
 <meta property="article:author" content="SmileTM">
 <meta property="article:tag" content="几何算法">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="http://example.com/images/Intersect/1.png">
+<meta name="twitter:image" content="http://s-tm.cn/images/Intersect/1.png">
 
 
-<link rel="canonical" href="http://example.com/2018/04/15/%E7%BA%BF%E6%AE%B5%E4%B8%8E%E7%BA%BF%E6%AE%B5%E3%80%81%E7%9F%A9%E5%BD%A2%E7%9B%B8%E4%BA%A4%E9%97%AE%E9%A2%98/">
+<link rel="canonical" href="http://s-tm.cn/2018/04/15/%E7%BA%BF%E6%AE%B5%E4%B8%8E%E7%BA%BF%E6%AE%B5%E3%80%81%E7%9F%A9%E5%BD%A2%E7%9B%B8%E4%BA%A4%E9%97%AE%E9%A2%98/">
 
 
 
-<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://example.com/2018/04/15/%E7%BA%BF%E6%AE%B5%E4%B8%8E%E7%BA%BF%E6%AE%B5%E3%80%81%E7%9F%A9%E5%BD%A2%E7%9B%B8%E4%BA%A4%E9%97%AE%E9%A2%98/","path":"2018/04/15/线段与线段、矩形相交问题/","title":"线段与线段、矩形相交问题"}</script>
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://s-tm.cn/2018/04/15/%E7%BA%BF%E6%AE%B5%E4%B8%8E%E7%BA%BF%E6%AE%B5%E3%80%81%E7%9F%A9%E5%BD%A2%E7%9B%B8%E4%BA%A4%E9%97%AE%E9%A2%98/","path":"2018/04/15/线段与线段、矩形相交问题/","title":"线段与线段、矩形相交问题"}</script>
 
 <script class="next-config" data-name="calendar" type="application/json">""</script>
 <title>线段与线段、矩形相交问题 | SmileTM博客</title>
@@ -197,7 +197,7 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2018/04/15/%E7%BA%BF%E6%AE%B5%E4%B8%8E%E7%BA%BF%E6%AE%B5%E3%80%81%E7%9F%A9%E5%BD%A2%E7%9B%B8%E4%BA%A4%E9%97%AE%E9%A2%98/">
+    <link itemprop="mainEntityOfPage" href="http://s-tm.cn/2018/04/15/%E7%BA%BF%E6%AE%B5%E4%B8%8E%E7%BA%BF%E6%AE%B5%E3%80%81%E7%9F%A9%E5%BD%A2%E7%9B%B8%E4%BA%A4%E9%97%AE%E9%A2%98/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.png">
