@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 6.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha256-HtsXJanqjKTc8vVQjO4YMhiqFoXkfBsjBWcX91T1jr8=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"example.com","root":"/","images":"/images","scheme":"Muse","darkmode":false,"version":"8.17.0","exturl":false,"sidebar":{"position":"right","display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":"gitalk","storage":true,"lazyload":false,"nav":null,"activeClass":"gitalk"},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="ImageDataGenerator本文章介绍了，直接通过Tensorflow 的ImageDataGenerator 来直接根据相应文件所在的标签目录 进行加载数据，并自动根据文件夹名字 进行自动分类，避免了人工进行标注。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="tf_ImageDataGenerator">
+<meta property="og:url" content="http://example.com/2019/09/19/tf-ImageDataGenerator/index.html">
+<meta property="og:site_name" content="SmileTM博客">
+<meta property="og:description" content="ImageDataGenerator本文章介绍了，直接通过Tensorflow 的ImageDataGenerator 来直接根据相应文件所在的标签目录 进行加载数据，并自动根据文件夹名字 进行自动分类，避免了人工进行标注。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/images/tf_ImageGenerator/cov2d.png">
+<meta property="og:image" content="http://example.com/images/tf_ImageGenerator/max_pooling.png">
+<meta property="article:published_time" content="2019-09-19T13:19:54.000Z">
+<meta property="article:modified_time" content="2023-06-10T12:02:31.637Z">
+<meta property="article:author" content="SmileTM">
+<meta property="article:tag" content="TensorFlow2.x">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/images/tf_ImageGenerator/cov2d.png">
+
+
+<link rel="canonical" href="http://example.com/2019/09/19/tf-ImageDataGenerator/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://example.com/2019/09/19/tf-ImageDataGenerator/","path":"2019/09/19/tf-ImageDataGenerator/","title":"tf_ImageDataGenerator"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>tf_ImageDataGenerator | SmileTM博客</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+      <img class="custom-logo-image" src="/images/custom-logo.png" alt="SmileTM博客">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">SmileTM博客</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">_________Smile  To  Me</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li>
+  </ul>
+</nav>
+
+
+
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#ImageDataGenerator"><span class="nav-number">1.</span> <span class="nav-text">ImageDataGenerator</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">SmileTM</p>
+  <div class="site-description" itemprop="description">________Talk is cheap，show me the code！！！</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">36</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">19</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/smiletm" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;smiletm" rel="noopener me" target="_blank">GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://twitter.com/SmileTM96" title="Twitter → https:&#x2F;&#x2F;twitter.com&#x2F;SmileTM96" rel="noopener me" target="_blank">Twitter</a>
+      </span>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2019/09/19/tf-ImageDataGenerator/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="SmileTM">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="SmileTM博客">
+      <meta itemprop="description" content="________Talk is cheap，show me the code！！！">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="tf_ImageDataGenerator | SmileTM博客">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          tf_ImageDataGenerator
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2019-09-19 21:19:54" itemprop="dateCreated datePublished" datetime="2019-09-19T21:19:54+08:00">2019-09-19</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2023-06-10 20:02:31" itemprop="dateModified" datetime="2023-06-10T20:02:31+08:00">2023-06-10</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><h1 id="ImageDataGenerator"><a href="#ImageDataGenerator" class="headerlink" title="ImageDataGenerator"></a>ImageDataGenerator</h1><p>本文章介绍了，直接通过Tensorflow 的ImageDataGenerator 来直接根据相应文件所在的标签目录 进行加载数据，并自动根据文件夹名字 进行自动分类，避免了人工进行标注。</p>
+<span id="more"></span>
+
+
+
+<p>对文件进行读取，并通过zip 进行解压，解压到指定文件夹。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> os</span><br><span class="line"><span class="keyword">import</span> zipfile</span><br><span class="line"></span><br><span class="line"><span class="comment"># 指定训练集zip的位置</span></span><br><span class="line">local_zip = <span class="string">&#x27;/tmp/horse-or-human.zip&#x27;</span></span><br><span class="line"><span class="comment"># 对zip压缩包进行读取</span></span><br><span class="line">zip_ref = zipfile.ZipFile(local_zip, <span class="string">&#x27;r&#x27;</span>)</span><br><span class="line"><span class="comment"># 解压到指定目录</span></span><br><span class="line">zip_ref.extractall(<span class="string">&#x27;/tmp/horse-or-human&#x27;</span>)</span><br><span class="line"><span class="comment"># 指定 验证集zip的位置</span></span><br><span class="line">local_zip = <span class="string">&#x27;/tmp/validation-horse-or-human.zip&#x27;</span></span><br><span class="line">zip_ref = zipfile.ZipFile(local_zip, <span class="string">&#x27;r&#x27;</span>)</span><br><span class="line">zip_ref.extractall(<span class="string">&#x27;/tmp/validation-horse-or-human&#x27;</span>)</span><br><span class="line"><span class="comment"># 关闭zip进程流 释放资源</span></span><br><span class="line">zip_ref.close()</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+
+
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Directory with our training horse pictures</span></span><br><span class="line"><span class="comment"># horse 训练集目录</span></span><br><span class="line">train_horse_dir = os.path.join(<span class="string">&#x27;/tmp/horse-or-human/horses&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># Directory with our training human pictures</span></span><br><span class="line"><span class="comment"># human 训练集目录</span></span><br><span class="line">train_human_dir = os.path.join(<span class="string">&#x27;/tmp/horse-or-human/humans&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># Directory with our training horse pictures</span></span><br><span class="line"><span class="comment"># 设置验证集目录</span></span><br><span class="line">validation_horse_dir = os.path.join(<span class="string">&#x27;/tmp/validation-horse-or-human/horses&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># Directory with our training human pictures</span></span><br><span class="line">validation_human_dir = os.path.join(<span class="string">&#x27;/tmp/validation-horse-or-human/humans&#x27;</span>)</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">train_horse_names = os.listdir(train_horse_dir)</span><br><span class="line"><span class="built_in">print</span>(train_horse_names[:<span class="number">10</span>])</span><br><span class="line"></span><br><span class="line">train_human_names = os.listdir(train_human_dir)</span><br><span class="line"><span class="built_in">print</span>(train_human_names[:<span class="number">10</span>])</span><br><span class="line"></span><br><span class="line">validation_horse_hames = os.listdir(validation_horse_dir)</span><br><span class="line"><span class="built_in">print</span>(validation_horse_hames[:<span class="number">10</span>])</span><br><span class="line"></span><br><span class="line">validation_human_names = os.listdir(validation_human_dir)</span><br><span class="line"><span class="built_in">print</span>(validation_human_names[:<span class="number">10</span>])</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">train_horse_names = os.listdir(train_horse_dir)</span><br><span class="line"><span class="built_in">print</span>(train_horse_names[:<span class="number">10</span>])</span><br><span class="line"></span><br><span class="line">train_human_names = os.listdir(train_human_dir)</span><br><span class="line"><span class="built_in">print</span>(train_human_names[:<span class="number">10</span>])</span><br><span class="line"></span><br><span class="line">validation_horse_hames = os.listdir(validation_horse_dir)</span><br><span class="line"><span class="built_in">print</span>(validation_horse_hames[:<span class="number">10</span>])</span><br><span class="line"></span><br><span class="line">validation_human_names = os.listdir(validation_human_dir)</span><br><span class="line"><span class="built_in">print</span>(validation_human_names[:<span class="number">10</span>])</span><br></pre></td></tr></table></figure>
+
+<p>列出各目录下的 文件名称</p>
+<p>[‘horse34-7.png’, ‘horse21-9.png’, ‘horse02-5.png’, ‘horse01-8.png’, ‘horse36-0.png’, ‘horse25-7.png’, ‘horse42-1.png’, ‘horse02-1.png’, ‘horse36-5.png’, ‘horse19-0.png’]<br>[‘human08-12.png’, ‘human14-08.png’, ‘human04-04.png’, ‘human03-27.png’, ‘human15-17.png’, ‘human02-00.png’, ‘human17-06.png’, ‘human04-29.png’, ‘human13-19.png’, ‘human05-00.png’]</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">%matplotlib inline</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> matplotlib.pyplot <span class="keyword">as</span> plt</span><br><span class="line"><span class="keyword">import</span> matplotlib.image <span class="keyword">as</span> mpimg</span><br><span class="line"></span><br><span class="line"><span class="comment"># Parameters for our graph; we&#x27;ll output images in a 4x4 configuration</span></span><br><span class="line">nrows = <span class="number">4</span> <span class="comment"># 设置plt幕布 行</span></span><br><span class="line">ncols = <span class="number">4</span> <span class="comment"># 设置plt幕布 列</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># Index for iterating over images</span></span><br><span class="line">pic_index = <span class="number">0</span></span><br></pre></td></tr></table></figure>
+
+
+
+
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Set up matplotlib fig, and size it to fit 4x4 pics</span></span><br><span class="line">fig = plt.gcf()</span><br><span class="line">fig.set_size_inches(ncols * <span class="number">4</span>, nrows * <span class="number">4</span>)</span><br><span class="line"></span><br><span class="line">pic_index += <span class="number">8</span></span><br><span class="line">next_horse_pix = [os.path.join(train_horse_dir, fname) </span><br><span class="line">                <span class="keyword">for</span> fname <span class="keyword">in</span> train_horse_names[pic_index-<span class="number">8</span>:pic_index]]</span><br><span class="line">next_human_pix = [os.path.join(train_human_dir, fname) </span><br><span class="line">                <span class="keyword">for</span> fname <span class="keyword">in</span> train_human_names[pic_index-<span class="number">8</span>:pic_index]]</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> i, img_path <span class="keyword">in</span> <span class="built_in">enumerate</span>(next_horse_pix+next_human_pix):</span><br><span class="line">  <span class="comment"># Set up subplot; subplot indices start at 1</span></span><br><span class="line">  sp = plt.subplot(nrows, ncols, i + <span class="number">1</span>)</span><br><span class="line">  sp.axis(<span class="string">&#x27;Off&#x27;</span>) <span class="comment"># Don&#x27;t show axes (or gridlines)</span></span><br><span class="line"></span><br><span class="line">  img = mpimg.imread(img_path)</span><br><span class="line">  plt.imshow(img)</span><br><span class="line"></span><br><span class="line">plt.show()</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+
+<p>模型架构的搭建</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> tensorflow <span class="keyword">as</span> tf</span><br><span class="line"></span><br><span class="line">model = tf.keras.models.Sequential([</span><br><span class="line">    <span class="comment"># Note the input shape is the desired size of the image 300x300 with 3 bytes color</span></span><br><span class="line">    <span class="comment"># This is the first convolution</span></span><br><span class="line">    tf.keras.layers.Conv2D(<span class="number">16</span>, (<span class="number">3</span>,<span class="number">3</span>), activation=<span class="string">&#x27;relu&#x27;</span>, input_shape=(<span class="number">300</span>, <span class="number">300</span>, <span class="number">3</span>)),</span><br><span class="line">    tf.keras.layers.MaxPooling2D(<span class="number">2</span>, <span class="number">2</span>),</span><br><span class="line">    <span class="comment"># The second convolution</span></span><br><span class="line">    tf.keras.layers.Conv2D(<span class="number">32</span>, (<span class="number">3</span>,<span class="number">3</span>), activation=<span class="string">&#x27;relu&#x27;</span>),</span><br><span class="line">    tf.keras.layers.MaxPooling2D(<span class="number">2</span>,<span class="number">2</span>),</span><br><span class="line">    <span class="comment"># The third convolution</span></span><br><span class="line">    tf.keras.layers.Conv2D(<span class="number">64</span>, (<span class="number">3</span>,<span class="number">3</span>), activation=<span class="string">&#x27;relu&#x27;</span>),</span><br><span class="line">    tf.keras.layers.MaxPooling2D(<span class="number">2</span>,<span class="number">2</span>),</span><br><span class="line">    <span class="comment"># The fourth convolution</span></span><br><span class="line">    tf.keras.layers.Conv2D(<span class="number">64</span>, (<span class="number">3</span>,<span class="number">3</span>), activation=<span class="string">&#x27;relu&#x27;</span>),</span><br><span class="line">    tf.keras.layers.MaxPooling2D(<span class="number">2</span>,<span class="number">2</span>),</span><br><span class="line">    <span class="comment"># The fifth convolution</span></span><br><span class="line">    tf.keras.layers.Conv2D(<span class="number">64</span>, (<span class="number">3</span>,<span class="number">3</span>), activation=<span class="string">&#x27;relu&#x27;</span>),</span><br><span class="line">    tf.keras.layers.MaxPooling2D(<span class="number">2</span>,<span class="number">2</span>),</span><br><span class="line">    <span class="comment"># Flatten the results to feed into a DNN</span></span><br><span class="line">    tf.keras.layers.Flatten(),</span><br><span class="line">    <span class="comment"># 512 neuron hidden layer</span></span><br><span class="line">    tf.keras.layers.Dense(<span class="number">512</span>, activation=<span class="string">&#x27;relu&#x27;</span>),</span><br><span class="line">    <span class="comment"># Only 1 output neuron. It will contain a value from 0-1 where 0 for 1 class (&#x27;horses&#x27;) and 1 for the other (&#x27;humans&#x27;)</span></span><br><span class="line">    tf.keras.layers.Dense(<span class="number">1</span>, activation=<span class="string">&#x27;sigmoid&#x27;</span>)</span><br><span class="line">])</span><br><span class="line"></span><br><span class="line"><span class="comment"># 输出 模型各层参数的大概</span></span><br><span class="line">model.summary()</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> tensorflow.keras.optimizers <span class="keyword">import</span> RMSprop</span><br><span class="line"><span class="comment"># 模型编译，指定loss损失函数，metrics评估标准 以及optimizer优化器</span></span><br><span class="line">model.<span class="built_in">compile</span>(loss=<span class="string">&#x27;binary_crossentropy&#x27;</span>,</span><br><span class="line">              optimizer=RMSprop(lr=<span class="number">0.001</span>),</span><br><span class="line">              metrics=[<span class="string">&#x27;acc&#x27;</span>])</span><br></pre></td></tr></table></figure>
+
+
+
+<p>创建ImageDataGenerator</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> tensorflow.keras.preprocessing.image <span class="keyword">import</span> ImageDataGenerator</span><br><span class="line"></span><br><span class="line"><span class="comment"># All images will be rescaled by 1./255</span></span><br><span class="line"><span class="comment"># 利用ImageDataGenerator rescale 对读取图像进行正则化 归1</span></span><br><span class="line">train_datagen = ImageDataGenerator(rescale=<span class="number">1</span>/<span class="number">255</span>)</span><br><span class="line">validation_datagen = ImageDataGenerator(rescale=<span class="number">1</span>/<span class="number">255</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># Flow training images in batches of 128 using train_datagen generator</span></span><br><span class="line"><span class="comment"># 创建训练样本生成器 ，指定训练目录，目录下不同image存放在 不同的 指定文件夹，并更具指定文件夹 自动设置label。</span></span><br><span class="line"><span class="comment"># 并通过设置target_size,在读取文件时 自动将image的shape 进行转换</span></span><br><span class="line">train_generator = train_datagen.flow_from_directory(</span><br><span class="line">        <span class="string">&#x27;/tmp/horse-or-human/&#x27;</span>,  <span class="comment"># This is the source directory for training images</span></span><br><span class="line">        target_size=(<span class="number">300</span>, <span class="number">300</span>),  <span class="comment"># All images will be resized to 150x150</span></span><br><span class="line">        batch_size=<span class="number">128</span>,</span><br><span class="line">        <span class="comment"># Since we use binary_crossentropy loss, we need binary labels</span></span><br><span class="line">        class_mode=<span class="string">&#x27;binary&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># Flow training images in batches of 128 using train_datagen generator</span></span><br><span class="line">validation_generator = validation_datagen.flow_from_directory(</span><br><span class="line">        <span class="string">&#x27;/tmp/validation-horse-or-human/&#x27;</span>,  <span class="comment"># This is the source directory for training images</span></span><br><span class="line">        target_size=(<span class="number">300</span>, <span class="number">300</span>),  <span class="comment"># All images will be resized to 150x150</span></span><br><span class="line">        batch_size=<span class="number">32</span>,</span><br><span class="line">        <span class="comment"># Since we use binary_crossentropy loss, we need binary labels</span></span><br><span class="line">        class_mode=<span class="string">&#x27;binary&#x27;</span>)</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+<p>若使用Generator，则应使用model.fit_generator 进行训练</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">history = model.fit_generator(</span><br><span class="line">      train_generator,</span><br><span class="line">      steps_per_epoch=<span class="number">8</span>,  </span><br><span class="line">      epochs=<span class="number">15</span>,</span><br><span class="line">      verbose=<span class="number">1</span>,</span><br><span class="line">      validation_data = validation_generator,</span><br><span class="line">      validation_steps=<span class="number">8</span>)</span><br></pre></td></tr></table></figure>
+
+<p>steps_per_epoch 根据样本数n，batch_size 来确定，告诉模型经过多少step 才代表一个batch为结束。</p>
+<p>steps_per_epoch &#x3D; n &#x2F; batch_size</p>
+<p>verbose &#x3D; 0 时 模型训练时 只输出结果</p>
+<p>verbose &#x3D; 1 时 模型训练时 控制台不会出现进度条</p>
+<p>verbose &#x3D; 2 时 模型训练时 控制台出现进度条</p>
+<p>图片特征提取处理</p>
+<p>展示 卷积层Cov，最大池化层MaxPooling，各filter所提取的图片特征</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">import</span> random</span><br><span class="line"><span class="keyword">from</span> tensorflow.keras.preprocessing.image <span class="keyword">import</span> img_to_array, load_img</span><br><span class="line"></span><br><span class="line"><span class="comment"># Let&#x27;s define a new Model that will take an image as input, and will output</span></span><br><span class="line"><span class="comment"># intermediate representations for all layers in the previous model after</span></span><br><span class="line"><span class="comment"># the first.</span></span><br><span class="line">successive_outputs = [layer.output <span class="keyword">for</span> layer <span class="keyword">in</span> model.layers[<span class="number">1</span>:]]</span><br><span class="line"><span class="comment">#visualization_model = Model(img_input, successive_outputs)</span></span><br><span class="line">visualization_model = tf.keras.models.Model(inputs = model.<span class="built_in">input</span>, outputs = successive_outputs)</span><br><span class="line"><span class="comment"># Let&#x27;s prepare a random input image from the training set.</span></span><br><span class="line">horse_img_files = [os.path.join(train_horse_dir, f) <span class="keyword">for</span> f <span class="keyword">in</span> train_horse_names]</span><br><span class="line">human_img_files = [os.path.join(train_human_dir, f) <span class="keyword">for</span> f <span class="keyword">in</span> train_human_names]</span><br><span class="line">img_path = random.choice(horse_img_files + human_img_files)</span><br><span class="line"></span><br><span class="line">img = load_img(img_path, target_size=(<span class="number">300</span>, <span class="number">300</span>))  <span class="comment"># this is a PIL image</span></span><br><span class="line">x = img_to_array(img)  <span class="comment"># Numpy array with shape (150, 150, 3)</span></span><br><span class="line">x = x.reshape((<span class="number">1</span>,) + x.shape)  <span class="comment"># Numpy array with shape (1, 150, 150, 3)</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># Rescale by 1/255</span></span><br><span class="line">x /= <span class="number">255</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># Let&#x27;s run our image through our network, thus obtaining all</span></span><br><span class="line"><span class="comment"># intermediate representations for this image.</span></span><br><span class="line">successive_feature_maps = visualization_model.predict(x)</span><br><span class="line"></span><br><span class="line"><span class="comment"># These are the names of the layers, so can have them as part of our plot</span></span><br><span class="line">layer_names = [layer.name <span class="keyword">for</span> layer <span class="keyword">in</span> model.layers]</span><br><span class="line"></span><br><span class="line"><span class="comment"># Now let&#x27;s display our representations</span></span><br><span class="line"><span class="keyword">for</span> layer_name, feature_map <span class="keyword">in</span> <span class="built_in">zip</span>(layer_names, successive_feature_maps):</span><br><span class="line">  <span class="keyword">if</span> <span class="built_in">len</span>(feature_map.shape) == <span class="number">4</span>:</span><br><span class="line">    <span class="comment"># Just do this for the conv / maxpool layers, not the fully-connected layers</span></span><br><span class="line">    n_features = feature_map.shape[-<span class="number">1</span>]  <span class="comment"># number of features in feature map</span></span><br><span class="line">    <span class="comment"># The feature map has shape (1, size, size, n_features)</span></span><br><span class="line">    size = feature_map.shape[<span class="number">1</span>]</span><br><span class="line">    <span class="comment"># We will tile our images in this matrix</span></span><br><span class="line">    display_grid = np.zeros((size, size * n_features))</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(n_features):</span><br><span class="line">      <span class="comment"># Postprocess the feature to make it visually palatable</span></span><br><span class="line">      x = feature_map[<span class="number">0</span>, :, :, i]</span><br><span class="line">      x -= x.mean()</span><br><span class="line">      x /= x.std()</span><br><span class="line">      x *= <span class="number">64</span></span><br><span class="line">      x += <span class="number">128</span></span><br><span class="line">      x = np.clip(x, <span class="number">0</span>, <span class="number">255</span>).astype(<span class="string">&#x27;uint8&#x27;</span>)</span><br><span class="line">      <span class="comment"># We&#x27;ll tile each filter into this big horizontal grid</span></span><br><span class="line">      display_grid[:, i * size : (i + <span class="number">1</span>) * size] = x</span><br><span class="line">    <span class="comment"># Display the grid</span></span><br><span class="line">    scale = <span class="number">20.</span> / n_features</span><br><span class="line">    plt.figure(figsize=(scale * n_features, scale))</span><br><span class="line">    plt.title(layer_name)</span><br><span class="line">    plt.grid(<span class="literal">False</span>)</span><br><span class="line">    plt.imshow(display_grid, aspect=<span class="string">&#x27;auto&#x27;</span>, cmap=<span class="string">&#x27;viridis&#x27;</span>)![download](/Users/lollipop/Desktop/download.png)</span><br></pre></td></tr></table></figure>
+
+<p>特征filter 只展示顶上两个</p>
+<p><img src="/images/tf_ImageGenerator/cov2d.png" alt="cov2d"></p>
+<p><img src="/images/tf_ImageGenerator/max_pooling.png" alt="max_pooling"></p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/TensorFlow2-x/" rel="tag"># TensorFlow2.x</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2019/09/21/tf%E6%96%87%E6%9C%AC%E5%A4%84%E7%90%86/" rel="prev" title="tf文本处理">
+                  <i class="fa fa-chevron-left"></i> tf文本处理
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2019/09/18/Tricks/" rel="next" title="Tricks">
+                  Tricks <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+    <div class="comments gitalk-container"></div>
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">SmileTM</span>
+</div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/schemes/muse.js"></script><script src="/js/next-boot.js"></script>
+
+  
+  <script class="next-config" data-name="pdf" type="application/json">{"object_url":{"url":"https://cdnjs.cloudflare.com/ajax/libs/pdfobject/2.2.11/pdfobject.min.js","integrity":"sha256-N6JtCNwaYm6kizuG92UtOOXamRHPwu+V1yF10g3bu/c="},"url":"/lib/pdf/web/viewer.html"}</script>
+  <script src="/js/third-party/tags/pdf.js"></script>
+
+
+
+
+
+
+  
+
+
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">false</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"tags":"all","js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.js","integrity":"sha256-MASABpB4tYktI2Oitl4t+78w/lyA+D7b/s9GEP0JOGI="}}</script>
+<script src="/js/third-party/math/mathjax.js"></script>
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/gitalk/1.8.0/gitalk.css" integrity="sha256-AJnUHL7dBv6PGaeyPQJcgQPDjt/Hn/PvYZde1iqfp8U=" crossorigin="anonymous">
+
+<script class="next-config" data-name="gitalk" type="application/json">{"enable":true,"github_id":"SmileTM","repo":"SmileTM.github.io","client_id":"ed531d5b5c361d2a4ee1","client_secret":"23d9318d301649f0513a37915b9466b68b44acd4","admin_user":"SmileTM","distraction_free_mode":true,"proxy":"https://cors-anywhere.azm.workers.dev/https://github.com/login/oauth/access_token","language":null,"js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/gitalk/1.8.0/gitalk.min.js","integrity":"sha256-MVK9MGD/XJaGyIghSVrONSnoXoGh3IFxLw0zfvzpxR4="},"path_md5":"b0ffed758ca33a438d3706e675109479"}</script>
+<script src="/js/third-party/comments/gitalk.js"></script>
+
+</body>
+</html>

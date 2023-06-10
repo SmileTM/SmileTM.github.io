@@ -1,0 +1,477 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 6.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha256-HtsXJanqjKTc8vVQjO4YMhiqFoXkfBsjBWcX91T1jr8=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"example.com","root":"/","images":"/images","scheme":"Muse","darkmode":false,"version":"8.17.0","exturl":false,"sidebar":{"position":"right","display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":"gitalk","storage":true,"lazyload":false,"nav":null,"activeClass":"gitalk"},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="模型训练完后，往往需要将模型应用到生产环境中。最常见的就是通过TensorFlow Serving来将模型部署到服务器端，以便客户端进行访问。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="TensorFlow2.x 模型部署">
+<meta property="og:url" content="http://example.com/2020/08/22/TensorFlow2.x%E6%A8%A1%E5%9E%8B%E9%83%A8%E7%BD%B2/index.html">
+<meta property="og:site_name" content="SmileTM博客">
+<meta property="og:description" content="模型训练完后，往往需要将模型应用到生产环境中。最常见的就是通过TensorFlow Serving来将模型部署到服务器端，以便客户端进行访问。">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2020-08-22T06:59:17.000Z">
+<meta property="article:modified_time" content="2023-06-10T12:02:31.638Z">
+<meta property="article:author" content="SmileTM">
+<meta property="article:tag" content="TensorFlow2.x">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="http://example.com/2020/08/22/TensorFlow2.x%E6%A8%A1%E5%9E%8B%E9%83%A8%E7%BD%B2/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://example.com/2020/08/22/TensorFlow2.x%E6%A8%A1%E5%9E%8B%E9%83%A8%E7%BD%B2/","path":"2020/08/22/TensorFlow2.x模型部署/","title":"TensorFlow2.x 模型部署"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>TensorFlow2.x 模型部署 | SmileTM博客</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+      <img class="custom-logo-image" src="/images/custom-logo.png" alt="SmileTM博客">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">SmileTM博客</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">_________Smile  To  Me</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li>
+  </ul>
+</nav>
+
+
+
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#TensorFlow-Serving-%E5%AE%89%E8%A3%85"><span class="nav-number">1.</span> <span class="nav-text">TensorFlow Serving 安装</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%A8%A1%E5%9E%8B%E9%83%A8%E7%BD%B2"><span class="nav-number">2.</span> <span class="nav-text">模型部署</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Keras-Sequential-%E6%A8%A1%E5%BC%8F%E6%A8%A1%E5%9E%8B%E7%9A%84%E9%83%A8%E7%BD%B2%EF%BC%88%E5%8D%95%E8%BE%93%E5%85%A5%EF%BC%8C%E5%8D%95%E8%BE%93%E5%87%BA%EF%BC%89"><span class="nav-number">2.1.</span> <span class="nav-text">Keras Sequential 模式模型的部署（单输入，单输出）</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%A8%A1%E5%9E%8B%E6%9E%84%E5%BB%BA"><span class="nav-number">2.1.1.</span> <span class="nav-text">模型构建</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%A8%A1%E5%9E%8B%E5%AF%BC%E5%87%BA"><span class="nav-number">2.1.2.</span> <span class="nav-text">模型导出</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#docker%E9%83%A8%E7%BD%B2"><span class="nav-number">2.1.3.</span> <span class="nav-text">docker部署</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%AF%B7%E6%B1%82%E6%9C%8D%E5%8A%A1"><span class="nav-number">2.1.4.</span> <span class="nav-text">请求服务</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Keras-Model%E5%87%BD%E6%95%B0%E5%BC%8F%E6%A8%A1%E5%9E%8B%E7%9A%84%E9%83%A8%E7%BD%B2%EF%BC%88%E5%A4%9A%E8%BE%93%E5%85%A5%EF%BC%8C%E5%A4%9A%E8%BE%93%E5%87%BA%EF%BC%89"><span class="nav-number">2.2.</span> <span class="nav-text">Keras Model函数式模型的部署（多输入，多输出）</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%A8%A1%E5%9E%8B%E6%9E%84%E5%BB%BA-1"><span class="nav-number">2.2.1.</span> <span class="nav-text">模型构建</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%A8%A1%E5%9E%8B%E5%AF%BC%E5%87%BA-1"><span class="nav-number">2.2.2.</span> <span class="nav-text">模型导出</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#docker%E9%83%A8%E7%BD%B2-1"><span class="nav-number">2.2.3.</span> <span class="nav-text">docker部署</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%AF%B7%E6%B1%82%E6%9C%8D%E5%8A%A1-1"><span class="nav-number">2.2.4.</span> <span class="nav-text">请求服务</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%87%AA%E5%AE%9A%E4%B9%89-Keras-%E6%A8%A1%E5%9E%8B%E7%9A%84%E9%83%A8%E7%BD%B2-%E5%A4%9A%E8%BE%93%E5%85%A5-mode%EF%BC%8C%E5%A4%9A%E8%BE%93%E5%87%BA"><span class="nav-number">2.3.</span> <span class="nav-text">自定义 Keras 模型的部署 (多输入+mode，多输出)</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%96%B9%E6%B3%95%E4%B8%80"><span class="nav-number">2.3.1.</span> <span class="nav-text">方法一</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%A8%A1%E5%9E%8B%E6%9E%84%E5%BB%BA-2"><span class="nav-number">2.3.1.1.</span> <span class="nav-text">模型构建</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%A8%A1%E5%9E%8B%E5%AF%BC%E5%87%BA-2"><span class="nav-number">2.3.1.2.</span> <span class="nav-text">模型导出</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%96%B9%E6%B3%95%E4%BA%8C"><span class="nav-number">2.3.2.</span> <span class="nav-text">方法二</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%A8%A1%E5%9E%8B%E6%9E%84%E5%BB%BA-3"><span class="nav-number">2.3.2.1.</span> <span class="nav-text">模型构建</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%A8%A1%E5%9E%8B%E5%AF%BC%E5%87%BA-3"><span class="nav-number">2.3.2.2.</span> <span class="nav-text">模型导出</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%BB%88%E7%89%88-%E5%AE%98%E6%96%B9%E6%8E%A8%E8%8D%90"><span class="nav-number">2.3.3.</span> <span class="nav-text">终版(官方推荐)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#docker%E9%83%A8%E7%BD%B2-2"><span class="nav-number">2.3.4.</span> <span class="nav-text">docker部署</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%AF%B7%E6%B1%82%E6%9C%8D%E5%8A%A1-2"><span class="nav-number">2.3.5.</span> <span class="nav-text">请求服务</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%AE%A2%E6%88%B7%E7%AB%AF%E4%B8%AD%E7%A8%8B%E5%BA%8F%E8%B0%83%E7%94%A8"><span class="nav-number">3.</span> <span class="nav-text">客户端中程序调用</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#pycurl"><span class="nav-number">3.1.</span> <span class="nav-text">pycurl</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#request"><span class="nav-number">3.2.</span> <span class="nav-text">request</span></a></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">SmileTM</p>
+  <div class="site-description" itemprop="description">________Talk is cheap，show me the code！！！</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">36</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">19</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/smiletm" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;smiletm" rel="noopener me" target="_blank">GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://twitter.com/SmileTM96" title="Twitter → https:&#x2F;&#x2F;twitter.com&#x2F;SmileTM96" rel="noopener me" target="_blank">Twitter</a>
+      </span>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2020/08/22/TensorFlow2.x%E6%A8%A1%E5%9E%8B%E9%83%A8%E7%BD%B2/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="SmileTM">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="SmileTM博客">
+      <meta itemprop="description" content="________Talk is cheap，show me the code！！！">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="TensorFlow2.x 模型部署 | SmileTM博客">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          TensorFlow2.x 模型部署
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2020-08-22 14:59:17" itemprop="dateCreated datePublished" datetime="2020-08-22T14:59:17+08:00">2020-08-22</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2023-06-10 20:02:31" itemprop="dateModified" datetime="2023-06-10T20:02:31+08:00">2023-06-10</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><p>模型训练完后，往往需要将模型应用到生产环境中。最常见的就是通过TensorFlow Serving来将模型部署到服务器端，以便客户端进行访问。</p>
+<span id="more"></span>
+
+<h1 id="TensorFlow-Serving-安装"><a href="#TensorFlow-Serving-安装" class="headerlink" title="TensorFlow Serving 安装"></a>TensorFlow Serving 安装</h1><p>TensorFlow Serving一般安装在服务器端，最为方便，推荐在生产环境中 <a target="_blank" rel="noopener" href="https://tensorflow.google.cn/tfx/serving/docker">使用 Docker 部署 TensorFlow Serving</a> 。当然也可以通过<a target="_blank" rel="noopener" href="https://tensorflow.google.cn/tfx/serving/setup#installing_using_apt">apt-get 安装</a> 。这里我主要，使用的前者。</p>
+<p>首先<a target="_blank" rel="noopener" href="https://docs.docker.com/engine/install/">安装docker</a>。</p>
+<p>然后，拉取最新的Tensorflow Serving镜像。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker pull tensorflow/serving</span><br></pre></td></tr></table></figure>
+
+
+
+<h1 id="模型部署"><a href="#模型部署" class="headerlink" title="模型部署"></a>模型部署</h1><h2 id="Keras-Sequential-模式模型的部署（单输入，单输出）"><a href="#Keras-Sequential-模式模型的部署（单输入，单输出）" class="headerlink" title="Keras Sequential 模式模型的部署（单输入，单输出）"></a>Keras Sequential 模式模型的部署（单输入，单输出）</h2><h3 id="模型构建"><a href="#模型构建" class="headerlink" title="模型构建"></a>模型构建</h3><p>由于Keras Sequential 模式的输入输出形式比较固定单一，所以这里简单的构造一个Sequential 模型。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">model = tf.keras.Sequential([tf.keras.layers.Dense(<span class="number">1</span>)])</span><br></pre></td></tr></table></figure>
+
+<h3 id="模型导出"><a href="#模型导出" class="headerlink" title="模型导出"></a>模型导出</h3><p>模型构造好后，开始进行模型的导出。<br>由于这里只是示例，不进行数据输入训练等操作，通过TF2.0 中eager的特性来初始化模型。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">version = <span class="string">&#x27;1&#x27;</span>  <span class="comment">#版本号</span></span><br><span class="line">model_name = <span class="string">&#x27;sequential_model&#x27;</span></span><br><span class="line">saved_path = os.path.join(<span class="string">&#x27;models&#x27;</span>,model_name)</span><br><span class="line">data = tf.ones((<span class="number">2</span>, <span class="number">10</span>))</span><br><span class="line">model(datas</span><br><span class="line">model.save(os.path.join(saved_path,version))   <span class="comment"># models/sequential_model/1</span></span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p><strong>注意</strong>：tensorflow Serving支持热更新，每次默认选取版本<code>version</code>最大的进行部署。因此，我们在保存模型的路径上需要加上指定的<code>version</code>。</p>
+</blockquote>
+<p>保存后的文件目录结构如下：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">└── sequential_model</span><br><span class="line">    ├── 1</span><br><span class="line">    │   ├── assets</span><br><span class="line">    │   ├── saved_model.pb</span><br><span class="line">    │   └── variables</span><br><span class="line">    │       ├── variables.data-00000-of-00001</span><br><span class="line">    │       └── variables.index</span><br><span class="line">    └── 2</span><br><span class="line">        ├── assets</span><br><span class="line">        ├── saved_model.pb</span><br><span class="line">        └── variables</span><br><span class="line">            ├── variables.data-00000-of-00001</span><br><span class="line">            └── variables.index</span><br></pre></td></tr></table></figure>
+
+
+
+<p>接着在<strong>终端</strong>中，通过以下命令，查看保存的模型结构</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">saved_model_cli show --dir models/sequential_model/1 --all</span><br></pre></td></tr></table></figure>
+
+<p>终端输出 重点关注下面信息：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">signature_def[&#x27;serving_default&#x27;]:</span><br><span class="line">  The given SavedModel SignatureDef contains the following input(s):</span><br><span class="line">    inputs[&#x27;dense_input&#x27;] tensor_info:</span><br><span class="line">        dtype: DT_FLOAT</span><br><span class="line">        shape: (-1, 10)</span><br><span class="line">        name: serving_default_dense_input:0</span><br><span class="line">  The given SavedModel SignatureDef contains the following output(s):</span><br><span class="line">    outputs[&#x27;dense&#x27;] tensor_info:</span><br><span class="line">        dtype: DT_FLOAT</span><br><span class="line">        shape: (-1, 1)</span><br><span class="line">        name: StatefulPartitionedCall:0</span><br><span class="line">  Method name is: tensorflow/serving/predict</span><br></pre></td></tr></table></figure>
+
+<p>其中<br>inputs[‘dense_input’]  中的 dense_input 是请求 TensorFlow Serving服务时所需的 <strong>输入名</strong><br>outputs[‘dense’] 中的dense是TensorFlow Serving服务 返回的<strong>输出名</strong> ( 当outputs只有一个时默认 输出名为 outputs)</p>
+<h3 id="docker部署"><a href="#docker部署" class="headerlink" title="docker部署"></a>docker部署</h3><p>接下来我们运行Docker中的tensorflow Serving 进行部署：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">docker run -t --name sequential_model -p 8501:8501 \</span><br><span class="line">--mount type=bind,source=/root/models,target=/models \</span><br><span class="line">-e MODEL_NAME=sequential_model tensorflow/serving &amp;</span><br></pre></td></tr></table></figure>
+
+<p>解释：<br>–name 定义容器的名字<br>-p 8051:8051  指的是 本地端口:容器内部端口 的映射。（注：tensorflow Serving 默认开启的是8501端口，如需修改则需进入容器中手动指定 –rest_api_port）<br>–mount type&#x3D;bind, source&#x3D;&#x2F;root&#x2F;models ,target&#x3D;&#x2F;models  指的是将本地<code>/root/models</code> 目录 映射到 docker容器中<code>/models</code>目录<br>-e MODEL_NAME&#x3D;sequential_model  这里指的环境名称MODEL_NAME，tensorflow Serving会自动索引容器中<code>/models/MODEL_NAME</code> 目录下的模型文件</p>
+<p>上面的docker 命令 相当于在容器中 执行下面命令。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">tensorflow_model_server \</span><br><span class="line">    --rest_api_port=8501 \   </span><br><span class="line">    --model_name=sequential_model \</span><br><span class="line">    --model_base_path= /models/sequential_model &amp;</span><br></pre></td></tr></table></figure>
+
+<p>因此，也可以仅启动容器，设置端口映射，目录映射后 ，进入容器 通过自己手动启动<code>tensorflow_model_server</code> 来进行更多的自定义。</p>
+<h3 id="请求服务"><a href="#请求服务" class="headerlink" title="请求服务"></a>请求服务</h3><p>终端中可以通过curl进行请求</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">curl -d &#x27;&#123;&quot;inputs&quot;: &#123;&quot;dense_input&quot;:[[1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0]]&#125;&#125;&#x27; -X POST http://localhost:8501/v1/models/sequential_model:predict</span><br></pre></td></tr></table></figure>
+
+<p>这里的<code>dense_input</code> 就是前面<code>saved_model_cli</code>在显示的输入名。</p>
+<p>返回<br>由于只是单输出，所以这里隐藏了输出名，默认为<code>outputs</code>, 与<code>saved_model_cli</code>中输出名有点区别。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    &quot;outputs&quot;: [</span><br><span class="line">        [</span><br><span class="line">            0.736189902</span><br><span class="line">        ]</span><br><span class="line">    ]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="Keras-Model函数式模型的部署（多输入，多输出）"><a href="#Keras-Model函数式模型的部署（多输入，多输出）" class="headerlink" title="Keras Model函数式模型的部署（多输入，多输出）"></a>Keras Model函数式模型的部署（多输入，多输出）</h2><p>由于Sequential 模式模型的输入输出过于单一，在模型构建方面有天生的弱势。<br>这里介绍下Keras Model函数式模型多输入多输出 的部署。</p>
+<h3 id="模型构建-1"><a href="#模型构建-1" class="headerlink" title="模型构建"></a>模型构建</h3><blockquote>
+<p>重点注意下,定义的<code>name</code> 属性。</p>
+</blockquote>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> tensorflow <span class="keyword">as</span> tf</span><br><span class="line"></span><br><span class="line">input_1 = tf.keras.layers.Input(shape=(<span class="number">10</span>,), dtype=tf.float32, name=<span class="string">&#x27;a&#x27;</span>)</span><br><span class="line">input_2 = tf.keras.layers.Input(shape=(<span class="number">10</span>,), dtype=tf.float32, name=<span class="string">&#x27;b&#x27;</span>)</span><br><span class="line">output_1 = tf.keras.layers.Dense(<span class="number">1</span>, name=<span class="string">&#x27;dense_1&#x27;</span>)(input_1 + input_2)</span><br><span class="line">output_2 = tf.keras.layers.Dense(<span class="number">1</span>, name=<span class="string">&#x27;dense_2&#x27;</span>)(input_1 - input_2)</span><br><span class="line">model = tf.keras.Model(inputs=[input_1, input_2], outputs=[output_1, output_2])</span><br></pre></td></tr></table></figure>
+
+<h3 id="模型导出-1"><a href="#模型导出-1" class="headerlink" title="模型导出"></a>模型导出</h3><p>这里依然通过eager的特性进行模型的初始构建。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">version = <span class="string">&#x27;1&#x27;</span>  <span class="comment">#版本号</span></span><br><span class="line">model_name = <span class="string">&#x27;keras_functional_model&#x27;</span></span><br><span class="line">saved_path = os.path.join(<span class="string">&#x27;models&#x27;</span>,model_name)</span><br><span class="line">data1= tf.ones((<span class="number">2</span>,<span class="number">10</span>),dtype=tf.float32)</span><br><span class="line">data2= tf.ones((<span class="number">2</span>,<span class="number">10</span>),dtype=tf.float32)</span><br><span class="line">model((data1,data2)) <span class="comment">#model(&#123;&#x27;a&#x27;:data1,&#x27;b&#x27;:data2&#125;)  两种方法都可以</span></span><br><span class="line">model.save(os.path.join(saved_path,version))   <span class="comment"># models/keras_functional_model/1</span></span><br></pre></td></tr></table></figure>
+
+<p>接下来我们查看下保存模型的内部结构</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">saved_model_cli show --<span class="built_in">dir</span> models/keras_functional_model/<span class="number">1</span> --<span class="built_in">all</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">signature_def[&#x27;serving_default&#x27;]:</span><br><span class="line">  The given SavedModel SignatureDef contains the following input(s):</span><br><span class="line">    inputs[&#x27;a&#x27;] tensor_info:</span><br><span class="line">        dtype: DT_FLOAT</span><br><span class="line">        shape: (-1, 10)</span><br><span class="line">        name: serving_default_a:0</span><br><span class="line">    inputs[&#x27;b&#x27;] tensor_info:</span><br><span class="line">        dtype: DT_FLOAT</span><br><span class="line">        shape: (-1, 10)</span><br><span class="line">        name: serving_default_b:0</span><br><span class="line">  The given SavedModel SignatureDef contains the following output(s):</span><br><span class="line">    outputs[&#x27;dense_1&#x27;] tensor_info:</span><br><span class="line">        dtype: DT_FLOAT</span><br><span class="line">        shape: (-1, 1)</span><br><span class="line">        name: StatefulPartitionedCall:0</span><br><span class="line">    outputs[&#x27;dense_2&#x27;] tensor_info:</span><br><span class="line">        dtype: DT_FLOAT</span><br><span class="line">        shape: (-1, 1)</span><br><span class="line">        name: StatefulPartitionedCall:1</span><br><span class="line">  Method name is: tensorflow/serving/predict</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>前面keras Sequential 模式中，<strong>输入名</strong>和<strong>输出名</strong>，是系统根据 变量名自动生成的。<br>在Keras Model函数式模型 中 我们可以通过定义<code>name</code>属性来设置<strong>输入名</strong>和<strong>输出名</strong>。</p>
+<h3 id="docker部署-1"><a href="#docker部署-1" class="headerlink" title="docker部署"></a>docker部署</h3><p>由于前面sequential_model 占用了本地8501端口，这里使用8502端口作为本地端口映射，tensorflow serving默认开启8501 所以内部端口8501 不用修改。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">docker run -t --name keras_functional_model -p 8502:8501 \</span><br><span class="line">--mount type=bind,source=/root/models,target=/models \</span><br><span class="line">-e MODEL_NAME=keras_functional_model tensorflow/serving &amp;</span><br></pre></td></tr></table></figure>
+
+<h3 id="请求服务-1"><a href="#请求服务-1" class="headerlink" title="请求服务"></a>请求服务</h3><p>终端中可以通过curl进行请求</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">curl -d &#x27;&#123;&quot;inputs&quot;: &#123;&quot;a&quot;:[[1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0]],&quot;b&quot;:[[1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0]]&#125;&#125;&#x27; -X POST http://localhost:8502/v1/models/keras_functional_model:predict</span><br></pre></td></tr></table></figure>
+
+<p>返回</p>
+<p>由于这里是多输出，返回的同时会加上输出名。与Keras Sequential模式有区别。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    &quot;outputs&quot;: &#123;</span><br><span class="line">        &quot;dense_1&quot;: [</span><br><span class="line">            [</span><br><span class="line">                0.251481533</span><br><span class="line">            ]</span><br><span class="line">        ],</span><br><span class="line">        &quot;dense_2&quot;: [</span><br><span class="line">            [</span><br><span class="line">                0.0</span><br><span class="line">            ]</span><br><span class="line">        ]</span><br><span class="line">    &#125;</span><br><span class="line">&#125;% </span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="自定义-Keras-模型的部署-多输入-mode，多输出"><a href="#自定义-Keras-模型的部署-多输入-mode，多输出" class="headerlink" title="自定义 Keras 模型的部署 (多输入+mode，多输出)"></a>自定义 Keras 模型的部署 (多输入+mode，多输出)</h2><p>如果Keras Sequential 模式 和 Keras Model函数式 模式 无法满足复杂模型需求怎么办？别担心，最大杀器自定义 Keras 模式可以帮你解决一切。</p>
+<p>设想下，我们如果需要通过 mode，来控制模型的运行流程，这样的模型我们该怎么导出部署呢？<br>当mode&#x3D;’train’ 时，输出a。<br>当mode&#x3D;’predict’时，输出b。</p>
+<h3 id="方法一"><a href="#方法一" class="headerlink" title="方法一"></a>方法一</h3><h4 id="模型构建-2"><a href="#模型构建-2" class="headerlink" title="模型构建"></a>模型构建</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> tensorflow <span class="keyword">as</span> tf</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">MyModel</span>(tf.keras.Model):</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, **kwargs</span>):</span><br><span class="line">        <span class="built_in">super</span>(MyModel, self).__init__(**kwargs)</span><br><span class="line">        self.dense_1 = tf.keras.layers.Dense(<span class="number">10</span>)</span><br><span class="line">        self.dense_2 = tf.keras.layers.Dense(<span class="number">1</span>)</span><br><span class="line"><span class="meta">    @tf.function</span></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">call</span>(<span class="params">self, inputs</span>):</span><br><span class="line">        a, b, mode = inputs</span><br><span class="line">        hidden = self.dense_1(a + b)</span><br><span class="line">        logits = self.dense_2(hidden)</span><br><span class="line">        <span class="keyword">if</span> mode == <span class="string">&#x27;predict&#x27;</span>:</span><br><span class="line">            <span class="keyword">return</span> hidden, mode</span><br><span class="line">        <span class="keyword">return</span> logits, mode</span><br></pre></td></tr></table></figure>
+
+<h4 id="模型导出-2"><a href="#模型导出-2" class="headerlink" title="模型导出"></a>模型导出</h4><p>这里依然通过eager的特性进行模型的初始构建。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">version = <span class="string">&#x27;1&#x27;</span>  <span class="comment">#版本号</span></span><br><span class="line">model_name = <span class="string">&#x27;custom_model&#x27;</span></span><br><span class="line">saved_path = os.path.join(<span class="string">&#x27;models&#x27;</span>,model_name)    </span><br><span class="line">model = MyModel()</span><br><span class="line">a = tf.ones((<span class="number">2</span>, <span class="number">10</span>))</span><br><span class="line">b = tf.ones((<span class="number">2</span>, <span class="number">10</span>))</span><br><span class="line">mode = <span class="string">&#x27;train&#x27;</span></span><br><span class="line">mode = tf.cast(mode, tf.string) <span class="comment">#这里的strin 必须转换成tf.string类型。</span></span><br><span class="line"><span class="built_in">print</span>(model((a, b, mode)))</span><br><span class="line">model.save(os.path.join(saved_path,version))</span><br></pre></td></tr></table></figure>
+
+<p>这里由于未显示的指定，输入的形状、类型、名字等。模型根据输入的数据进行自动推断的。因此输入的数据 必须是 tf的<code>dtype</code>类型。所以，在输入字符串时需要转换成<code>tf.string</code>。<br>虽然，在我们平时训练模型时没有什么问题，但在导出模型时，会出现</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">TypeError: Invalid input_signature ; input_signature must be a possibly nested sequence of TensorSpec objects.</span><br></pre></td></tr></table></figure>
+
+<p>通过<code>saved_model_cli</code>对模型进行查看。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">saved_model_cli show --<span class="built_in">dir</span> models/keras_functional_model/<span class="number">1</span> --<span class="built_in">all</span></span><br></pre></td></tr></table></figure>
+
+<p>由于，并没有指定输入的名字，这里都由系统根据输入顺序，输出顺序自动命名，输入就是input_n，输出就是output_n.</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">signature_def[&#x27;serving_default&#x27;]:</span><br><span class="line">  The given SavedModel SignatureDef contains the following input(s):</span><br><span class="line">    inputs[&#x27;input_1&#x27;] tensor_info:</span><br><span class="line">        dtype: DT_FLOAT</span><br><span class="line">        shape: (-1, 10)</span><br><span class="line">        name: serving_default_input_1:0</span><br><span class="line">    inputs[&#x27;input_2&#x27;] tensor_info:</span><br><span class="line">        dtype: DT_FLOAT</span><br><span class="line">        shape: (-1, 10)</span><br><span class="line">        name: serving_default_input_2:0</span><br><span class="line">    inputs[&#x27;input_3&#x27;] tensor_info:</span><br><span class="line">        dtype: DT_STRING</span><br><span class="line">        shape: ()</span><br><span class="line">        name: serving_default_input_3:0</span><br><span class="line">  The given SavedModel SignatureDef contains the following output(s):</span><br><span class="line">    outputs[&#x27;output_1&#x27;] tensor_info:</span><br><span class="line">        dtype: DT_FLOAT</span><br><span class="line">        shape: (-1, -1)</span><br><span class="line">        name: StatefulPartitionedCall:0</span><br><span class="line">    outputs[&#x27;output_2&#x27;] tensor_info:</span><br><span class="line">        dtype: DT_STRING</span><br><span class="line">        shape: ()</span><br><span class="line">        name: StatefulPartitionedCall:1</span><br><span class="line">  Method name is: tensorflow/serving/predict</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+
+<p>下面介绍下比较规范的自定义 Keras 模型 导出</p>
+<h3 id="方法二"><a href="#方法二" class="headerlink" title="方法二"></a>方法二</h3><h4 id="模型构建-3"><a href="#模型构建-3" class="headerlink" title="模型构建"></a>模型构建</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> tensorflow <span class="keyword">as</span> tf</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">MyModel</span>(tf.keras.Model):</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, **kwargs</span>):</span><br><span class="line">        <span class="built_in">super</span>(MyModel, self).__init__(**kwargs)</span><br><span class="line">        self.dense_1 = tf.keras.layers.Dense(<span class="number">10</span>)</span><br><span class="line">        self.dense_2 = tf.keras.layers.Dense(<span class="number">1</span>)</span><br><span class="line"></span><br><span class="line"><span class="meta">    @tf.function(<span class="params">input_signature=[(<span class="params">tf.TensorSpec(<span class="params">[<span class="literal">None</span>, <span class="number">10</span>], name=<span class="string">&#x27;a&#x27;</span>, dtype=tf.float32</span>),</span></span></span></span><br><span class="line"><span class="params"><span class="params"><span class="meta">                                   tf.TensorSpec(<span class="params">[<span class="literal">None</span>, <span class="number">10</span>], name=<span class="string">&#x27;b&#x27;</span>, dtype=tf.float32</span>),</span></span></span></span><br><span class="line"><span class="params"><span class="params"><span class="meta">                                   tf.TensorSpec(<span class="params">[], name=<span class="string">&#x27;mode&#x27;</span>, dtype=tf.string</span>)</span>)]</span>)</span></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">call</span>(<span class="params">self, inputs</span>):</span><br><span class="line">        a, b, mode = inputs</span><br><span class="line">        hidden = self.dense_1(a + b)</span><br><span class="line">        logits = self.dense_2(hidden)</span><br><span class="line">        <span class="keyword">if</span> mode == <span class="string">&#x27;predict&#x27;</span>:</span><br><span class="line">            <span class="keyword">return</span> hidden, mode</span><br><span class="line">        <span class="keyword">return</span> logits, mode</span><br></pre></td></tr></table></figure>
+
+<p>与 <strong>方法一</strong> 不同的是,我们通过显示的定义了inputs 需要输入的类型，形状，类别，名字。这样一来，模型就知道我们要输入的是什么了。</p>
+<blockquote>
+<p><strong>注意</strong>：在构建类似上面面多分支输出模型时，需要保持各分支输出的 <strong>变量类型，变量数量</strong> 一致，否则模型导出会抛出异常。</p>
+<p>如：上面分支模型，当<code>mode</code>&#x3D;&#x3D;’train’ 和 <code>mode</code>&#x3D;&#x3D;’predict’时，return返回的都是<code>tf.float32</code>和<code>tf.string</code>类型，且都是两个变量。若出现变量类型，变量数量<strong>不一致</strong>，则会提示<strong>TypeError</strong></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&gt;TypeError: <span class="string">&#x27;retval_&#x27;</span> must have the same nested structure <span class="keyword">in</span> the main <span class="keyword">and</span> <span class="keyword">else</span> branches:.....</span><br></pre></td></tr></table></figure>
+</blockquote>
+<blockquote>
+<p><strong>注意</strong>：看到这里，细心的可能会发现，我在编写call()函数时，不管是单输入，还是多输入，我都是通过解包的方式进行输入，并没有改动 inputs 这个变量。我们在训练模型过程中，经常会直接显示的指明变量，比如 上面的call可以进行改写<br>def call(self,inputs):  —-&gt; def call(self, a,b,mode):<br>虽然，在train的过程中不会出错，但在部署导出模型时，会发生未知错误。<br>因此，推荐<strong>解包</strong>的方式进行输入变量。</p>
+</blockquote>
+<h4 id="模型导出-3"><a href="#模型导出-3" class="headerlink" title="模型导出"></a>模型导出</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">version = <span class="string">&#x27;2&#x27;</span>  <span class="comment">#版本号</span></span><br><span class="line">model_name = <span class="string">&#x27;custom_model&#x27;</span></span><br><span class="line">saved_path = os.path.join(<span class="string">&#x27;models&#x27;</span>,model_name)    </span><br><span class="line">model = MyModel()</span><br><span class="line">a = tf.ones((<span class="number">2</span>, <span class="number">10</span>))</span><br><span class="line">b = tf.ones((<span class="number">2</span>, <span class="number">10</span>))</span><br><span class="line">mode = <span class="string">&#x27;train&#x27;</span></span><br><span class="line"><span class="built_in">print</span>(model((a, b, mode)))</span><br><span class="line">model.save(os.path.join(saved_path,version))</span><br></pre></td></tr></table></figure>
+
+<p>这里，我们也无需将<code>mode</code>手动转换成<code>tf.string</code>了，一切都由模型自动完成。<br>再通过<code>saved_model_cli</code>来查看下模型信息。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">saved_model_cli show --<span class="built_in">dir</span> models/keras_functional_model/<span class="number">2</span> --<span class="built_in">all</span></span><br></pre></td></tr></table></figure>
+
+<p>由于我们在tf.function中指定了，输入名，因此这里输入名都发生了改变。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">signature_def[<span class="string">&#x27;serving_default&#x27;</span>]:</span><br><span class="line">  The given SavedModel SignatureDef contains the following <span class="built_in">input</span>(s):</span><br><span class="line">    inputs[<span class="string">&#x27;a&#x27;</span>] tensor_info:</span><br><span class="line">        dtype: DT_FLOAT</span><br><span class="line">        shape: (-<span class="number">1</span>, <span class="number">10</span>)</span><br><span class="line">        name: serving_default_a:<span class="number">0</span></span><br><span class="line">    inputs[<span class="string">&#x27;b&#x27;</span>] tensor_info:</span><br><span class="line">        dtype: DT_FLOAT</span><br><span class="line">        shape: (-<span class="number">1</span>, <span class="number">10</span>)</span><br><span class="line">        name: serving_default_b:<span class="number">0</span></span><br><span class="line">    inputs[<span class="string">&#x27;mode&#x27;</span>] tensor_info:</span><br><span class="line">        dtype: DT_STRING</span><br><span class="line">        shape: ()</span><br><span class="line">        name: serving_default_mode:<span class="number">0</span></span><br><span class="line">  The given SavedModel SignatureDef contains the following output(s):</span><br><span class="line">    outputs[<span class="string">&#x27;output_1&#x27;</span>] tensor_info:</span><br><span class="line">        dtype: DT_FLOAT</span><br><span class="line">        shape: (-<span class="number">1</span>, -<span class="number">1</span>)</span><br><span class="line">        name: StatefulPartitionedCall:<span class="number">0</span></span><br><span class="line">    outputs[<span class="string">&#x27;output_2&#x27;</span>] tensor_info:</span><br><span class="line">        dtype: DT_STRING</span><br><span class="line">        shape: ()</span><br><span class="line">        name: StatefulPartitionedCall:<span class="number">1</span></span><br><span class="line">  Method name <span class="keyword">is</span>: tensorflow/serving/predict</span><br></pre></td></tr></table></figure>
+
+<p>那么，问题来了，输入进行了自定义修改，输出呢？ 别急，请看下面的<strong>最终版</strong>。</p>
+<h3 id="终版-官方推荐"><a href="#终版-官方推荐" class="headerlink" title="终版(官方推荐)"></a><strong>终版(官方推荐)</strong></h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> tensorflow <span class="keyword">as</span> tf</span><br><span class="line"><span class="keyword">import</span> os</span><br><span class="line"><span class="keyword">class</span> <span class="title class_">MyModel</span>(tf.keras.Model):</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, **kwargs</span>):</span><br><span class="line">        <span class="built_in">super</span>(MyModel, self).__init__(**kwargs)</span><br><span class="line">        self.dense_1 = tf.keras.layers.Dense(<span class="number">10</span>)</span><br><span class="line">        self.dense_2 = tf.keras.layers.Dense(<span class="number">1</span>)</span><br><span class="line">        self.dropout = tf.keras.layers.Dropout(<span class="number">0.1</span>)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">call</span>(<span class="params">self, inputs, training=<span class="literal">None</span></span>):</span><br><span class="line">        a, b = inputs</span><br><span class="line">        hidden = self.dense_1(a + b)</span><br><span class="line">        hidden = self.dropout(hidden, training=training)</span><br><span class="line">        logits = self.dense_2(hidden)</span><br><span class="line">        <span class="keyword">return</span> logits</span><br><span class="line"></span><br><span class="line"><span class="meta">    @tf.function(<span class="params">input_signature=[(<span class="params">tf.TensorSpec(<span class="params">[<span class="literal">None</span>, <span class="number">10</span>], name=<span class="string">&#x27;a&#x27;</span>, dtype=tf.float32</span>),</span></span></span></span><br><span class="line"><span class="params"><span class="params"><span class="meta">                                   tf.TensorSpec(<span class="params">[<span class="literal">None</span>, <span class="number">10</span>], name=<span class="string">&#x27;b&#x27;</span>, dtype=tf.float32</span>)</span>)]</span>)</span></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">sever</span>(<span class="params">self, inputs</span>):</span><br><span class="line">        <span class="keyword">return</span> &#123;<span class="string">&quot;score&quot;</span>: self.call(inputs, training=<span class="literal">False</span>)&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&#x27;__main__&#x27;</span>:</span><br><span class="line">    model = MyModel()</span><br><span class="line">    data = tf.ones((<span class="number">2</span>, <span class="number">10</span>))</span><br><span class="line">    out = model((data, data), training=<span class="literal">True</span>)</span><br><span class="line">    <span class="built_in">print</span>(out)</span><br><span class="line">    model.save(<span class="string">&quot;SavedModel&quot;</span>, signatures=&#123;<span class="string">&quot;serving_default&quot;</span>: model.sever&#125;)</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>方法三 与 方法二 相比在输入的时候call方法中多了training&#x3D;None，但默认导出时tf2会自动屏蔽掉training参数。这时我们可以对call方法进行重新包装，这里自定义了<strong>sever</strong>函数对<strong>call</strong>进行包装并对server指定 input_signature  ，同时在输出时通过dic 指定输出变量名。最后 ，在model.save导出模型时, 指定对serving_default 签名对应的 调用函数进行指定即可。   </p>
+<p>最后通过saved_model_cli show –all –dir SavedModel命令对保存的模型进行查看，可以发现这次不仅自定义了输入而且还自定义了输出。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">signature_def[&#x27;serving_default&#x27;]:</span><br><span class="line">  The given SavedModel SignatureDef contains the following input(s):</span><br><span class="line">    inputs[&#x27;a&#x27;] tensor_info:</span><br><span class="line">        dtype: DT_FLOAT</span><br><span class="line">        shape: (-1, 10)</span><br><span class="line">        name: serving_default_a:0</span><br><span class="line">    inputs[&#x27;b&#x27;] tensor_info:</span><br><span class="line">        dtype: DT_FLOAT</span><br><span class="line">        shape: (-1, 10)</span><br><span class="line">        name: serving_default_b:0</span><br><span class="line">  The given SavedModel SignatureDef contains the following output(s):</span><br><span class="line">    outputs[&#x27;score&#x27;] tensor_info:</span><br><span class="line">        dtype: DT_FLOAT</span><br><span class="line">        shape: (-1, 1)</span><br><span class="line">        name: StatefulPartitionedCall:0</span><br><span class="line">  Method name is: tensorflow/serving/predict</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>终于不用再看到input_n, output_n 而头疼了。 </p>
+<h3 id="docker部署-2"><a href="#docker部署-2" class="headerlink" title="docker部署"></a>docker部署</h3><p>由于前面8501 8502 端口被占用，这里我们启用8503端口进行映射。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">docker run -t --name custom_model -p <span class="number">8503</span>:<span class="number">8501</span> \</span><br><span class="line">--mount <span class="built_in">type</span>=bind,source=/root/models,target=/models \</span><br><span class="line">-e MODEL_NAME=custom_model tensorflow/serving &amp;</span><br></pre></td></tr></table></figure>
+
+<p>通过返回的信息，我们可以看见，模型成功的加载了 <strong>version&#x3D;’2’</strong> 的模型文件。tensorflow serving 的<strong>热部署</strong>默认加载最大的版本号模型。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">2020-08-23 14:13:13.477881: I external/org_tensorflow/tensorflow/cc/saved_model/loader.cc:199] Restoring SavedModel bundle.</span><br><span class="line">2020-08-23 14:13:13.491605: I external/org_tensorflow/tensorflow/cc/saved_model/loader.cc:183] Running initialization op on SavedModel bundle at path: /models/custom_model/2</span><br><span class="line">2020-08-23 14:13:13.495698: I external/org_tensorflow/tensorflow/cc/saved_model/loader.cc:303] SavedModel load for tags &#123; serve &#125;; Status: success: OK. Took 41678 microseconds.</span><br><span class="line">2020-08-23 14:13:13.496311: I tensorflow_serving/servables/tensorflow/saved_model_warmup_util.cc:59] No warmup data file found at /models/custom_model/2/assets.extra/tf_serving_warmup_requests</span><br><span class="line">2020-08-23 14:13:13.496841: I tensorflow_serving/core/loader_harness.cc:87] Successfully loaded servable version &#123;name: custom_model version: 2&#125;</span><br><span class="line">2020-08-23 14:13:13.498519: I tensorflow_serving/model_servers/server.cc:367] Running gRPC ModelServer at 0.0.0.0:8500 ...</span><br><span class="line">[warn] getaddrinfo: address family for nodename not supported</span><br><span class="line">2020-08-23 14:13:13.499738: I tensorflow_serving/model_servers/server.cc:387] Exporting HTTP/REST API at:localhost:8501 ...</span><br><span class="line">[evhttp_server.cc : 238] NET_LOG: Entering the event loop ...</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h3 id="请求服务-2"><a href="#请求服务-2" class="headerlink" title="请求服务"></a>请求服务</h3><p><strong>train</strong></p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">curl -d &#x27;&#123;&quot;inputs&quot;: &#123;&quot;a&quot;:[[1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0]],&quot;b&quot;:[[1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0]],&quot;mode&quot;:&quot;train&quot;&#125;&#125;&#x27; -X POST http://localhost:8503/v1/models/custom_model:predict</span><br></pre></td></tr></table></figure>
+
+<p>返回</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    &quot;outputs&quot;: &#123;</span><br><span class="line">        &quot;output_1&quot;: [</span><br><span class="line">            [</span><br><span class="line">                2.90094423</span><br><span class="line">            ]</span><br><span class="line">        ],</span><br><span class="line">        &quot;output_2&quot;: &quot;train&quot;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<p><strong>predict</strong></p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">curl -d &#x27;&#123;&quot;inputs&quot;: &#123;&quot;a&quot;:[[1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0]],&quot;b&quot;:[[1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0]],&quot;mode&quot;:&quot;predict&quot;&#125;&#125;&#x27; -X POST http://localhost:8503/v1/models/custom_model:predict</span><br></pre></td></tr></table></figure>
+
+<p>返回</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    &quot;outputs&quot;: &#123;</span><br><span class="line">        &quot;output_1&quot;: [</span><br><span class="line">            [</span><br><span class="line">                0.699072063,</span><br><span class="line">                0.756825566,</span><br><span class="line">                1.35330391,</span><br><span class="line">                -2.21226835,</span><br><span class="line">                1.43654501,</span><br><span class="line">                1.50765,</span><br><span class="line">                -1.43798947,</span><br><span class="line">                -0.434436381,</span><br><span class="line">                -0.289675713,</span><br><span class="line">                2.53842211</span><br><span class="line">            ]</span><br><span class="line">        ],</span><br><span class="line">        &quot;output_2&quot;: &quot;predict&quot;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<h1 id="客户端中程序调用"><a href="#客户端中程序调用" class="headerlink" title="客户端中程序调用"></a>客户端中程序调用</h1><p>这里以上文custom_model v2 为例子。 </p>
+<p>准备数据</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">import</span> json</span><br><span class="line"></span><br><span class="line">a = np.ones((<span class="number">1</span>, <span class="number">10</span>))</span><br><span class="line">b = np.ones((<span class="number">1</span>, <span class="number">10</span>))</span><br><span class="line">mode = <span class="string">&quot;train&quot;</span></span><br><span class="line">data = &#123;<span class="string">&quot;inputs&quot;</span>: &#123;<span class="string">&quot;a&quot;</span>: a.tolist(), <span class="string">&quot;b&quot;</span>: b.tolist(), <span class="string">&quot;mode&quot;</span>: mode&#125;&#125;</span><br><span class="line">data = json.dumps(data)</span><br></pre></td></tr></table></figure>
+
+<h2 id="pycurl"><a href="#pycurl" class="headerlink" title="pycurl"></a>pycurl</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> pycurl</span><br><span class="line">url = <span class="string">&quot;http://localhost:8503/v1/models/custom_model:predict&quot;</span></span><br><span class="line">c = pycurl.Curl()</span><br><span class="line">c.setopt(c.URL, url)</span><br><span class="line">c.setopt(c.POSTFIELDS, data)</span><br><span class="line">rs = c.performb_rs()</span><br><span class="line">rs = <span class="built_in">eval</span>(rs)</span><br><span class="line">outputs = rs[<span class="string">&#x27;outputs&#x27;</span>]</span><br><span class="line"><span class="built_in">print</span>(outputs)</span><br><span class="line">c.close()</span><br></pre></td></tr></table></figure>
+
+<h2 id="request"><a href="#request" class="headerlink" title="request"></a>request</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> requests</span><br><span class="line">url = <span class="string">&quot;http://localhost:8503/v1/models/custom_model:predict&quot;</span></span><br><span class="line">rs = requests.post(url,data)</span><br><span class="line">outputs = rs.json()[<span class="string">&#x27;outputs&#x27;</span>]</span><br><span class="line"><span class="built_in">print</span>(outputs)</span><br></pre></td></tr></table></figure>
+
+<p>输出：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#123;<span class="string">&#x27;output_1&#x27;</span>: [[<span class="number">2.90094423</span>]], <span class="string">&#x27;output_2&#x27;</span>: <span class="string">&#x27;train&#x27;</span>&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/TensorFlow2-x/" rel="tag"># TensorFlow2.x</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2020/10/21/tf-sugar/" rel="prev" title="TensorFlow2.x 语法糖">
+                  <i class="fa fa-chevron-left"></i> TensorFlow2.x 语法糖
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2020/03/12/CheckpointManager/" rel="next" title="CheckpointManager">
+                  CheckpointManager <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+    <div class="comments gitalk-container"></div>
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">SmileTM</span>
+</div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/schemes/muse.js"></script><script src="/js/next-boot.js"></script>
+
+  
+  <script class="next-config" data-name="pdf" type="application/json">{"object_url":{"url":"https://cdnjs.cloudflare.com/ajax/libs/pdfobject/2.2.11/pdfobject.min.js","integrity":"sha256-N6JtCNwaYm6kizuG92UtOOXamRHPwu+V1yF10g3bu/c="},"url":"/lib/pdf/web/viewer.html"}</script>
+  <script src="/js/third-party/tags/pdf.js"></script>
+
+
+
+
+
+
+  
+
+
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">false</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"tags":"all","js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.js","integrity":"sha256-MASABpB4tYktI2Oitl4t+78w/lyA+D7b/s9GEP0JOGI="}}</script>
+<script src="/js/third-party/math/mathjax.js"></script>
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/gitalk/1.8.0/gitalk.css" integrity="sha256-AJnUHL7dBv6PGaeyPQJcgQPDjt/Hn/PvYZde1iqfp8U=" crossorigin="anonymous">
+
+<script class="next-config" data-name="gitalk" type="application/json">{"enable":true,"github_id":"SmileTM","repo":"SmileTM.github.io","client_id":"ed531d5b5c361d2a4ee1","client_secret":"23d9318d301649f0513a37915b9466b68b44acd4","admin_user":"SmileTM","distraction_free_mode":true,"proxy":"https://cors-anywhere.azm.workers.dev/https://github.com/login/oauth/access_token","language":null,"js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/gitalk/1.8.0/gitalk.min.js","integrity":"sha256-MVK9MGD/XJaGyIghSVrONSnoXoGh3IFxLw0zfvzpxR4="},"path_md5":"e248aa2cecee1408af3ba5b57a7922c5"}</script>
+<script src="/js/third-party/comments/gitalk.js"></script>
+
+</body>
+</html>

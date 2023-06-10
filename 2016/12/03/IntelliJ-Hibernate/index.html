@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 6.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha256-HtsXJanqjKTc8vVQjO4YMhiqFoXkfBsjBWcX91T1jr8=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"example.com","root":"/","images":"/images","scheme":"Muse","darkmode":false,"version":"8.17.0","exturl":false,"sidebar":{"position":"right","display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":"gitalk","storage":true,"lazyload":false,"nav":null,"activeClass":"gitalk"},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="由于最近在学习Hibernate时，特别是在Mac+idea16+Mysql网上的环境搭建教程比较少，另一个原因也是为了记录自己在建立Hibernate项目时所遇到的一系列问题，特此写下该文档来记录，方便自己和他人日后遇到同样的问题，能少走弯路。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="IntelliJ IDEA配置 Hibernate">
+<meta property="og:url" content="http://example.com/2016/12/03/IntelliJ-Hibernate/index.html">
+<meta property="og:site_name" content="SmileTM博客">
+<meta property="og:description" content="由于最近在学习Hibernate时，特别是在Mac+idea16+Mysql网上的环境搭建教程比较少，另一个原因也是为了记录自己在建立Hibernate项目时所遇到的一系列问题，特此写下该文档来记录，方便自己和他人日后遇到同样的问题，能少走弯路。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/images/Hibernate/Hibernate1.png">
+<meta property="og:image" content="http://example.com/images/Hibernate/Hibernate2.png">
+<meta property="og:image" content="http://example.com/images/Hibernate/Hibernate3.png">
+<meta property="og:image" content="http://example.com/images/Hibernate/Hibernate4.png">
+<meta property="og:image" content="http://example.com/images/Hibernate/Hibernate5.png">
+<meta property="og:image" content="http://example.com/images/Hibernate/Hibernate6.png">
+<meta property="og:image" content="http://example.com/images/Hibernate/Hibernate7.png">
+<meta property="og:image" content="http://example.com/images/Hibernate/Hibernate8.png">
+<meta property="og:image" content="http://example.com/images/Hibernate/Hibernate9.png">
+<meta property="og:image" content="http://example.com/images/Hibernate/Hibernate10.png">
+<meta property="og:image" content="http://example.com/images/Hibernate/Hibernate11.png">
+<meta property="og:image" content="http://example.com/images/Hibernate/Hibernate12.png">
+<meta property="og:image" content="http://example.com/images/Hibernate/Hibernate13.png">
+<meta property="og:image" content="http://example.com/images/Hibernate/Hibernate14.png">
+<meta property="og:image" content="http://example.com/images/Hibernate/Hibernate15.png">
+<meta property="og:image" content="http://example.com/images/Hibernate/Hibernate16.png">
+<meta property="og:image" content="http://example.com/images/Hibernate/Hibernate17.png">
+<meta property="article:published_time" content="2016-12-02T16:02:19.000Z">
+<meta property="article:modified_time" content="2023-06-10T12:02:31.640Z">
+<meta property="article:author" content="SmileTM">
+<meta property="article:tag" content="IntelliJ IDEA配置">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/images/Hibernate/Hibernate1.png">
+
+
+<link rel="canonical" href="http://example.com/2016/12/03/IntelliJ-Hibernate/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://example.com/2016/12/03/IntelliJ-Hibernate/","path":"2016/12/03/IntelliJ-Hibernate/","title":"IntelliJ IDEA配置 Hibernate"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>IntelliJ IDEA配置 Hibernate | SmileTM博客</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+      <img class="custom-logo-image" src="/images/custom-logo.png" alt="SmileTM博客">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">SmileTM博客</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">_________Smile  To  Me</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li>
+  </ul>
+</nav>
+
+
+
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%9C%89%E5%85%B3Hibernate%E5%86%99%E5%85%A5%E6%95%B0%E6%8D%AE-%E4%B8%AD%E6%96%87%E9%97%AE%E9%A2%98"><span class="nav-number">1.</span> <span class="nav-text">有关Hibernate写入数据 中文问题</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">SmileTM</p>
+  <div class="site-description" itemprop="description">________Talk is cheap，show me the code！！！</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">36</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">19</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/smiletm" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;smiletm" rel="noopener me" target="_blank">GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://twitter.com/SmileTM96" title="Twitter → https:&#x2F;&#x2F;twitter.com&#x2F;SmileTM96" rel="noopener me" target="_blank">Twitter</a>
+      </span>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2016/12/03/IntelliJ-Hibernate/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="SmileTM">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="SmileTM博客">
+      <meta itemprop="description" content="________Talk is cheap，show me the code！！！">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="IntelliJ IDEA配置 Hibernate | SmileTM博客">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          IntelliJ IDEA配置 Hibernate
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2016-12-03 00:02:19" itemprop="dateCreated datePublished" datetime="2016-12-03T00:02:19+08:00">2016-12-03</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2023-06-10 20:02:31" itemprop="dateModified" datetime="2023-06-10T20:02:31+08:00">2023-06-10</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><p>由于最近在学习Hibernate时，特别是在Mac+idea16+Mysql网上的环境搭建教程比较少，另一个原因也是为了记录自己在建立Hibernate项目时所遇到的一系列问题，特此写下该文档来记录，方便自己和他人日后遇到同样的问题，能少走弯路。</p>
+<span id="more"></span>
+
+<p>由于Maven有良好的仓库管理的优点，方便导入必要Jar包，也便于用户管理本地的Jar文件，因此此次简单项目的建立如图 新建Maven项目。</p>
+<p><img src="/images/Hibernate/Hibernate1.png" alt="Hibernate1"></p>
+<p>由于只是简单的项目演示，不必选相应的模板，直接点Next</p>
+<p><img src="/images/Hibernate/Hibernate2.png" alt="Hibernate2"></p>
+<p><img src="/images/Hibernate/Hibernate3.png" alt="Hibernate3"></p>
+<p>建立好项目后，打开Maven配置文件pom.xml</p>
+<p><img src="/images/Hibernate/Hibernate4.png" alt="Hibernate4"></p>
+<p>并如图，添加相应的Jar包依赖。junit 有较好的分部调试的功能，可以方便我们对部分方法的调试；其中，hibernate-core的Jar包才是该项目的核心文件。如果，本地仓库中没有，则idea会自动从远程仓库中下载相应的文件到本地仓库。(出现下不动的情况很正常，具体原因你懂得)</p>
+<p><img src="/images/Hibernate/Hibernate5.png" alt="Hibernate5"></p>
+<p>导入成功后。如图，在项目包，鼠标右键打开Add Framework Support为项目添加相应的框架。</p>
+<p><img src="/images/Hibernate/Hibernate6.png" alt="Hibernate6"></p>
+<p>打开后如图选中Hibernate，由于已从Maven中导入了相关的库，idea会自动识别。如果未识别，请手动匹配相关的库。</p>
+<p>以上有两个可选项：</p>
+<ul>
+<li><p>Create default hibernate configuration and main class</p>
+<p>第一个是创建一个系统默认的hibernate的测试类(初学Hibernate时建议勾选，因为它会 给你提供相应的一些建立session的方法及帮助),勾选后会生成如下调试代码：</p>
+</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">Main</span> &#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> SessionFactory ourSessionFactory;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">static</span> &#123;</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            <span class="type">Configuration</span> <span class="variable">configuration</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Configuration</span>();</span><br><span class="line">            configuration.configure();</span><br><span class="line"></span><br><span class="line">            ourSessionFactory = configuration.buildSessionFactory();</span><br><span class="line">        &#125; <span class="keyword">catch</span> (Throwable ex) &#123;</span><br><span class="line">            <span class="keyword">throw</span> <span class="keyword">new</span> <span class="title class_">ExceptionInInitializerError</span>(ex);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> Session <span class="title function_">getSession</span><span class="params">()</span> <span class="keyword">throws</span> HibernateException &#123;</span><br><span class="line">        <span class="keyword">return</span> ourSessionFactory.openSession();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(<span class="keyword">final</span> String[] args)</span> <span class="keyword">throws</span> Exception &#123;</span><br><span class="line">        <span class="keyword">final</span> <span class="type">Session</span> <span class="variable">session</span> <span class="operator">=</span> getSession();</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            System.out.println(<span class="string">&quot;querying all the managed entities...&quot;</span>);</span><br><span class="line">            <span class="keyword">final</span> <span class="type">Metamodel</span> <span class="variable">metamodel</span> <span class="operator">=</span> session.getSessionFactory().getMetamodel();</span><br><span class="line">            <span class="keyword">for</span> (EntityType&lt;?&gt; entityType : metamodel.getEntities()) &#123;</span><br><span class="line">                <span class="keyword">final</span> <span class="type">String</span> <span class="variable">entityName</span> <span class="operator">=</span> entityType.getName();</span><br><span class="line">                <span class="keyword">final</span> <span class="type">Query</span> <span class="variable">query</span> <span class="operator">=</span> session.createQuery(<span class="string">&quot;from &quot;</span> + entityName);</span><br><span class="line">                System.out.println(<span class="string">&quot;executing: &quot;</span> + query.getQueryString());</span><br><span class="line">                <span class="keyword">for</span> (Object o : query.list()) &#123;</span><br><span class="line">                    System.out.println(<span class="string">&quot;  &quot;</span> + o);</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125; <span class="keyword">finally</span> &#123;</span><br><span class="line">            session.close();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<ul>
+<li><p>Import database schema</p>
+<p>第二个是导入已有的数据库Table，若此时已建立相应的Table，则可勾选，若没有则 后期在来创建。</p>
+</li>
+</ul>
+<p>在这里为了演示，这两个都不勾选。</p>
+<p><img src="/images/Hibernate/Hibernate7.png" alt="Hibernate7"></p>
+<p>添加完成后，打开右上角的项目架构图标</p>
+<p><img src="/images/Hibernate/Hibernate8.png" alt="Hibernate8"></p>
+<p>打开后如图选中Modules —&gt;Hibernate —&gt; + hibernate.cfg.xml ,来添加相应的配置文件，一路ok。</p>
+<p>由于Idea不像Eclipse可以根据写好的映射类来自动生成相应的hbm映射文件，但Idea可以根据已有的表来生成相应的hbm映射文件。</p>
+<p>因此我们先建立数据库。</p>
+<p>如下图设置</p>
+<p><img src="/images/Hibernate/Hibernate9.png" alt="Hibernate9"></p>
+<p><img src="/images/Hibernate/Hibernate10.png" alt="Hibernate10"></p>
+<p><img src="/images/Hibernate/Hibernate11.png" alt="Hibernate11"></p>
+<p><img src="/images/Hibernate/Hibernate12.png" alt="Hibernate12"></p>
+<p>建立连接后，可以如图会显示该数据库中的表项目。</p>
+<p><img src="/images/Hibernate/Hibernate13.png" alt="Hibernate13"></p>
+<p>接下来根据相应的表来建立相应的映射类及hbm映射配置文件。</p>
+<p><img src="/images/Hibernate/Hibernate14.png" alt="Hibernate14"></p>
+<p>如图 ，一路OK。</p>
+<p><img src="/images/Hibernate/Hibernate15.png" alt="Hibernate15"></p>
+<p>并将默认生成的hbm文件手动移动到resources中，默认位置与生成的类位置相同，如果未移动，则会报错 找不到映射文件</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">org.hibernate.boot.MappingNotFoundException: Mapping (RESOURCE) not found : htest/StudentEntity.hbm.xml : origin(htest/StudentEntity.hbm.xml)</span><br></pre></td></tr></table></figure>
+
+<p>打开生成相应的StudentEntity类,并作相应修改</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Entity</span></span><br><span class="line"><span class="meta">@Table(name = &quot;STUDENT&quot;, schema = &quot;test_db&quot;)</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">StudentEntity</span> &#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="type">int</span> sid;</span><br><span class="line">    <span class="keyword">private</span> String name;</span><br><span class="line">    <span class="keyword">private</span> String gender;</span><br><span class="line">    <span class="keyword">private</span> String address;</span><br><span class="line">    <span class="keyword">private</span> String phone;</span><br><span class="line">    <span class="keyword">private</span> Date birthday;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="title function_">StudentEntity</span><span class="params">()</span> &#123;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="title function_">StudentEntity</span><span class="params">(<span class="type">int</span> sid, String name, String gender, String address, String phone, Date birthday)</span> &#123;</span><br><span class="line">        <span class="built_in">this</span>.sid = sid;</span><br><span class="line">        <span class="built_in">this</span>.name = name;</span><br><span class="line">        <span class="built_in">this</span>.gender = gender;</span><br><span class="line">        <span class="built_in">this</span>.address = address;</span><br><span class="line">        <span class="built_in">this</span>.phone = phone;</span><br><span class="line">        <span class="built_in">this</span>.birthday = birthday;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Id</span></span><br><span class="line">    <span class="meta">@Column(name = &quot;SID&quot;, nullable = false)</span></span><br><span class="line">    <span class="keyword">public</span> <span class="type">int</span> <span class="title function_">getSid</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> sid;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">setSid</span><span class="params">(<span class="type">int</span> sid)</span> &#123;</span><br><span class="line">        <span class="built_in">this</span>.sid = sid;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Basic</span></span><br><span class="line">    <span class="meta">@Column(name = &quot;NAME&quot;, nullable = false, length = 45)</span></span><br><span class="line">    <span class="keyword">public</span> String <span class="title function_">getName</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> name;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">setName</span><span class="params">(String name)</span> &#123;</span><br><span class="line">        <span class="built_in">this</span>.name = name;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Basic</span></span><br><span class="line">    <span class="meta">@Column(name = &quot;GENDER&quot;, nullable = false, length = 45)</span></span><br><span class="line">    <span class="keyword">public</span> String <span class="title function_">getGender</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> gender;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">setGender</span><span class="params">(String gender)</span> &#123;</span><br><span class="line">        <span class="built_in">this</span>.gender = gender;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Basic</span></span><br><span class="line">    <span class="meta">@Column(name = &quot;ADDRESS&quot;, nullable = false, length = 45)</span></span><br><span class="line">    <span class="keyword">public</span> String <span class="title function_">getAddress</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> address;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">setAddress</span><span class="params">(String address)</span> &#123;</span><br><span class="line">        <span class="built_in">this</span>.address = address;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Basic</span></span><br><span class="line">    <span class="meta">@Column(name = &quot;PHONE&quot;, nullable = false, length = 45)</span></span><br><span class="line">    <span class="keyword">public</span> String <span class="title function_">getPhone</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> phone;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">setPhone</span><span class="params">(String phone)</span> &#123;</span><br><span class="line">        <span class="built_in">this</span>.phone = phone;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Basic</span></span><br><span class="line">    <span class="meta">@Column(name = &quot;BIRTHDAY&quot;, nullable = false)</span></span><br><span class="line">    <span class="keyword">public</span> Date <span class="title function_">getBirthday</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> birthday;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">setBirthday</span><span class="params">(Date birthday)</span> &#123;</span><br><span class="line">        <span class="built_in">this</span>.birthday = birthday;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">public</span> <span class="type">boolean</span> <span class="title function_">equals</span><span class="params">(Object o)</span> &#123;</span><br><span class="line">        <span class="keyword">if</span> (<span class="built_in">this</span> == o) <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">        <span class="keyword">if</span> (o == <span class="literal">null</span> || getClass() != o.getClass()) <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line"></span><br><span class="line">        <span class="type">StudentEntity</span> <span class="variable">that</span> <span class="operator">=</span> (StudentEntity) o;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> (sid != that.sid) <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">        <span class="keyword">if</span> (name != <span class="literal">null</span> ? !name.equals(that.name) : that.name != <span class="literal">null</span>) <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">        <span class="keyword">if</span> (gender != <span class="literal">null</span> ? !gender.equals(that.gender) : that.gender != <span class="literal">null</span>) <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">        <span class="keyword">if</span> (address != <span class="literal">null</span> ? !address.equals(that.address) : that.address != <span class="literal">null</span>) <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">        <span class="keyword">if</span> (phone != <span class="literal">null</span> ? !phone.equals(that.phone) : that.phone != <span class="literal">null</span>) <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">        <span class="keyword">if</span> (birthday != <span class="literal">null</span> ? !birthday.equals(that.birthday) : that.birthday != <span class="literal">null</span>) <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">public</span> <span class="type">int</span> <span class="title function_">hashCode</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="type">int</span> <span class="variable">result</span> <span class="operator">=</span> sid;</span><br><span class="line">        result = <span class="number">31</span> * result + (name != <span class="literal">null</span> ? name.hashCode() : <span class="number">0</span>);</span><br><span class="line">        result = <span class="number">31</span> * result + (gender != <span class="literal">null</span> ? gender.hashCode() : <span class="number">0</span>);</span><br><span class="line">        result = <span class="number">31</span> * result + (address != <span class="literal">null</span> ? address.hashCode() : <span class="number">0</span>);</span><br><span class="line">        result = <span class="number">31</span> * result + (phone != <span class="literal">null</span> ? phone.hashCode() : <span class="number">0</span>);</span><br><span class="line">        result = <span class="number">31</span> * result + (birthday != <span class="literal">null</span> ? birthday.hashCode() : <span class="number">0</span>);</span><br><span class="line">        <span class="keyword">return</span> result;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//添加toString方便调试</span></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">public</span> String <span class="title function_">toString</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="string">&quot;StudentEntity&#123;&quot;</span> +</span><br><span class="line">                <span class="string">&quot;sid=&quot;</span> + sid +</span><br><span class="line">                <span class="string">&quot;, name=&#x27;&quot;</span> + name + <span class="string">&#x27;\&#x27;&#x27;</span> +</span><br><span class="line">                <span class="string">&quot;, gender=&#x27;&quot;</span> + gender + <span class="string">&#x27;\&#x27;&#x27;</span> +</span><br><span class="line">                <span class="string">&quot;, address=&#x27;&quot;</span> + address + <span class="string">&#x27;\&#x27;&#x27;</span> +</span><br><span class="line">                <span class="string">&quot;, phone=&#x27;&quot;</span> + phone + <span class="string">&#x27;\&#x27;&#x27;</span> +</span><br><span class="line">                <span class="string">&quot;, birthday=&quot;</span> + birthday +</span><br><span class="line">                <span class="string">&#x27;&#125;&#x27;</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>同时生成相应的SrudentEntity.hbm.xml文件</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?xml version=&#x27;1.0&#x27; encoding=&#x27;utf-8&#x27;?&gt;</span></span><br><span class="line"><span class="meta">&lt;!DOCTYPE <span class="keyword">hibernate-mapping</span> <span class="keyword">PUBLIC</span></span></span><br><span class="line"><span class="meta">    <span class="string">&quot;-//Hibernate/Hibernate Mapping DTD 3.0//EN&quot;</span></span></span><br><span class="line"><span class="meta">    <span class="string">&quot;http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd&quot;</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">hibernate-mapping</span>&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="tag">&lt;<span class="name">class</span> <span class="attr">name</span>=<span class="string">&quot;htest.StudentEntity&quot;</span> <span class="attr">table</span>=<span class="string">&quot;STUDENT&quot;</span> <span class="attr">schema</span>=<span class="string">&quot;test_db&quot;</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">id</span> <span class="attr">name</span>=<span class="string">&quot;sid&quot;</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">column</span> <span class="attr">name</span>=<span class="string">&quot;SID&quot;</span> <span class="attr">sql-type</span>=<span class="string">&quot;int(11)&quot;</span>/&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">id</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">&quot;name&quot;</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">column</span> <span class="attr">name</span>=<span class="string">&quot;NAME&quot;</span> <span class="attr">sql-type</span>=<span class="string">&quot;varchar(45)&quot;</span> <span class="attr">length</span>=<span class="string">&quot;45&quot;</span>/&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">property</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">&quot;gender&quot;</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">column</span> <span class="attr">name</span>=<span class="string">&quot;GENDER&quot;</span> <span class="attr">sql-type</span>=<span class="string">&quot;varchar(45)&quot;</span> <span class="attr">length</span>=<span class="string">&quot;45&quot;</span>/&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">property</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">&quot;address&quot;</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">column</span> <span class="attr">name</span>=<span class="string">&quot;ADDRESS&quot;</span> <span class="attr">sql-type</span>=<span class="string">&quot;varchar(45)&quot;</span> <span class="attr">length</span>=<span class="string">&quot;45&quot;</span>/&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">property</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">&quot;phone&quot;</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">column</span> <span class="attr">name</span>=<span class="string">&quot;PHONE&quot;</span> <span class="attr">sql-type</span>=<span class="string">&quot;varchar(45)&quot;</span> <span class="attr">length</span>=<span class="string">&quot;45&quot;</span>/&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">property</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">&quot;birthday&quot;</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">column</span> <span class="attr">name</span>=<span class="string">&quot;BIRTHDAY&quot;</span> <span class="attr">sql-type</span>=<span class="string">&quot;date&quot;</span>/&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">property</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">class</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">hibernate-mapping</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>然后修改相应的hibernate.cfg.xml文件</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?xml version=&#x27;1.0&#x27; encoding=&#x27;utf-8&#x27;?&gt;</span></span><br><span class="line"><span class="meta">&lt;!DOCTYPE <span class="keyword">hibernate-configuration</span> <span class="keyword">PUBLIC</span></span></span><br><span class="line"><span class="meta">    <span class="string">&quot;-//Hibernate/Hibernate Configuration DTD//EN&quot;</span></span></span><br><span class="line"><span class="meta">    <span class="string">&quot;http://www.hibernate.org/dtd/hibernate-configuration-3.0.dtd&quot;</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">hibernate-configuration</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">session-factory</span>&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">&lt;!--配置数据库连接--&gt;</span></span><br><span class="line">    <span class="comment">&lt;!--比说明字符编码为utf-8--&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">&quot;connection.url&quot;</span>&gt;</span>jdbc:mysql://127.0.0.1:3306/test_db?useSSL=false<span class="symbol">&amp;amp;</span>useUnicode=true<span class="symbol">&amp;amp;</span>characterEncoding=utf-8<span class="tag">&lt;/<span class="name">property</span>&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">&lt;!--若驱动导入报错，请检查是否倒入了相关数据库连接的Jar包--&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">&quot;connection.driver_class&quot;</span>&gt;</span>com.mysql.jdbc.Driver<span class="tag">&lt;/<span class="name">property</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">&quot;connection.username&quot;</span>&gt;</span>root<span class="tag">&lt;/<span class="name">property</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">&quot;connection.password&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">property</span>&gt;</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="comment">&lt;!--相关的属性--&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">&quot;hbm2ddl.auto&quot;</span>&gt;</span>update<span class="tag">&lt;/<span class="name">property</span>&gt;</span></span><br><span class="line">    <span class="comment">&lt;!--格式化控制台显示的MySQL语句--&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">&quot;format_sql&quot;</span>&gt;</span>true<span class="tag">&lt;/<span class="name">property</span>&gt;</span></span><br><span class="line">    <span class="comment">&lt;!--在控制台显示执行的MySQL语句--&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">&quot;show_sql&quot;</span>&gt;</span>true<span class="tag">&lt;/<span class="name">property</span>&gt;</span></span><br><span class="line">    <span class="comment">&lt;!--使用MySQL数据库的方言--&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">&quot;dialect&quot;</span>&gt;</span>org.hibernate.dialect.MySQLDialect<span class="tag">&lt;/<span class="name">property</span>&gt;</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="comment">&lt;!--相关的映射--&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">mapping</span> <span class="attr">class</span>=<span class="string">&quot;htest.StudentEntity&quot;</span>/&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">mapping</span> <span class="attr">resource</span>=<span class="string">&quot;StudentEntity.hbm.xml&quot;</span>/&gt;</span></span><br><span class="line"></span><br><span class="line">  <span class="tag">&lt;/<span class="name">session-factory</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">hibernate-configuration</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+
+
+<p>然后，创建测试类</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">StudentTest</span> &#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> SessionFactory sessionFactory;</span><br><span class="line">    <span class="keyword">private</span> Session session;</span><br><span class="line">    <span class="keyword">private</span> Transaction transaction;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Before</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">Init</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="type">Configuration</span> <span class="variable">configuration</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Configuration</span>().configure();</span><br><span class="line"></span><br><span class="line">        sessionFactory = configuration.buildSessionFactory();</span><br><span class="line">        session = sessionFactory.openSession();</span><br><span class="line">        transaction = session.beginTransaction();</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Test</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">test</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="type">StudentEntity</span> <span class="variable">student1</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">StudentEntity</span>(<span class="number">20</span>, <span class="string">&quot;张三&quot;</span>, <span class="string">&quot;男&quot;</span>, <span class="string">&quot;北京&quot;</span>, <span class="string">&quot;188888888&quot;</span>, Date.valueOf(<span class="string">&quot;2008-08-08&quot;</span>));</span><br><span class="line"></span><br><span class="line">        session.save(student1);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@After</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">destroy</span><span class="params">()</span> &#123;</span><br><span class="line">        transaction.commit();</span><br><span class="line">        session.close();</span><br><span class="line">        sessionFactory.close();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<p>运行测试类代码后，查看数据库，并更新，若写入了相应的数据则代表配置成功</p>
+<p><img src="/images/Hibernate/Hibernate16.png" alt="Hibernate16"></p>
+<h2 id="有关Hibernate写入数据-中文问题"><a href="#有关Hibernate写入数据-中文问题" class="headerlink" title="有关Hibernate写入数据 中文问题"></a>有关Hibernate写入数据 中文问题</h2><p>当写入中文时，报错如下</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">Dec 02, 2016 11:46:02 PM org.hibernate.engine.jdbc.spi.SqlExceptionHelper logExceptions</span><br><span class="line">WARN: SQL Error: 1366, SQLState: HY000</span><br><span class="line">Dec 02, 2016 11:46:02 PM org.hibernate.engine.jdbc.spi.SqlExceptionHelper logExceptions</span><br><span class="line">ERROR: Incorrect string value: &#x27;\xE5\xBC\xA0\xE4\xB8\x89&#x27; for column &#x27;NAME&#x27; at row 1</span><br><span class="line">Dec 02, 2016 11:46:02 PM org.hibernate.engine.jdbc.batch.internal.AbstractBatchImpl release</span><br><span class="line">INFO: HHH000010: On release of batch it still contained JDBC statements</span><br><span class="line">Dec 02, 2016 11:46:02 PM org.hibernate.internal.ExceptionMapperStandardImpl mapManagedFlushFailure</span><br><span class="line">ERROR: HHH000346: Error during managed flush [org.hibernate.exception.GenericJDBCException: could not execute statement]</span><br></pre></td></tr></table></figure>
+
+<p>博主是通过MySQLWorkbench来建的表，如果出现下面的错误，主要有2个原因</p>
+<p>1.检查hibernate.cfg.xml中url是否强调为utf-8</p>
+<p>2.检查MySQL默认的编码是否为utf-8</p>
+<p>解决办法：</p>
+<p>​	原因1:在相应的URL中添加useUnicode&#x3D;true&amp;characterEncoding&#x3D;utf-8 。</p>
+<p>​	原因2:如图在MySQLWorkbench中修改（或在创建表时 明确为UTF-8）</p>
+<p><img src="/images/Hibernate/Hibernate17.png" alt="Hibernate17"></p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/IntelliJ-IDEA%E9%85%8D%E7%BD%AE/" rel="tag"># IntelliJ IDEA配置</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2016/12/08/HibernateVSMybatis/" rel="prev" title="Hibernate与Mybatis对比">
+                  <i class="fa fa-chevron-left"></i> Hibernate与Mybatis对比
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2016/11/26/DesignModel-2/" rel="next" title="设计模式 (二) ：观察者模式">
+                  设计模式 (二) ：观察者模式 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+    <div class="comments gitalk-container"></div>
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">SmileTM</span>
+</div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/schemes/muse.js"></script><script src="/js/next-boot.js"></script>
+
+  
+  <script class="next-config" data-name="pdf" type="application/json">{"object_url":{"url":"https://cdnjs.cloudflare.com/ajax/libs/pdfobject/2.2.11/pdfobject.min.js","integrity":"sha256-N6JtCNwaYm6kizuG92UtOOXamRHPwu+V1yF10g3bu/c="},"url":"/lib/pdf/web/viewer.html"}</script>
+  <script src="/js/third-party/tags/pdf.js"></script>
+
+
+
+
+
+
+  
+
+
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">false</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"tags":"all","js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.js","integrity":"sha256-MASABpB4tYktI2Oitl4t+78w/lyA+D7b/s9GEP0JOGI="}}</script>
+<script src="/js/third-party/math/mathjax.js"></script>
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/gitalk/1.8.0/gitalk.css" integrity="sha256-AJnUHL7dBv6PGaeyPQJcgQPDjt/Hn/PvYZde1iqfp8U=" crossorigin="anonymous">
+
+<script class="next-config" data-name="gitalk" type="application/json">{"enable":true,"github_id":"SmileTM","repo":"SmileTM.github.io","client_id":"ed531d5b5c361d2a4ee1","client_secret":"23d9318d301649f0513a37915b9466b68b44acd4","admin_user":"SmileTM","distraction_free_mode":true,"proxy":"https://cors-anywhere.azm.workers.dev/https://github.com/login/oauth/access_token","language":null,"js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/gitalk/1.8.0/gitalk.min.js","integrity":"sha256-MVK9MGD/XJaGyIghSVrONSnoXoGh3IFxLw0zfvzpxR4="},"path_md5":"936c9c867820015984a42082e2861dbd"}</script>
+<script src="/js/third-party/comments/gitalk.js"></script>
+
+</body>
+</html>

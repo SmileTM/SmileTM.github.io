@@ -1,0 +1,444 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 6.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha256-HtsXJanqjKTc8vVQjO4YMhiqFoXkfBsjBWcX91T1jr8=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"example.com","root":"/","images":"/images","scheme":"Muse","darkmode":false,"version":"8.17.0","exturl":false,"sidebar":{"position":"right","display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":"gitalk","storage":true,"lazyload":false,"nav":null,"activeClass":"gitalk"},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="本文根据 Luong 论文中NMT的的一个注意力例子来进行 中-英 NMT模型的构建训练，并对该训练后的模型在Docker上进行部署。具体的可以参考Tensorflow教程NMT_with_Attenion，本文也是根据该教程来对Docker部署进一步探索。 NMT_with_Attenion也是NLP中比较经典的值得复现的一个例子。 本文架构  Model  Train  Save model">
+<meta property="og:type" content="article">
+<meta property="og:title" content="NMT-Attention">
+<meta property="og:url" content="http://example.com/2019/12/13/NMT-Attention/index.html">
+<meta property="og:site_name" content="SmileTM博客">
+<meta property="og:description" content="本文根据 Luong 论文中NMT的的一个注意力例子来进行 中-英 NMT模型的构建训练，并对该训练后的模型在Docker上进行部署。具体的可以参考Tensorflow教程NMT_with_Attenion，本文也是根据该教程来对Docker部署进一步探索。 NMT_with_Attenion也是NLP中比较经典的值得复现的一个例子。 本文架构  Model  Train  Save model">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/images/NLP/1.png">
+<meta property="og:image" content="http://example.com/images/NLP/2.jpg">
+<meta property="og:image" content="http://example.com/images/NLP/3.png">
+<meta property="og:image" content="http://example.com/images/NLP/4.png">
+<meta property="article:published_time" content="2019-12-13T01:51:02.000Z">
+<meta property="article:modified_time" content="2023-06-10T12:02:31.627Z">
+<meta property="article:author" content="SmileTM">
+<meta property="article:tag" content="NLP">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/images/NLP/1.png">
+
+
+<link rel="canonical" href="http://example.com/2019/12/13/NMT-Attention/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://example.com/2019/12/13/NMT-Attention/","path":"2019/12/13/NMT-Attention/","title":"NMT-Attention"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>NMT-Attention | SmileTM博客</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+      <img class="custom-logo-image" src="/images/custom-logo.png" alt="SmileTM博客">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">SmileTM博客</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">_________Smile  To  Me</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li>
+  </ul>
+</nav>
+
+
+
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Model"><span class="nav-number">1.</span> <span class="nav-text">Model</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Encoder"><span class="nav-number">1.1.</span> <span class="nav-text">Encoder</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#BahdanauAttention"><span class="nav-number">1.2.</span> <span class="nav-text">BahdanauAttention</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Decoder"><span class="nav-number">1.3.</span> <span class="nav-text">Decoder</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Train"><span class="nav-number">2.</span> <span class="nav-text">Train</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Save-model"><span class="nav-number">3.</span> <span class="nav-text">Save model</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Deploy"><span class="nav-number">4.</span> <span class="nav-text">Deploy</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Deploy-in-docker"><span class="nav-number">4.1.</span> <span class="nav-text">Deploy in docker</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Load-model"><span class="nav-number">4.2.</span> <span class="nav-text">Load model</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Rest-client"><span class="nav-number">4.3.</span> <span class="nav-text">Rest client</span></a></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">SmileTM</p>
+  <div class="site-description" itemprop="description">________Talk is cheap，show me the code！！！</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">36</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">19</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/smiletm" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;smiletm" rel="noopener me" target="_blank">GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://twitter.com/SmileTM96" title="Twitter → https:&#x2F;&#x2F;twitter.com&#x2F;SmileTM96" rel="noopener me" target="_blank">Twitter</a>
+      </span>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2019/12/13/NMT-Attention/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="SmileTM">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="SmileTM博客">
+      <meta itemprop="description" content="________Talk is cheap，show me the code！！！">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="NMT-Attention | SmileTM博客">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          NMT-Attention
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2019-12-13 09:51:02" itemprop="dateCreated datePublished" datetime="2019-12-13T09:51:02+08:00">2019-12-13</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2023-06-10 20:02:31" itemprop="dateModified" datetime="2023-06-10T20:02:31+08:00">2023-06-10</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><p>本文根据 <a target="_blank" rel="noopener" href="https://arxiv.org/abs/1508.04025v5">Luong 论文</a>中NMT的的一个注意力例子来进行 <a target="_blank" rel="noopener" href="http://www.manythings.org/anki/"><strong>中-英</strong></a> NMT模型的构建训练，并对该训练后的模型在Docker上进行部署。具体的可以参考Tensorflow教程<a target="_blank" rel="noopener" href="https://www.tensorflow.org/tutorials/text/nmt_with_attention">NMT_with_Attenion</a>，本文也是根据该教程来对Docker部署进一步探索。</p>
+<p>NMT_with_Attenion也是NLP中比较经典的值得复现的一个例子。</p>
+<p>本文架构</p>
+<ul>
+<li><p>Model</p>
+</li>
+<li><p>Train</p>
+</li>
+<li><p>Save model</p>
+</li>
+<li><p>Deploy</p>
+</li>
+</ul>
+<span id="more"></span>
+
+<h1 id="Model"><a href="#Model" class="headerlink" title="Model"></a>Model</h1><p>model的具体结构如Luong论文中图片所示，我们将蓝色部分的作为Encoder， 红色部分作为Decoder.</p>
+<p><img src="/images/NLP/1.png" alt="截屏2019-12-1310.34.06"></p>
+<p>下图是Google Tensorflow中对该模型更进一步的描绘。具体部分，可以参考 上面给出的连接，里面有详细的介绍。</p>
+<p><img src="/images/NLP/2.jpg" alt="attention_mechanism"></p>
+<h2 id="Encoder"><a href="#Encoder" class="headerlink" title="Encoder"></a>Encoder</h2><p>Encoder中使用了简单的使用了Embedding层+GRU。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Encoder</span>(tf.keras.Model):</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, vocab_szie, embedding_dim, enc_units, batch_sz</span>):</span><br><span class="line">        <span class="built_in">super</span>(Encoder, self).__init__()</span><br><span class="line">        self.batch_sz = batch_sz</span><br><span class="line">        self.enc_units = enc_units</span><br><span class="line">        self.embedding = tf.keras.layers.Embedding(vocab_szie, embedding_dim)</span><br><span class="line">        self.gru = tf.keras.layers.GRU(self.enc_units,</span><br><span class="line">                                       return_sequences=<span class="literal">True</span>,</span><br><span class="line">                                       return_state=<span class="literal">True</span>,</span><br><span class="line">                                       recurrent_initializer=<span class="string">&#x27;glorot_uniform&#x27;</span>)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">call</span>(<span class="params">self, inputs</span>):</span><br><span class="line">        <span class="built_in">input</span>, hidden = inputs</span><br><span class="line">        x = self.embedding(<span class="built_in">input</span>)</span><br><span class="line">        output, state = self.gru(x, initial_state=hidden)</span><br><span class="line">        <span class="keyword">return</span> output, state</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">initialize_hidden_state</span>(<span class="params">self</span>):</span><br><span class="line">        <span class="keyword">return</span> tf.zeros((self.batch_sz, self.enc_units))</span><br></pre></td></tr></table></figure>
+
+
+
+<p><strong>这里，特别强调，在call中，有许多 例子 直接 将原始的inputs进行了改变，这样操作实际并不好。</strong>（这点在许多教程，中并没有强调）</p>
+<p>由call(self, inputs)  —&gt;  call(self, input, hidden) 随意的进行了变化， 这将会导致使用 build() 以及后续部署操作带来不可预计的Bug， 因此在<strong>官方</strong>中给出的建议是，如果要传入多个变量时，请传入tuple，然后进行解包操作 来获取相关变量，就如Encoder中的call 一样。这种操作， 可能会在IDE coding 声明时 带来不方便，需要编程人员了解你的inputs到底包含的是什么。这就需要 对代码注释进行完善。</p>
+<p>这一点也有可能，在TensorFlow2.0 后续版本得到改进。</p>
+<p>这样一来，可以有效避免部分不可预计的Bug， 而且在build中也可以得到传入参数的shape。</p>
+<p>如</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">MyModel</span>(tf.keras.models.Model):</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self</span>):</span><br><span class="line">        <span class="built_in">super</span>(MyModel, self).__init__()</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">build</span>(<span class="params">self, inputs</span>):</span><br><span class="line">        a_shape, b_shape =inputs</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">&quot;a_shape :&quot;</span>, a_shape)</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">&quot;b_shape :&quot;</span>, b_shape)</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">call</span>(<span class="params">self, inputs</span>):</span><br><span class="line">        a, b = inputs</span><br><span class="line">        <span class="keyword">return</span> a@b</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">a = tf.random.uniform((<span class="number">2</span>,<span class="number">3</span>), dtype=tf.float32)</span><br><span class="line">b = tf.random.uniform((<span class="number">3</span>,<span class="number">2</span>), dtype=tf.float32)</span><br><span class="line">m = MyModel()</span><br><span class="line"><span class="built_in">print</span>(m((a, b)))</span><br><span class="line"></span><br><span class="line">输出为：</span><br><span class="line">a_shape: (<span class="number">2</span>, <span class="number">3</span>)</span><br><span class="line">b_shape: (<span class="number">3</span>, <span class="number">2</span>)</span><br><span class="line">tf.Tensor(</span><br><span class="line">[[<span class="number">0.21918826</span> <span class="number">0.5524787</span> ]</span><br><span class="line"> [<span class="number">0.80377287</span> <span class="number">0.7006702</span> ]], shape=(<span class="number">2</span>, <span class="number">2</span>), dtype=float32)</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="BahdanauAttention"><a href="#BahdanauAttention" class="headerlink" title="BahdanauAttention"></a>BahdanauAttention</h2><p>Google 样例中采用的是BahdanauAttention，后续也可以改成和Transformer中相似的attention。具体的解释 可以参考上面的Google样例。</p>
+<p><img src="/images/NLP/3.png" alt="截屏2019-12-1311.33.09"></p>
+<p>简单的说就是 </p>
+<ol>
+<li>将Decoder中gru上个时间t-1 的 状态state 与Encoder 输出enc_output 分别进行Dense全连接。</li>
+<li>然后将 1 中两个全连接后，所得进行相加(利用广播机制)。</li>
+<li>再通过tanh激活。</li>
+<li>激活后的向量 再通过Dense层向1维进行映射，从而压缩矩阵</li>
+<li>最后通过softmax得到score，</li>
+<li>然后在利用的到的score 对enc_output进行加权求和，从而得到BahdanauAttention后的特征向量</li>
+</ol>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">BahdanauAttention</span>(tf.keras.layers.Layer):</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, units</span>):</span><br><span class="line">        <span class="built_in">super</span>(BahdanauAttention, self).__init__()</span><br><span class="line">        self.W1 = tf.keras.layers.Dense(units)</span><br><span class="line">        self.W2 = tf.keras.layers.Dense(units)</span><br><span class="line">        self.V = tf.keras.layers.Dense(<span class="number">1</span>)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">call</span>(<span class="params">self, inputs</span>):</span><br><span class="line">        query, values = inputs</span><br><span class="line">        hidden_with_time_axis = tf.expand_dims(query, <span class="number">1</span>)</span><br><span class="line"></span><br><span class="line">        score = self.V(tf.nn.tanh(self.W1(values) + self.W2(hidden_with_time_axis)))</span><br><span class="line"></span><br><span class="line">        attention_weights = tf.nn.softmax(score, axis=<span class="number">1</span>)</span><br><span class="line"></span><br><span class="line">        contex_vector = attention_weights * values</span><br><span class="line">        contex_vector = tf.reduce_sum(contex_vector, axis=<span class="number">1</span>)</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> contex_vector, attention_weights</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+<h2 id="Decoder"><a href="#Decoder" class="headerlink" title="Decoder"></a>Decoder</h2><p>Decoder中 ，初始输入的hidden， enc_output均是Encoder中的输出，初始输入x 为<start>标记id.</p>
+<p>简单来讲，Decoder 就是 将Encoder中的enc_output和 decoder中gru的上一个时间步t-1 的state 进行attention，将得到的特征 与 输入x经过Embedding得到的向量进行 拼接处理，作为这次gru时间步t 时的输入，在将时间t时的输出 进行全连接Dense向vocab_size进行映射，找到argmax id从而就是 预测的单词。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Decoder</span>(tf.keras.Model):</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, vocab_size, embedding_dim, dec_units, batch_sz</span>):</span><br><span class="line">        <span class="built_in">super</span>(Decoder, self).__init__()</span><br><span class="line">        self.batch_sz = batch_sz</span><br><span class="line">        self.dec_units = dec_units</span><br><span class="line">        self.embedding = tf.keras.layers.Embedding(vocab_size, embedding_dim)</span><br><span class="line">        self.gru = tf.keras.layers.GRU(self.dec_units,</span><br><span class="line">                                       return_sequences=<span class="literal">True</span>,</span><br><span class="line">                                       return_state=<span class="literal">True</span>,</span><br><span class="line">                                       recurrent_initializer=<span class="string">&#x27;glorot_uniform&#x27;</span>)</span><br><span class="line">        self.fc = tf.keras.layers.Dense(vocab_size)</span><br><span class="line"></span><br><span class="line">        self.attention = BahdanauAttention(self.dec_units)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">call</span>(<span class="params">self, inputs</span>):</span><br><span class="line">        x, hidden, enc_output = inputs</span><br><span class="line">        context_vector, attention_weights = self.attention((hidden, enc_output))</span><br><span class="line">        x = self.embedding(x)</span><br><span class="line">        x = tf.concat([tf.expand_dims(context_vector, <span class="number">1</span>), x], axis=-<span class="number">1</span>)</span><br><span class="line"></span><br><span class="line">        output, state = self.gru(x)</span><br><span class="line">        output = tf.reshape(output, (-<span class="number">1</span>, output.shape[<span class="number">2</span>]))</span><br><span class="line">        x = self.fc(output)</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> x, state, attention_weights</span><br></pre></td></tr></table></figure>
+
+<h1 id="Train"><a href="#Train" class="headerlink" title="Train"></a>Train</h1><p>在前期训练过程中，我们引入了<strong>Teacher forcing</strong>技巧。就是在Decoder gru中，原本每个时间t时刻，传入的是上个时间t-1时刻的预测输出，改为了传入的是实际真实 所期待的输出字符id 作为输入。这样可以在训练时避免由于上个时间t-1时刻预测错误，导致后面形成滚雪球效应，造成一连串的错误，从而使得模型收敛过慢。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@tf.function</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">train_step</span>(<span class="params">inp, targ, enc_hidden</span>):</span><br><span class="line">    loss = <span class="number">0</span></span><br><span class="line">    <span class="keyword">with</span> tf.GradientTape() <span class="keyword">as</span> tape:</span><br><span class="line">        enc_output, enc_hidden = encoder((inp, enc_hidden))</span><br><span class="line">        dec_hidden = enc_hidden</span><br><span class="line">        dec_input = tf.expand_dims([targ_lang_tokenizer.word_index[<span class="string">&#x27;&lt;start&gt;&#x27;</span>]] * BATCH_SIZE, <span class="number">1</span>)</span><br><span class="line"></span><br><span class="line">        <span class="keyword">for</span> t <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">1</span>, targ.shape[<span class="number">1</span>]):</span><br><span class="line">            predictions, dec_hidden, _ = decoder((dec_input, dec_hidden, enc_output))</span><br><span class="line">            loss += loss_function(targ[:, t], predictions)</span><br><span class="line">            <span class="comment"># Teacher forcing</span></span><br><span class="line">            dec_input = tf.expand_dims(targ[:, t], <span class="number">1</span>)</span><br><span class="line"></span><br><span class="line">    batch_loss = (loss / <span class="built_in">int</span>(targ.shape[<span class="number">1</span>]))</span><br><span class="line">    variables = encoder.trainable_variables + decoder.trainable_variables</span><br><span class="line"></span><br><span class="line">    gradients = tape.gradient(loss, variables)</span><br><span class="line">    optimizer.apply_gradients(<span class="built_in">zip</span>(gradients, variables))</span><br><span class="line"></span><br><span class="line">    train_loss(batch_loss)</span><br></pre></td></tr></table></figure>
+
+
+
+<h1 id="Save-model"><a href="#Save-model" class="headerlink" title="Save model"></a>Save model</h1><p>通过训练好后，我们可以分别对Encoder，Decoder进行保存。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">version = <span class="string">&#x27;1&#x27;</span></span><br><span class="line">encoder.save(<span class="string">&#x27;path/encoder_zh/&#x27;</span>+version)</span><br><span class="line">decoder.save(<span class="string">&#x27;path/decoder_zh/&#x27;</span>+version)</span><br></pre></td></tr></table></figure>
+<p>保存后，可看见产生如下文件，接下来我们就可以开始 部署了。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">/Users/lollipop/Documents/tf2/learn/encoder_zh</span><br><span class="line">└── 1</span><br><span class="line">    ├── assets</span><br><span class="line">    ├── saved_model.pb</span><br><span class="line">    └── variables</span><br><span class="line">        ├── variables.data-00000-of-00002</span><br><span class="line">        ├── variables.data-00001-of-00002</span><br><span class="line">        └── variables.index</span><br><span class="line">        </span><br><span class="line">/Users/lollipop/Documents/tf2/learn/decoder_zh</span><br><span class="line">└── 1</span><br><span class="line">    ├── assets</span><br><span class="line">    ├── saved_model.pb</span><br><span class="line">    └── variables</span><br><span class="line">        ├── variables.data-00000-of-00002</span><br><span class="line">        ├── variables.data-00001-of-00002</span><br><span class="line">        └── variables.index</span><br></pre></td></tr></table></figure>
+
+
+
+<p>在部署前，在终端输入下面命令，可以查看encoder decoder保存的一些信息。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">saved_model_cli show --<span class="built_in">dir</span> /Users/lollipop/Documents/tf2/learn/encoder_zh/<span class="number">1</span> --tag_set serve --signature_def serving_default</span><br></pre></td></tr></table></figure>
+
+<p>输出如下：</p>
+<p>在输出中我们 可以看见一些input_1, input_2, ouput_1, output_2 等信息，这些在我们 通过rest 向服务端进行信息传输时需要用到。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">The given SavedModel SignatureDef contains the following input(s):</span><br><span class="line">  inputs[&#x27;input_1&#x27;] tensor_info:</span><br><span class="line">      dtype: DT_INT32</span><br><span class="line">      shape: (-1, 46)</span><br><span class="line">      name: serving_default_input_1:0</span><br><span class="line">  inputs[&#x27;input_2&#x27;] tensor_info:</span><br><span class="line">      dtype: DT_FLOAT</span><br><span class="line">      shape: (-1, 1024)</span><br><span class="line">      name: serving_default_input_2:0</span><br><span class="line">The given SavedModel SignatureDef contains the following output(s):</span><br><span class="line">  outputs[&#x27;output_1&#x27;] tensor_info:</span><br><span class="line">      dtype: DT_FLOAT</span><br><span class="line">      shape: (-1, 46, 1024)</span><br><span class="line">      name: StatefulPartitionedCall:0</span><br><span class="line">  outputs[&#x27;output_2&#x27;] tensor_info:</span><br><span class="line">      dtype: DT_FLOAT</span><br><span class="line">      shape: (-1, 1024)</span><br><span class="line">      name: StatefulPartitionedCall:1</span><br><span class="line">Method name is: tensorflow/serving/predict</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+
+
+
+
+<h1 id="Deploy"><a href="#Deploy" class="headerlink" title="Deploy"></a>Deploy</h1><p>部署前默认已经安装的Docker 和tensorflow&#x2F;serving的docker镜像。</p>
+<p>如果不了解，可以查看以前的文章<a target="_blank" rel="noopener" href="http://s-tm.cn/2019/12/01/docker+tensorflow:serving/">docker+tensorflow&#x2F;serving</a></p>
+<h2 id="Deploy-in-docker"><a href="#Deploy-in-docker" class="headerlink" title="Deploy in docker"></a>Deploy in docker</h2><p>打开两个终端，分别输入下面命令，将模型部署在docker上</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_"># </span><span class="language-bash">docker run -p 8501:8501 --name encoder --mount <span class="built_in">source</span>=path/encoder_zh,<span class="built_in">type</span>=<span class="built_in">bind</span>,target=/models/encoder -e MODEL_NAME=encoder -t tensorflow/servien</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_"># </span><span class="language-bash">docker run -p 8502:8501 --name decoder --mount <span class="built_in">source</span>=path/decoder_zh,<span class="built_in">type</span>=<span class="built_in">bind</span>,target=/models/decoder -e MODEL_NAME=decoder -t tensorflow/serving</span></span><br></pre></td></tr></table></figure>
+
+<p>–name 指定 部署项目的名字</p>
+<p>-p 指定端口映射</p>
+<p>source 模型保存位置</p>
+<p>后面对应的参数进行修改</p>
+<p>部署成功后</p>
+<p>通过</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_"># </span><span class="language-bash">docker ps</span></span><br></pre></td></tr></table></figure>
+
+<p>进行查看</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">CONTAINER ID        IMAGE                COMMAND                  CREATED             STATUS              PORTS                              NAMES</span><br><span class="line">eea666daa1ba        tensorflow/serving   <span class="string">&quot;/usr/bin/tf_serving…&quot;</span>   <span class="number">24</span> hours ago        Up <span class="number">24</span> hours         <span class="number">8500</span>/tcp, <span class="number">0.0</span><span class="number">.0</span><span class="number">.0</span>:<span class="number">8502</span>-&gt;<span class="number">8501</span>/tcp   decoder</span><br><span class="line">5f2c5ee249ef        tensorflow/serving   <span class="string">&quot;/usr/bin/tf_serving…&quot;</span>   <span class="number">24</span> hours ago        Up <span class="number">24</span> hours         <span class="number">8500</span>/tcp, <span class="number">0.0</span><span class="number">.0</span><span class="number">.0</span>:<span class="number">8501</span>-&gt;<span class="number">8501</span>/tcp   encoder</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="Load-model"><a href="#Load-model" class="headerlink" title="Load model"></a>Load model</h2><p>对Docker部署的模型进行通信前，我们先加载已保存的Encoder，Decoder模型。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">load_en = tf.saved_model.load(<span class="string">&#x27;/Users/lollipop/Documents/tf2/learn/encoder_zh/1&#x27;</span>)</span><br><span class="line">encoder = load_en.signatures[<span class="string">&#x27;serving_default&#x27;</span>] <span class="comment">#如果需要用加载的模型进行预测 就要加上，这里可加 可不加</span></span><br><span class="line">load_de = tf.saved_model.load(<span class="string">&#x27;/Users/lollipop/Documents/tf2/learn/decoder_zh/1&#x27;</span>)</span><br><span class="line">decoder = load_de.signatures[<span class="string">&#x27;serving_default&#x27;</span>]</span><br></pre></td></tr></table></figure>
+
+<p>加载后，我们可以通过encoder.inputs, encoder.outputs 查看相应的参数对应关系。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">encoder.inputs</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">[&lt;tf.Tensor <span class="string">&#x27;input_1:0&#x27;</span> shape=(<span class="literal">None</span>, <span class="number">46</span>) dtype=int32&gt;,</span><br><span class="line"> &lt;tf.Tensor <span class="string">&#x27;input_2:0&#x27;</span> shape=(<span class="literal">None</span>, <span class="number">1024</span>) dtype=float32&gt;,</span><br><span class="line"> &lt;tf.Tensor <span class="string">&#x27;statefulpartitionedcall_args_2:0&#x27;</span> shape=&lt;unknown&gt; dtype=resource&gt;,</span><br><span class="line"> &lt;tf.Tensor <span class="string">&#x27;statefulpartitionedcall_args_3:0&#x27;</span> shape=&lt;unknown&gt; dtype=resource&gt;,</span><br><span class="line"> &lt;tf.Tensor <span class="string">&#x27;statefulpartitionedcall_args_4:0&#x27;</span> shape=&lt;unknown&gt; dtype=resource&gt;,</span><br><span class="line"> &lt;tf.Tensor <span class="string">&#x27;statefulpartitionedcall_args_5:0&#x27;</span> shape=&lt;unknown&gt; dtype=resource&gt;]</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">encoder.outputs</span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[&lt;tf.Tensor <span class="string">&#x27;Identity:0&#x27;</span> shape=(<span class="literal">None</span>, <span class="number">46</span>, <span class="number">1024</span>) dtype=float32&gt;,</span><br><span class="line"> &lt;tf.Tensor <span class="string">&#x27;Identity_1:0&#x27;</span> shape=(<span class="literal">None</span>, <span class="number">1024</span>) dtype=float32&gt;]</span><br></pre></td></tr></table></figure>
+
+<h2 id="Rest-client"><a href="#Rest-client" class="headerlink" title="Rest client"></a>Rest client</h2><p>这里我使用的是Rest进行通信，比较简单。至于grpc，感觉有点复杂，就没有详细接触。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> tensorflow <span class="keyword">as</span> tf</span><br><span class="line"><span class="keyword">import</span> json</span><br><span class="line"><span class="keyword">import</span> data_process</span><br><span class="line"><span class="keyword">import</span> requests</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">units = <span class="number">1024</span></span><br><span class="line"><span class="comment"># encoder_ref，decoder_ref更具自己的docker 进行配置</span></span><br><span class="line">encoder_ref = <span class="string">&#x27;http://localhost:8501/v1/models/encoder:predict&#x27;</span></span><br><span class="line">decoder_ref = <span class="string">&#x27;http://localhost:8502/v1/models/decoder:predict&#x27;</span></span><br><span class="line"></span><br><span class="line">input_tensor, target_tensor, inp_lang_tokenizer, targ_lang_tokenizer = data_process.load_dataset(<span class="string">&#x27;cmn.txt&#x27;</span>)</span><br><span class="line">max_length_inp, max_length_tar = data_process.max_length(input_tensor), data_process.max_length(target_tensor)</span><br><span class="line"></span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line"><span class="string">其中值得注意的 是 instance处，[]里面是每个实例。 也就是说[]里面的 每一个大括号对应一个预测样本，因此 </span></span><br><span class="line"><span class="string">输入的 维度不包括example_size,</span></span><br><span class="line"><span class="string">如 有2个30维的图片，正常的表示为 （2 30 30 3）， 在传入时，就应转换成 &quot;instance&quot;:[&#123;&quot;input&quot;:( 30 30 3)&#125;,&#123;&quot;input&quot;:( 30 30 3)&#125;]</span></span><br><span class="line"><span class="string">每个大括号代表一个样例</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">instance 中的 input_1, input_2, 以及output_1 output_2,是根具model的输入 输出 顺序来的。</span></span><br><span class="line"><span class="string">如果不清楚可以 在加载模型后 通过 encoder.inputs  encoder.outputs 来进行查看</span></span><br><span class="line"><span class="string">在终端中 输入以下命令 将模型部署 映射到8501端口</span></span><br><span class="line"><span class="string">docker run -p 8501:8501 --name encoder --mount source=path/encoder_zh,type=bind,target=/models/encoder -e MODEL_NAME=encoder -t tensorflow/serving</span></span><br><span class="line"><span class="string">encoder 的rest_client</span></span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">encoder_rest</span>(<span class="params"><span class="built_in">input</span>, hidden</span>):</span><br><span class="line">    data = json.dumps(&#123;<span class="string">&quot;instances&quot;</span>: [&#123;<span class="string">&quot;input_1&quot;</span>: <span class="built_in">input</span>.numpy().tolist(), <span class="string">&quot;input_2&quot;</span>: hidden.numpy().tolist()&#125;]&#125;)</span><br><span class="line">    json_response = requests.post(encoder_ref, data=data)</span><br><span class="line"></span><br><span class="line">    predictions = json.loads(json_response.text)[<span class="string">&#x27;predictions&#x27;</span>]</span><br><span class="line"></span><br><span class="line">    en_output = predictions[<span class="number">0</span>][<span class="string">&#x27;output_1&#x27;</span>]</span><br><span class="line">    en_state = predictions[<span class="number">0</span>][<span class="string">&#x27;output_2&#x27;</span>]</span><br><span class="line">    <span class="keyword">return</span> en_state, en_output</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># 在终端中 输入以下命令 将模型部署 映射到8502端口</span></span><br><span class="line"><span class="comment"># docker run -p 8502:8501 --name decoder --mount source=path/decoder_zh,type=bind,target=/models/decoder -e MODEL_NAME=decoder -t tensorflow/serving</span></span><br><span class="line"><span class="comment"># decoder 的rest_client</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">decoder_rest</span>(<span class="params">x, en_hidden, en_output</span>):</span><br><span class="line">    data = json.dumps(&#123;<span class="string">&quot;instances&quot;</span>: [&#123;<span class="string">&quot;input_1&quot;</span>: x.numpy().tolist(), <span class="string">&quot;input_2&quot;</span>: en_hidden, <span class="string">&quot;input_3&quot;</span>: en_output&#125;]&#125;)</span><br><span class="line">    json_response = requests.post(decoder_ref, data=data)</span><br><span class="line">    predictions = json.loads(json_response.text)[<span class="string">&#x27;predictions&#x27;</span>]</span><br><span class="line">    x = predictions[<span class="number">0</span>][<span class="string">&#x27;output_1&#x27;</span>]</span><br><span class="line">    state = predictions[<span class="number">0</span>][<span class="string">&#x27;output_2&#x27;</span>]</span><br><span class="line">    attention_weights = predictions[<span class="number">0</span>][<span class="string">&#x27;output_3&#x27;</span>]</span><br><span class="line">    <span class="keyword">return</span> x, state, attention_weights</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># 进行翻译， 并返回结果</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">translate</span>(<span class="params">sentence</span>):</span><br><span class="line">    sentence = data_process.preprocess_sentence_zh(sentence)</span><br><span class="line">    inputs = [inp_lang_tokenizer.word_index[i] <span class="keyword">for</span> i <span class="keyword">in</span> sentence.split()]</span><br><span class="line">    inputs = tf.keras.preprocessing.sequence.pad_sequences([inputs], maxlen=max_length_inp, padding=<span class="string">&#x27;post&#x27;</span>)</span><br><span class="line">    inputs = tf.convert_to_tensor(inputs)</span><br><span class="line">    result = <span class="string">&#x27;&#x27;</span></span><br><span class="line">    hidden = tf.zeros((<span class="number">1</span>, units))</span><br><span class="line">    en_state, en_out = encoder_rest(inputs[<span class="number">0</span>], hidden[<span class="number">0</span>])</span><br><span class="line">    de_inputs = tf.expand_dims([targ_lang_tokenizer.word_index[<span class="string">&#x27;&lt;start&gt;&#x27;</span>]], <span class="number">0</span>)</span><br><span class="line">    de_input = de_inputs[<span class="number">0</span>]</span><br><span class="line">    decoder_rest(de_input, en_state, en_out)</span><br><span class="line">    de_hideen = en_state</span><br><span class="line"></span><br><span class="line">    result = <span class="string">&#x27;&#x27;</span></span><br><span class="line">    <span class="keyword">for</span> t <span class="keyword">in</span> <span class="built_in">range</span>(max_length_tar):</span><br><span class="line">        x, state, _ = decoder_rest(de_input, de_hideen, en_out)</span><br><span class="line">        prediction_id = tf.argmax(x, axis=-<span class="number">1</span>).numpy()</span><br><span class="line">        <span class="keyword">if</span> targ_lang_tokenizer.index_word[prediction_id] == <span class="string">&#x27;&lt;end&gt;&#x27;</span>:</span><br><span class="line">            <span class="keyword">break</span></span><br><span class="line">        result += targ_lang_tokenizer.index_word[prediction_id] + <span class="string">&#x27; &#x27;</span></span><br><span class="line">        de_input = tf.expand_dims([prediction_id], <span class="number">0</span>)[<span class="number">0</span>]</span><br><span class="line">        de_hideen = state</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> result</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">sentence = <span class="string">&#x27;我喜欢你！&#x27;</span></span><br><span class="line"><span class="built_in">print</span>(sentence)</span><br><span class="line"><span class="built_in">print</span>(translate(sentence))</span><br></pre></td></tr></table></figure>
+
+<p>输出如下：</p>
+<p><img src="/images/NLP/4.png" alt="截屏2019-12-1315.16.45"></p>
+<p><a target="_blank" rel="noopener" href="https://github.com/SmileTM/paper_coding/tree/master/NMT_attention"><strong>[code]</strong></a></p>
+<p>在Google教程代码下，复现的小小起步，后面会接着复现Transformer，Bert ， Transformer-XL·········</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/NLP/" rel="tag"># NLP</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2019/12/19/tensorflow-addons/" rel="prev" title="tensorflow_addons">
+                  <i class="fa fa-chevron-left"></i> tensorflow_addons
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2019/12/01/docker+tensorflow:serving/" rel="next" title="docker+tensorflow/serving">
+                  docker+tensorflow/serving <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+    <div class="comments gitalk-container"></div>
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">SmileTM</span>
+</div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/schemes/muse.js"></script><script src="/js/next-boot.js"></script>
+
+  
+  <script class="next-config" data-name="pdf" type="application/json">{"object_url":{"url":"https://cdnjs.cloudflare.com/ajax/libs/pdfobject/2.2.11/pdfobject.min.js","integrity":"sha256-N6JtCNwaYm6kizuG92UtOOXamRHPwu+V1yF10g3bu/c="},"url":"/lib/pdf/web/viewer.html"}</script>
+  <script src="/js/third-party/tags/pdf.js"></script>
+
+
+
+
+
+
+  
+
+
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">false</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"tags":"all","js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.js","integrity":"sha256-MASABpB4tYktI2Oitl4t+78w/lyA+D7b/s9GEP0JOGI="}}</script>
+<script src="/js/third-party/math/mathjax.js"></script>
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/gitalk/1.8.0/gitalk.css" integrity="sha256-AJnUHL7dBv6PGaeyPQJcgQPDjt/Hn/PvYZde1iqfp8U=" crossorigin="anonymous">
+
+<script class="next-config" data-name="gitalk" type="application/json">{"enable":true,"github_id":"SmileTM","repo":"SmileTM.github.io","client_id":"ed531d5b5c361d2a4ee1","client_secret":"23d9318d301649f0513a37915b9466b68b44acd4","admin_user":"SmileTM","distraction_free_mode":true,"proxy":"https://cors-anywhere.azm.workers.dev/https://github.com/login/oauth/access_token","language":null,"js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/gitalk/1.8.0/gitalk.min.js","integrity":"sha256-MVK9MGD/XJaGyIghSVrONSnoXoGh3IFxLw0zfvzpxR4="},"path_md5":"70992703d46699b9e1eef8e910a89c04"}</script>
+<script src="/js/third-party/comments/gitalk.js"></script>
+
+</body>
+</html>

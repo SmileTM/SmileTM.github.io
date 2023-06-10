@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 6.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha256-HtsXJanqjKTc8vVQjO4YMhiqFoXkfBsjBWcX91T1jr8=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"example.com","root":"/","images":"/images","scheme":"Muse","darkmode":false,"version":"8.17.0","exturl":false,"sidebar":{"position":"right","display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":"gitalk","storage":true,"lazyload":false,"nav":null,"activeClass":"gitalk"},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="TFRecord是一种高效的数据存储格式，尤其是在处理大数据集时，我们无法对数据进行一次读取，这时我们就可以将文件存储为TFRecord，然后再进行读取。这样可以可以提高数据移动、读取、处理等速度。在对小数据集进行读取时，可以直接使用tf.data API来进行处理。 在TFRecord中是将每个样本example 以字典的方式进行存储。 主要的数据类型如下：  int64：tf.train.Fe">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Create-TFRecord">
+<meta property="og:url" content="http://example.com/2020/01/14/Create-TFRecord/index.html">
+<meta property="og:site_name" content="SmileTM博客">
+<meta property="og:description" content="TFRecord是一种高效的数据存储格式，尤其是在处理大数据集时，我们无法对数据进行一次读取，这时我们就可以将文件存储为TFRecord，然后再进行读取。这样可以可以提高数据移动、读取、处理等速度。在对小数据集进行读取时，可以直接使用tf.data API来进行处理。 在TFRecord中是将每个样本example 以字典的方式进行存储。 主要的数据类型如下：  int64：tf.train.Fe">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2020-01-14T08:59:01.000Z">
+<meta property="article:modified_time" content="2023-06-10T12:02:31.642Z">
+<meta property="article:author" content="SmileTM">
+<meta property="article:tag" content="TensorFlow2.x">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="http://example.com/2020/01/14/Create-TFRecord/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://example.com/2020/01/14/Create-TFRecord/","path":"2020/01/14/Create-TFRecord/","title":"Create-TFRecord"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>Create-TFRecord | SmileTM博客</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+      <img class="custom-logo-image" src="/images/custom-logo.png" alt="SmileTM博客">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">SmileTM博客</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">_________Smile  To  Me</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li>
+  </ul>
+</nav>
+
+
+
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Create-TFRecord-py"><span class="nav-number">1.</span> <span class="nav-text">Create_TFRecord.py</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Read-TFRecord-py"><span class="nav-number">2.</span> <span class="nav-text">Read_TFRecord.py</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">SmileTM</p>
+  <div class="site-description" itemprop="description">________Talk is cheap，show me the code！！！</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">36</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">19</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/smiletm" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;smiletm" rel="noopener me" target="_blank">GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://twitter.com/SmileTM96" title="Twitter → https:&#x2F;&#x2F;twitter.com&#x2F;SmileTM96" rel="noopener me" target="_blank">Twitter</a>
+      </span>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2020/01/14/Create-TFRecord/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="SmileTM">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="SmileTM博客">
+      <meta itemprop="description" content="________Talk is cheap，show me the code！！！">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="Create-TFRecord | SmileTM博客">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Create-TFRecord
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2020-01-14 16:59:01" itemprop="dateCreated datePublished" datetime="2020-01-14T16:59:01+08:00">2020-01-14</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2023-06-10 20:02:31" itemprop="dateModified" datetime="2023-06-10T20:02:31+08:00">2023-06-10</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><p>TFRecord是一种高效的数据存储格式，尤其是在处理大数据集时，我们无法对数据进行一次读取，这时我们就可以将文件存储为TFRecord，然后再进行读取。这样可以可以提高数据移动、读取、处理等速度。<br>在对小数据集进行读取时，可以直接使用<code>tf.data</code> API来进行处理。</p>
+<p>在TFRecord中是将每个样本example 以字典的方式进行存储。</p>
+<p>主要的数据类型如下：</p>
+<ul>
+<li>int64：<code>tf.train.Feature(int64_list = tf.train.Int64List(value=输入))</code></li>
+<li>float32：<code>tf.train.Feature(float_list = tf.train.FloatList(value=输入))</code></li>
+<li>string：<code>tf.train.Feature(bytes_list=tf.train.BytesList(value=输入))</code></li>
+<li>注：输入必须是list(向量)</li>
+</ul>
+<p>这里我们举一个NLP中常见例子。</p>
+<ul>
+<li>这里有10个句子<code>sentence</code>，每个句子有128个<code>token_id</code>。</li>
+<li>每个句子对应的10个标签<code>label</code>。</li>
+<li>每个句子中对应的<code>token weight (mask)</code></li>
+<li>每个句子经过<code>Embedding</code>后的 句子<code>matrix</code>，<code>tensor </code>(两者是同一个东西，只是为了后面介绍两种不同的存储方式。)</li>
+</ul>
+<p>那么我们怎样将这些转换为<code>TFRecord</code>呢？</p>
+<span id="more"></span>
+
+<h1 id="Create-TFRecord-py"><a href="#Create-TFRecord-py" class="headerlink" title="Create_TFRecord.py"></a>Create_TFRecord.py</h1><p>大致可以分为以下几步：</p>
+<ol>
+<li>由于TFRecord中是将每个样本当做一个<code>example</code>进行存储。所以我们先要取得每个样本对应的<code>sentence</code>,<code> label</code>, <code>weight</code>, <code>matrix</code>, <code>tensor</code>.</li>
+<li>将每个样本属性转换为对应的<code>feature</code>字典类型。（注意，这里的<code>value</code>均为**<code>list</code>**类型）<ul>
+<li>int64：<code>tf.train.Feature(int64_list = tf.train.Int64List(value=输入))</code></li>
+<li>float32：<code>tf.train.Feature(float_list = tf.train.FloatList(value=输入))</code></li>
+<li>string：<code>tf.train.Feature(bytes_list=tf.train.BytesList(value=输入))</code></li>
+</ul>
+</li>
+<li>将feature字典包装成features。<br><code> features=tf.train.Features(feature=feature字典)</code></li>
+<li>将features转换成example<br><code>example = tf.train.Example(features=features)</code></li>
+<li>通过<code>example.SerializeToString() </code> 将example 进行序列化，并通过 <code>tfwriter.write()</code>进行写入文件。</li>
+</ol>
+<p>具体代码如下：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> tensorflow <span class="keyword">as</span> tf</span><br><span class="line"><span class="keyword">from</span> pathlib <span class="keyword">import</span> Path</span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"></span><br><span class="line"><span class="comment"># 随机生成相应数据</span></span><br><span class="line">senteces = np.random.randint(<span class="number">0</span>,<span class="number">512</span>,(<span class="number">10</span>,<span class="number">128</span>))</span><br><span class="line">senteces_label = np.random.randint(<span class="number">0</span>,<span class="number">2</span>,(<span class="number">10</span>))</span><br><span class="line">senteces_weight = [[<span class="number">1.0</span>]*<span class="number">128</span>]*<span class="number">10</span></span><br><span class="line">tensors = np.random.randn(<span class="number">10</span>,<span class="number">128</span>,<span class="number">512</span>)</span><br><span class="line">matrixs = np.random.randn(<span class="number">10</span>,<span class="number">128</span>,<span class="number">512</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">tfrecord_save_path = <span class="string">&#x27;data.tfrecord&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">with</span> tf.io.TFRecordWriter(tfrecord_save_path) <span class="keyword">as</span> tfwriter:</span><br><span class="line">    <span class="keyword">for</span> text,label ,weight, tensor, matrix <span class="keyword">in</span> <span class="built_in">zip</span>(senteces ,senteces_label,senteces_weight, tensors, matrixs):</span><br><span class="line">        example = tf.train.Example(features=tf.train.Features(</span><br><span class="line">            feature=&#123;</span><br><span class="line">                <span class="string">&#x27;text&#x27;</span>:tf.train.Feature(int64_list=tf.train.Int64List(value=text.tolist())),</span><br><span class="line">                <span class="string">&#x27;label&#x27;</span>:tf.train.Feature(int64_list=tf.train.Int64List(value=[label])),</span><br><span class="line">                <span class="string">&#x27;weight&#x27;</span>:tf.train.Feature(float_list=tf.train.FloatList(value=weight)),</span><br><span class="line"></span><br><span class="line">                <span class="comment">#当需要存入矩阵时，有两种方法 一种是将矩阵Flatten 然后在读取的时候进行 形状reshape</span></span><br><span class="line">                <span class="string">&#x27;matrix&#x27;</span>: tf.train.Feature(float_list=tf.train.FloatList(value=matrix.reshape(-<span class="number">1</span>))),</span><br><span class="line">                <span class="string">&#x27;matrix_shape&#x27;</span>: tf.train.Feature(int64_list=tf.train.Int64List(value=matrix.shape)),</span><br><span class="line"></span><br><span class="line">                <span class="comment"># 存入矩阵时，会使得矩阵形状丢失 因此 需要额外记录矩阵的形状，以便还原。</span></span><br><span class="line"></span><br><span class="line">                <span class="comment">#另一种方法 是将矩阵转换为字符类型存储,随后在还原。</span></span><br><span class="line">                <span class="comment"># 两种方法都会导致 形状丢失，都需要进行矩阵形状存储</span></span><br><span class="line">                <span class="string">&#x27;tensor&#x27;</span>: tf.train.Feature(bytes_list=tf.train.BytesList(value=[tensor.tostring()])),</span><br><span class="line">                <span class="string">&#x27;tensor_shape&#x27;</span>: tf.train.Feature(int64_list=tf.train.Int64List(value=tensor.shape))</span><br><span class="line"></span><br><span class="line">            &#125;</span><br><span class="line">        ))</span><br><span class="line"></span><br><span class="line">        tfwriter.write(example.SerializeToString())</span><br></pre></td></tr></table></figure>
+
+
+
+<h1 id="Read-TFRecord-py"><a href="#Read-TFRecord-py" class="headerlink" title="Read_TFRecord.py"></a>Read_TFRecord.py</h1><p>在得到了<code>TFRecord</code>后，我们又改如何解析呢？</p>
+<p>解析大致也可以分为几个步骤:</p>
+<ol>
+<li><p>通过<code>tf.data.TFRecordDataset</code>对TFRecord进行读取。</p>
+</li>
+<li><p>在前面创建TFRecord时，我们需要创建feature字典，同样在解析时也需要定义一个feature_description字典，告诉程序，TFRecord中的数据类型。</p>
+<p><strong>定长特征解析</strong>：<code>tf.FixedLenFeature(shape, dtype, default_value)</code></p>
+<ul>
+<li>shape：可当<code>reshape</code>来用，如vector的shape从(3,)改动成了(1,3)。</li>
+<li>注：如果写入的feature使用了<code>.tostring()</code> 其shape就是<code>()</code></li>
+<li>dtype：<strong>必须</strong>是<code>tf.float32</code>， <code>tf.int64</code>， <code>tf.string</code>中的一种。</li>
+<li>default_value：<code>feature</code>值缺失时所指定的值。</li>
+</ul>
+<p><strong>不定长特征解析</strong>：<code>tf.VarLenFeature(dtype)</code></p>
+<ul>
+<li>注：可以不明确指定shape，但得到的tensor是SparseTensor。</li>
+</ul>
+</li>
+<li><p>通过<code>tf.io.parse_single_example</code>对 1 中得到的raw_data进行解析。</p>
+</li>
+<li><p>对解析后的数据，对应的部分进一步进行还原。</p>
+</li>
+</ol>
+<p>在解析TFRecord时，需要注意：</p>
+<ul>
+<li><code>tf.io.FixedLenFeature</code> 中要明确传入数据的形状。</li>
+<li><code>tf.io.VarLenFeature</code>虽然不用传入数据形状，但需要通过<code>tf.sparse.to_dense</code>对对应数据进行解析</li>
+<li>其中由于tensor是前面是通过转换为字符类型进行存储的，因此需要进行解码。</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> tensorflow <span class="keyword">as</span> tf</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">parse_function</span>(<span class="params">example</span>):</span><br><span class="line">    <span class="comment"># 这里的dtype 类型只有 float32, int64, string</span></span><br><span class="line">    feature_description = &#123;</span><br><span class="line">        <span class="string">&#x27;text&#x27;</span>: tf.io.FixedLenFeature(shape=(<span class="number">128</span>,), dtype=tf.int64),</span><br><span class="line">        <span class="string">&#x27;label&#x27;</span>: tf.io.FixedLenFeature(shape=(), dtype=tf.int64),</span><br><span class="line">        <span class="string">&#x27;weight&#x27;</span>: tf.io.FixedLenFeature(shape=(<span class="number">128</span>,), dtype=tf.float32),</span><br><span class="line">        <span class="string">&#x27;matrix&#x27;</span>: tf.io.VarLenFeature(dtype=tf.float32),</span><br><span class="line">        <span class="string">&#x27;matrix_shape&#x27;</span>: tf.io.VarLenFeature(dtype=tf.int64),</span><br><span class="line">        <span class="string">&#x27;tensor&#x27;</span>: tf.io.FixedLenFeature(shape=(), dtype=tf.string),</span><br><span class="line">        <span class="string">&#x27;tensor_shape&#x27;</span>: tf.io.FixedLenFeature(shape=(<span class="number">2</span>,), dtype=tf.int64)</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    parse_example = tf.io.parse_single_example(example, feature_description)</span><br><span class="line"> </span><br><span class="line">    <span class="comment"># 对parse_example中的对应数据进一步解析</span></span><br><span class="line">    parse_example[<span class="string">&#x27;matrix&#x27;</span>] = tf.sparse.to_dense(parse_example[<span class="string">&#x27;matrix&#x27;</span>])</span><br><span class="line">    parse_example[<span class="string">&#x27;matrix_shape&#x27;</span>] = tf.sparse.to_dense(parse_example[<span class="string">&#x27;matrix_shape&#x27;</span>])</span><br><span class="line">		<span class="comment"># 由于tensor是前面是通过转换为字符类型进行存储的，因此需要进行解码</span></span><br><span class="line">    parse_example[<span class="string">&#x27;tensor&#x27;</span>] = tf.io.decode_raw(parse_example[<span class="string">&#x27;tensor&#x27;</span>], tf.int64)</span><br><span class="line">		<span class="comment"># 将相应矩阵进行reshape</span></span><br><span class="line">    parse_example[<span class="string">&#x27;matrix&#x27;</span>] = tf.reshape(parse_example[<span class="string">&#x27;matrix&#x27;</span>], parse_example[<span class="string">&#x27;matrix_shape&#x27;</span>])</span><br><span class="line">    parse_example[<span class="string">&#x27;tensor&#x27;</span>] = tf.reshape(parse_example[<span class="string">&#x27;tensor&#x27;</span>], parse_example[<span class="string">&#x27;tensor_shape&#x27;</span>])</span><br><span class="line">    <span class="keyword">return</span> parse_example</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&#x27;__main__&#x27;</span>:</span><br><span class="line">    tfrecord_save_path = <span class="string">&#x27;data.tfrecord&#x27;</span></span><br><span class="line"></span><br><span class="line">    raw_dataset = tf.data.TFRecordDataset(tfrecord_save_path)</span><br><span class="line"></span><br><span class="line">    dataset = raw_dataset.<span class="built_in">map</span>(parse_function)</span><br><span class="line">		<span class="comment"># 在这里我们还可以对数据dataset进行shuffle和batch操作</span></span><br><span class="line">    <span class="comment"># dataset = dataset.shuffle()</span></span><br><span class="line">    <span class="comment"># dataset = dataset.batch()</span></span><br><span class="line">    <span class="keyword">for</span> data <span class="keyword">in</span> dataset:</span><br><span class="line">        <span class="built_in">print</span>(data)</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+
+
+
+
+
+<p><strong>Reference</strong></p>
+<p><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/33223782">https://zhuanlan.zhihu.com/p/33223782</a></p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/TensorFlow2-x/" rel="tag"># TensorFlow2.x</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2020/01/30/keras%E8%87%AA%E5%8A%A8%E7%82%BC%E4%B8%B9%E5%99%A8/" rel="prev" title="keras自动炼丹器">
+                  <i class="fa fa-chevron-left"></i> keras自动炼丹器
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2019/12/29/TensorFlow2.x-distribute/" rel="next" title="TensorFlow2.x-distribute">
+                  TensorFlow2.x-distribute <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+    <div class="comments gitalk-container"></div>
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">SmileTM</span>
+</div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/schemes/muse.js"></script><script src="/js/next-boot.js"></script>
+
+  
+  <script class="next-config" data-name="pdf" type="application/json">{"object_url":{"url":"https://cdnjs.cloudflare.com/ajax/libs/pdfobject/2.2.11/pdfobject.min.js","integrity":"sha256-N6JtCNwaYm6kizuG92UtOOXamRHPwu+V1yF10g3bu/c="},"url":"/lib/pdf/web/viewer.html"}</script>
+  <script src="/js/third-party/tags/pdf.js"></script>
+
+
+
+
+
+
+  
+
+
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">false</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"tags":"all","js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.js","integrity":"sha256-MASABpB4tYktI2Oitl4t+78w/lyA+D7b/s9GEP0JOGI="}}</script>
+<script src="/js/third-party/math/mathjax.js"></script>
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/gitalk/1.8.0/gitalk.css" integrity="sha256-AJnUHL7dBv6PGaeyPQJcgQPDjt/Hn/PvYZde1iqfp8U=" crossorigin="anonymous">
+
+<script class="next-config" data-name="gitalk" type="application/json">{"enable":true,"github_id":"SmileTM","repo":"SmileTM.github.io","client_id":"ed531d5b5c361d2a4ee1","client_secret":"23d9318d301649f0513a37915b9466b68b44acd4","admin_user":"SmileTM","distraction_free_mode":true,"proxy":"https://cors-anywhere.azm.workers.dev/https://github.com/login/oauth/access_token","language":null,"js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/gitalk/1.8.0/gitalk.min.js","integrity":"sha256-MVK9MGD/XJaGyIghSVrONSnoXoGh3IFxLw0zfvzpxR4="},"path_md5":"3098790fb1729c5685aa93c87df9d104"}</script>
+<script src="/js/third-party/comments/gitalk.js"></script>
+
+</body>
+</html>

@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 6.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha256-HtsXJanqjKTc8vVQjO4YMhiqFoXkfBsjBWcX91T1jr8=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"example.com","root":"/","images":"/images","scheme":"Muse","darkmode":false,"version":"8.17.0","exturl":false,"sidebar":{"position":"right","display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":"gitalk","storage":true,"lazyload":false,"nav":null,"activeClass":"gitalk"},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="在HuggingFace transformers 的模型库中常常会见到这种pytorch_model.bin.index.json 参数名 与 模型bin文件的映射表，在如今的大模型中更为常见。本文主要介绍如何利用HuggingFace transformers进模型保存分片。 pytorch_model.bin.index.json  1234567891011&amp;#123;  &quot;me">
+<meta property="og:type" content="article">
+<meta property="og:title" content="使用 HuggingFace transformers 进行模型分片存储">
+<meta property="og:url" content="http://example.com/2023/06/10/SaveModelSharding/index.html">
+<meta property="og:site_name" content="SmileTM博客">
+<meta property="og:description" content="在HuggingFace transformers 的模型库中常常会见到这种pytorch_model.bin.index.json 参数名 与 模型bin文件的映射表，在如今的大模型中更为常见。本文主要介绍如何利用HuggingFace transformers进模型保存分片。 pytorch_model.bin.index.json  1234567891011&amp;#123;  &quot;me">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2023-06-10T08:08:59.000Z">
+<meta property="article:modified_time" content="2023-06-10T12:02:31.631Z">
+<meta property="article:author" content="SmileTM">
+<meta property="article:tag" content="ToolsDemo">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="http://example.com/2023/06/10/SaveModelSharding/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://example.com/2023/06/10/SaveModelSharding/","path":"2023/06/10/SaveModelSharding/","title":"使用 HuggingFace transformers 进行模型分片存储"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>使用 HuggingFace transformers 进行模型分片存储 | SmileTM博客</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+      <img class="custom-logo-image" src="/images/custom-logo.png" alt="SmileTM博客">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">SmileTM博客</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">_________Smile  To  Me</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li>
+  </ul>
+</nav>
+
+
+
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#PyTorch"><span class="nav-number">1.</span> <span class="nav-text">PyTorch</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#TF2-x"><span class="nav-number">2.</span> <span class="nav-text">TF2.x</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">SmileTM</p>
+  <div class="site-description" itemprop="description">________Talk is cheap，show me the code！！！</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">36</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">19</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/smiletm" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;smiletm" rel="noopener me" target="_blank">GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://twitter.com/SmileTM96" title="Twitter → https:&#x2F;&#x2F;twitter.com&#x2F;SmileTM96" rel="noopener me" target="_blank">Twitter</a>
+      </span>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2023/06/10/SaveModelSharding/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="SmileTM">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="SmileTM博客">
+      <meta itemprop="description" content="________Talk is cheap，show me the code！！！">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="使用 HuggingFace transformers 进行模型分片存储 | SmileTM博客">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          使用 HuggingFace transformers 进行模型分片存储
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+      
+
+      <time title="创建时间：2023-06-10 16:08:59 / 修改时间：20:02:31" itemprop="dateCreated datePublished" datetime="2023-06-10T16:08:59+08:00">2023-06-10</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><p>在HuggingFace transformers 的模型库中常常会见到这种<code>pytorch_model.bin.index.json</code> 参数名 与 模型bin文件的映射表，在如今的<strong>大模型</strong>中更为常见。本文主要介绍如何利用HuggingFace transformers进模型保存分片。</p>
+<p><strong>pytorch_model.bin.index.json</strong> </p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  &quot;metadata&quot;: &#123;</span><br><span class="line">    &quot;total_size&quot;: 8396800</span><br><span class="line">  &#125;,</span><br><span class="line">  &quot;weight_map&quot;: &#123;</span><br><span class="line">    &quot;liner1.bias&quot;: &quot;pytorch_model-00001-of-00002.bin&quot;,</span><br><span class="line">    &quot;liner1.weight&quot;: &quot;pytorch_model-00001-of-00002.bin&quot;,</span><br><span class="line">    &quot;liner2.bias&quot;: &quot;pytorch_model-00002-of-00002.bin&quot;,</span><br><span class="line">    &quot;liner2.weight&quot;: &quot;pytorch_model-00002-of-00002.bin&quot;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>权重结构：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">saved_pt</span><br><span class="line">├── config.json</span><br><span class="line">├── pytorch_model-00001-of-00002.bin</span><br><span class="line">├── pytorch_model-00002-of-00002.bin</span><br><span class="line">└── pytorch_model.bin.index.json</span><br></pre></td></tr></table></figure>
+
+<span id="more"></span>
+
+<h1 id="PyTorch"><a href="#PyTorch" class="headerlink" title="PyTorch"></a>PyTorch</h1><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># PyTorch 使用HuggingFace transformers保存模型方式</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">ModelConfig</span>(<span class="title class_ inherited__">PretrainedConfig</span>):</span><br><span class="line">    model_type = <span class="string">&quot;ptmodel&quot;</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, size=<span class="number">1024</span>, **kwargs</span>):</span><br><span class="line">        <span class="built_in">super</span>().__init__(**kwargs)</span><br><span class="line">        self.size = size</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Model</span>(<span class="title class_ inherited__">PreTrainedModel</span>):</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, config: ModelConfig, *inputs, **kwargs</span>):</span><br><span class="line">        <span class="built_in">super</span>().__init__(config, *inputs, **kwargs)</span><br><span class="line">        self.config = config</span><br><span class="line">        self.liner1 = torch.nn.Linear(self.config.size, self.config.size)</span><br><span class="line">        self.liner2 = torch.nn.Linear(self.config.size, self.config.size)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">forward</span>(<span class="params">self, <span class="built_in">input</span></span>):</span><br><span class="line">        out = self.liner1(<span class="built_in">input</span>)</span><br><span class="line">        out = self.liner2(out)</span><br><span class="line">        <span class="keyword">return</span> out</span><br><span class="line">      </span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&#x27;__main__&#x27;</span>:</span><br><span class="line">    saved_path = <span class="string">&quot;saved_pt&quot;</span></span><br><span class="line">    os.makedirs(saved_path, exist_ok=<span class="literal">True</span>)</span><br><span class="line"></span><br><span class="line">    config = ModelConfig(size=<span class="number">1024</span>)</span><br><span class="line"></span><br><span class="line">    model = Model(config=config)</span><br><span class="line">    data = torch.ones((<span class="number">1024</span>, <span class="number">1024</span>))</span><br><span class="line">    out = model(data)</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">f&quot;model output:&quot;</span>, out)</span><br><span class="line">    model.save_pretrained(saved_path, max_shard_size=<span class="string">&quot;6MB&quot;</span>)</span><br><span class="line">    <span class="comment"># 打印model参数</span></span><br><span class="line">    <span class="built_in">print</span>(model.state_dict())</span><br><span class="line"></span><br><span class="line">    model1 = Model(config=config).from_pretrained(saved_path, from_pt=<span class="literal">True</span>, config=config)</span><br><span class="line">    out1 = model1(data)</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">f&quot;model1 output:&quot;</span>, out)</span><br><span class="line">    <span class="comment"># 打印model1 参数</span></span><br><span class="line">    <span class="built_in">print</span>(model1.state_dict())</span><br></pre></td></tr></table></figure>
+
+
+<p>权重结构：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">&#x27;&#x27;&#x27;</span><br><span class="line"><span class="meta prompt_">&gt;</span><span class="language-bash">&gt;&gt; tree saved_pt</span> </span><br><span class="line">   </span><br><span class="line">saved_pt</span><br><span class="line">├── config.json</span><br><span class="line">├── pytorch_model-00001-of-00002.bin</span><br><span class="line">├── pytorch_model-00002-of-00002.bin</span><br><span class="line">└── pytorch_model.bin.index.json</span><br><span class="line">&#x27;&#x27;&#x27;</span><br></pre></td></tr></table></figure>
+
+<h1 id="TF2-x"><a href="#TF2-x" class="headerlink" title="TF2.x"></a>TF2.x</h1><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># TF2.x 使用HuggingFace transformers保存模型方式</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">ModelConfig</span>(<span class="title class_ inherited__">PretrainedConfig</span>):</span><br><span class="line">    model_type = <span class="string">&quot;tfmodel&quot;</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, size=<span class="number">1024</span>, **kwargs</span>):</span><br><span class="line">        <span class="built_in">super</span>().__init__(**kwargs)</span><br><span class="line">        self.size = size</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">config = ModelConfig(size=<span class="number">1024</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="meta">@dataclass</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">ModelOut</span>(<span class="title class_ inherited__">ModelOutput</span>):</span><br><span class="line">    logits: tf.Tensor = <span class="literal">None</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Model</span>(<span class="title class_ inherited__">TFPreTrainedModel</span>):</span><br><span class="line"></span><br><span class="line"><span class="meta">    @property</span></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">dummy_inputs</span>(<span class="params">self</span>):</span><br><span class="line">        dummy = tf.constant(tf.ones((self.config.size, self.config.size), dtype=tf.float32))</span><br><span class="line">        <span class="keyword">return</span> dummy</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, config: ModelConfig, *inputs, **kwargs</span>):</span><br><span class="line">        <span class="built_in">super</span>().__init__(config, *inputs, **kwargs)</span><br><span class="line">        self.config = config</span><br><span class="line"></span><br><span class="line">        <span class="comment"># TF2.x 一定要记住给name赋值，否则会根据整个类图进行增量自动命名</span></span><br><span class="line">        self.dense1 = tf.keras.layers.Dense(self.config.size, name=<span class="string">&quot;dense1&quot;</span>)</span><br><span class="line">        self.dense2 = tf.keras.layers.Dense(self.config.size, name=<span class="string">&quot;dense2&quot;</span>)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">call</span>(<span class="params">self, inputs, training=<span class="literal">None</span>, mask=<span class="literal">None</span></span>):</span><br><span class="line">        out = self.dense1(inputs)</span><br><span class="line">        out = self.dense2(out)</span><br><span class="line">        <span class="keyword">return</span> out</span><br><span class="line"></span><br><span class="line"><span class="meta">    @tf.function(<span class="params"></span></span></span><br><span class="line"><span class="params"><span class="meta">        input_signature=[</span></span></span><br><span class="line"><span class="params"><span class="meta">            (<span class="params">tf.TensorSpec(<span class="params">shape=(<span class="params"><span class="literal">None</span>, config.size</span>), dtype=tf.float32, name=<span class="string">&quot;inputs&quot;</span></span>)</span>)</span></span></span><br><span class="line"><span class="params"><span class="meta">        ]</span></span></span><br><span class="line"><span class="params"><span class="meta">    </span>)</span></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">serving</span>(<span class="params">self, inputs</span>):</span><br><span class="line">        output = self.call(inputs)</span><br><span class="line">        <span class="keyword">return</span> self.serving_output(output)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">serving_output</span>(<span class="params">self, output</span>):</span><br><span class="line">        <span class="keyword">return</span> ModelOut(logits=output)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&#x27;__main__&#x27;</span>:</span><br><span class="line">    saved_path = <span class="string">&quot;saved_tf&quot;</span></span><br><span class="line">    os.makedirs(saved_path, exist_ok=<span class="literal">True</span>)</span><br><span class="line"></span><br><span class="line">    config = ModelConfig(size=<span class="number">1024</span>)</span><br><span class="line">    data = tf.ones((<span class="number">1024</span>, <span class="number">1024</span>))</span><br><span class="line">    model = Model(config=config)</span><br><span class="line">    out = model(data)</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">f&quot;model output:&quot;</span>, out)</span><br><span class="line">    model.save_pretrained(saved_path, max_shard_size=<span class="string">&quot;6MB&quot;</span>)</span><br><span class="line">    <span class="comment"># 打印model参数</span></span><br><span class="line">    <span class="built_in">print</span>(model.trainable_variables)</span><br><span class="line"></span><br><span class="line">    model1 = Model(config=config).from_pretrained(saved_path, config=config)</span><br><span class="line">    out1 = model1(data)</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">f&quot;model1 output:&quot;</span>, out)</span><br><span class="line">    <span class="comment"># 打印model1参数</span></span><br><span class="line">    <span class="built_in">print</span>(model1.trainable_variables)</span><br></pre></td></tr></table></figure>
+
+<p>权重结构：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">&#x27;&#x27;&#x27;</span><br><span class="line"><span class="meta prompt_">&gt;</span><span class="language-bash">&gt;&gt; tree saved_tf</span></span><br><span class="line"></span><br><span class="line">saved_tf</span><br><span class="line">├── config.json</span><br><span class="line">├── tf_model-00001-of-00002.h5</span><br><span class="line">├── tf_model-00002-of-00002.h5</span><br><span class="line">└── tf_model.h5.index.json</span><br><span class="line"></span><br><span class="line">&#x27;&#x27;&#x27;</span><br></pre></td></tr></table></figure>
+
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/ToolsDemo/" rel="tag"># ToolsDemo</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+            </div>
+            <div class="post-nav-item">
+                <a href="/2020/12/13/re-example/" rel="next" title="正则记录">
+                  正则记录 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+    <div class="comments gitalk-container"></div>
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">SmileTM</span>
+</div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/schemes/muse.js"></script><script src="/js/next-boot.js"></script>
+
+  
+  <script class="next-config" data-name="pdf" type="application/json">{"object_url":{"url":"https://cdnjs.cloudflare.com/ajax/libs/pdfobject/2.2.11/pdfobject.min.js","integrity":"sha256-N6JtCNwaYm6kizuG92UtOOXamRHPwu+V1yF10g3bu/c="},"url":"/lib/pdf/web/viewer.html"}</script>
+  <script src="/js/third-party/tags/pdf.js"></script>
+
+
+
+
+
+
+  
+
+
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">false</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"tags":"all","js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.js","integrity":"sha256-MASABpB4tYktI2Oitl4t+78w/lyA+D7b/s9GEP0JOGI="}}</script>
+<script src="/js/third-party/math/mathjax.js"></script>
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/gitalk/1.8.0/gitalk.css" integrity="sha256-AJnUHL7dBv6PGaeyPQJcgQPDjt/Hn/PvYZde1iqfp8U=" crossorigin="anonymous">
+
+<script class="next-config" data-name="gitalk" type="application/json">{"enable":true,"github_id":"SmileTM","repo":"SmileTM.github.io","client_id":"ed531d5b5c361d2a4ee1","client_secret":"23d9318d301649f0513a37915b9466b68b44acd4","admin_user":"SmileTM","distraction_free_mode":true,"proxy":"https://cors-anywhere.azm.workers.dev/https://github.com/login/oauth/access_token","language":null,"js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/gitalk/1.8.0/gitalk.min.js","integrity":"sha256-MVK9MGD/XJaGyIghSVrONSnoXoGh3IFxLw0zfvzpxR4="},"path_md5":"ae35b5673d4f69fad9befaba1c926cd6"}</script>
+<script src="/js/third-party/comments/gitalk.js"></script>
+
+</body>
+</html>

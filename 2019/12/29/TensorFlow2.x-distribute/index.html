@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 6.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha256-HtsXJanqjKTc8vVQjO4YMhiqFoXkfBsjBWcX91T1jr8=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"example.com","root":"/","images":"/images","scheme":"Muse","darkmode":false,"version":"8.17.0","exturl":false,"sidebar":{"position":"right","display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":"gitalk","storage":true,"lazyload":false,"nav":null,"activeClass":"gitalk"},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="Tensorflow distributeTensorflow2.0 单机多卡设置。 Tensorflow2.0 多GPU设置。 在Tensorflow2.0 中，有一个非常一个非常方便的函数 tf.distribute.MirroredStrategy()只需在代码中进行修改即可。 我们可以简单理解 单机多卡，就是将数据根据batch进行分发到每一张GPU上，然后单独计算loss，最后对loss">
+<meta property="og:type" content="article">
+<meta property="og:title" content="TensorFlow2.x-distribute">
+<meta property="og:url" content="http://example.com/2019/12/29/TensorFlow2.x-distribute/index.html">
+<meta property="og:site_name" content="SmileTM博客">
+<meta property="og:description" content="Tensorflow distributeTensorflow2.0 单机多卡设置。 Tensorflow2.0 多GPU设置。 在Tensorflow2.0 中，有一个非常一个非常方便的函数 tf.distribute.MirroredStrategy()只需在代码中进行修改即可。 我们可以简单理解 单机多卡，就是将数据根据batch进行分发到每一张GPU上，然后单独计算loss，最后对loss">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2019-12-29T13:46:30.000Z">
+<meta property="article:modified_time" content="2023-06-10T12:02:31.643Z">
+<meta property="article:author" content="SmileTM">
+<meta property="article:tag" content="TensorFlow2.x">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="http://example.com/2019/12/29/TensorFlow2.x-distribute/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://example.com/2019/12/29/TensorFlow2.x-distribute/","path":"2019/12/29/TensorFlow2.x-distribute/","title":"TensorFlow2.x-distribute"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>TensorFlow2.x-distribute | SmileTM博客</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+      <img class="custom-logo-image" src="/images/custom-logo.png" alt="SmileTM博客">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">SmileTM博客</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">_________Smile  To  Me</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li>
+  </ul>
+</nav>
+
+
+
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Tensorflow-distribute"><span class="nav-number">1.</span> <span class="nav-text">Tensorflow distribute</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%95%B0%E6%8D%AE%E5%A4%84%E7%90%86"><span class="nav-number">1.1.</span> <span class="nav-text">数据处理</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#loss-%E5%A4%84%E7%90%86"><span class="nav-number">1.2.</span> <span class="nav-text">loss 处理</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8F%82%E8%80%83%E4%BB%A3%E7%A0%81"><span class="nav-number">1.3.</span> <span class="nav-text">参考代码</span></a></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">SmileTM</p>
+  <div class="site-description" itemprop="description">________Talk is cheap，show me the code！！！</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">36</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">19</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/smiletm" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;smiletm" rel="noopener me" target="_blank">GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://twitter.com/SmileTM96" title="Twitter → https:&#x2F;&#x2F;twitter.com&#x2F;SmileTM96" rel="noopener me" target="_blank">Twitter</a>
+      </span>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2019/12/29/TensorFlow2.x-distribute/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="SmileTM">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="SmileTM博客">
+      <meta itemprop="description" content="________Talk is cheap，show me the code！！！">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="TensorFlow2.x-distribute | SmileTM博客">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          TensorFlow2.x-distribute
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2019-12-29 21:46:30" itemprop="dateCreated datePublished" datetime="2019-12-29T21:46:30+08:00">2019-12-29</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2023-06-10 20:02:31" itemprop="dateModified" datetime="2023-06-10T20:02:31+08:00">2023-06-10</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><h1 id="Tensorflow-distribute"><a href="#Tensorflow-distribute" class="headerlink" title="Tensorflow distribute"></a>Tensorflow distribute</h1><p>Tensorflow2.0 单机多卡设置。</p>
+<p>Tensorflow2.0 多GPU设置。</p>
+<p>在Tensorflow2.0 中，有一个非常一个非常方便的函数 tf.distribute.MirroredStrategy()只需在代码中进行修改即可。</p>
+<p>我们可以简单理解 单机多卡，就是将数据根据batch进行分发到每一张GPU上，然后单独计算loss，最后对loss进行汇总，然后进行反向传播，对每张GPU上的模型参数镜像 进行更新。</p>
+<p>MirroredStrategy 的步骤如下：</p>
+<ul>
+<li><p>训练开始前，该策略在所有 N 个计算设备上均各复制一份完整的模型；</p>
+</li>
+<li><p>每次训练传入一个批次的数据时，将数据分成 N 份，分别传入 N 个计算设备（即数据并行）；</p>
+</li>
+<li><p>N 个计算设备使用本地变量（镜像变量）分别计算自己所获得的部分数据的梯度；</p>
+</li>
+<li><p>使用分布式计算的 All-reduce 操作，在计算设备间高效交换梯度数据并进行求和，使得最终每个设备都有了所有设备的梯度之和；</p>
+</li>
+<li><p>使用梯度求和的结果更新本地变量（镜像变量）；</p>
+</li>
+<li><p>当所有设备均更新本地变量后，进行下一轮训练（即该并行策略是同步的）。</p>
+</li>
+</ul>
+<p>其中，最主要的 就是下面3个函数。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 创建strategy</span></span><br><span class="line">strategy = tf.distribute.MirroredStrategy() </span><br><span class="line"></span><br><span class="line"><span class="comment"># 将train_step 分发到各个GPU， 并得到各GPU返回的句柄</span></span><br><span class="line">loss = strategy.experimental_run_v2(train_step, args=(<span class="literal">None</span>,))</span><br><span class="line"></span><br><span class="line"><span class="comment"># 根据返回的句柄，将各GPU计算的loss进行汇总</span></span><br><span class="line">strategy.reduce(tf.distribute.ReduceOp.SUM, loss, axis=<span class="literal">None</span>)</span><br></pre></td></tr></table></figure>
+
+
+
+<span id="more"></span>
+
+<p>因此，在进行代码设计时，需要对每张GPU的loss计算进行，重新设计。</p>
+<h2 id="数据处理"><a href="#数据处理" class="headerlink" title="数据处理"></a>数据处理</h2><p>数据在传入tf.data.Dataset，通过 strategy.experimental_distribute_dataset() 函数对数据进行处理，会自动根据GPU的数量进行平均分配。</p>
+<h2 id="loss-处理"><a href="#loss-处理" class="headerlink" title="loss 处理"></a>loss 处理</h2><p>在原有train_step 上 进行GPU distribute 封装。</p>
+<p>通过strategy.experimental_run_v2 对train_step 在各个GPU上产生相应镜像， 并得到各个GPU计算出来的loss。</p>
+<p>然后通过调用strategy.reduce(tf.distribute.ReduceOp.SUM, per_replica_losses, axis&#x3D;None) 来对各个GPU产生的loss 进行汇总sum。所以，我们在处理loss时 需要考虑总的GLOBAL_BATCH_SIZE。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@tf.function</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">destribute_train_loss</span>(<span class="params">dataset_input</span>):</span><br><span class="line">    inp, targ, enc_hidden = dataset_input</span><br><span class="line">    per_replica_losses = strategy.experimental_run_v2(train_step, args=(inp, targ, enc_hidden))</span><br><span class="line">    <span class="keyword">return</span> strategy.reduce(tf.distribute.ReduceOp.SUM, per_replica_losses, axis=<span class="literal">None</span>)</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="参考代码"><a href="#参考代码" class="headerlink" title="参考代码"></a>参考代码</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> tensorflow <span class="keyword">as</span> tf</span><br><span class="line"><span class="keyword">from</span> modeling <span class="keyword">import</span> Decoder, Encoder</span><br><span class="line"><span class="keyword">from</span> data_process <span class="keyword">import</span> load_dataset, max_length, preprocess_sentence_en, preprocess_sentence_zh</span><br><span class="line"><span class="keyword">from</span> sklearn.model_selection <span class="keyword">import</span> train_test_split</span><br><span class="line"><span class="keyword">import</span> os</span><br><span class="line"><span class="keyword">import</span> time</span><br><span class="line"><span class="keyword">import</span> datetime</span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">import</span> matplotlib.pyplot <span class="keyword">as</span> plt</span><br><span class="line"><span class="keyword">import</span> matplotlib.ticker <span class="keyword">as</span> ticker</span><br><span class="line"><span class="keyword">from</span> tqdm <span class="keyword">import</span> tqdm</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">strategy = tf.distribute.MirroredStrategy()</span><br><span class="line"><span class="built_in">print</span>(strategy.num_replicas_in_sync)  <span class="comment">#这里可以得到 GPU的数量</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">with</span> strategy.scope():</span><br><span class="line">    input_tensor, target_tensor, inp_lang_tokenizer, targ_lang_tokenizer = load_dataset(<span class="string">&#x27;cmn.txt&#x27;</span>)</span><br><span class="line">    <span class="comment"># 得到input，targe中的最大长度</span></span><br><span class="line">    max_length_targ, max_length_inp = max_length(target_tensor), max_length(input_tensor)</span><br><span class="line"></span><br><span class="line">    input_tensor_train, input_tensor_val, target_tensor_train, target_tensor_val = train_test_split(input_tensor,</span><br><span class="line">                                                                                                    target_tensor,</span><br><span class="line">                                                                                                    test_size=<span class="number">0.2</span>)</span><br><span class="line">    <span class="comment"># 设置相关参数</span></span><br><span class="line">    EPOCHS = <span class="number">100</span></span><br><span class="line">    BUFFER_SIZE = <span class="built_in">len</span>(input_tensor_train)  <span class="comment"># 设置buffer大小</span></span><br><span class="line">    BATCH_SIZE = <span class="number">64</span>  <span class="comment"># 设置batch——size 每张GPU读入的Batch—size</span></span><br><span class="line">    GLOBAL_BATCH_SZIE = BATCH_SIZE*strategy.num_replicas_in_sync  <span class="comment">#全局batch-size， 这在后面计算每个GLOBAL_BATCH loss 时要用到</span></span><br><span class="line">    steps_per_epoch = <span class="built_in">len</span>(input_tensor_train) // BATCH_SIZE  <span class="comment"># 得到训练集中每一个epoch中 batch的个数</span></span><br><span class="line">    embedding_dim = <span class="number">256</span>  <span class="comment"># 设置embedding的输出维度</span></span><br><span class="line">    units = <span class="number">1024</span>  <span class="comment"># 设置GRU 的输出维度，也就是GRU内部中 9W 的维度</span></span><br><span class="line"></span><br><span class="line">    vocab_inp_size = <span class="built_in">len</span>(inp_lang_tokenizer.word_index) + <span class="number">1</span></span><br><span class="line">    vocab_tar_size = <span class="built_in">len</span>(targ_lang_tokenizer.word_index) + <span class="number">1</span></span><br><span class="line">    <span class="comment"># 得到 train数据集</span></span><br><span class="line">    dataset_train = tf.data.Dataset.from_tensor_slices((input_tensor_train, target_tensor_train)).shuffle(BUFFER_SIZE)</span><br><span class="line">    dataset_train = dataset_train.batch(GLOBAL_BATCH_SZIE, drop_remainder=<span class="literal">True</span>) <span class="comment">#按照GLOBAL_BATCH_SZIE 对数据进行划分 因为后面会根据GPU数量对数据进行平均分发到各个GPU</span></span><br><span class="line">    dataset_train = strategy.experimental_distribute_dataset(dataset_train)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="comment"># 定义encoder 和 decoder</span></span><br><span class="line">    encoder = Encoder(vocab_szie=vocab_inp_size, embedding_dim=embedding_dim, enc_units=units, batch_sz=BATCH_SIZE)</span><br><span class="line">    decoder = Decoder(vocab_size=vocab_tar_size, embedding_dim=embedding_dim, dec_units=units, batch_sz=BATCH_SIZE)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 定义loss 和 optimizer</span></span><br><span class="line">    optimizer = tf.keras.optimizers.Adam()</span><br><span class="line">    loss_object = tf.keras.losses.SparseCategoricalCrossentropy(from_logits=<span class="literal">True</span>, reduction=tf.keras.losses.Reduction.NONE)      </span><br><span class="line">		<span class="comment">#Reduction 设置为None    </span></span><br><span class="line"></span><br><span class="line">    <span class="comment"># train_loss = tf.keras.metrics.Mean(name=&#x27;train_loss&#x27;)</span></span><br><span class="line">		</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="comment"># 计算 去除mask后的loss 的平均值</span></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">loss_function</span>(<span class="params">real, pred</span>):</span><br><span class="line">        mask = tf.math.logical_not(tf.math.equal(real, <span class="number">0</span>))</span><br><span class="line">        loss_ = loss_object(real, pred)</span><br><span class="line"></span><br><span class="line">        mask = tf.cast(mask, dtype=tf.float32)</span><br><span class="line"></span><br><span class="line">        loss_ *= mask</span><br><span class="line">        <span class="keyword">return</span> tf.reduce_mean(loss_)</span><br><span class="line">        <span class="comment"># return tf.nn.compute_average_loss(per_example_loss, global_batch_size=GLOBAL_BATCH_SIZE)</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="comment"># 定义checkpoint, checkpoint只保存模型参数</span></span><br><span class="line">    checkpoint_dir = <span class="string">&#x27;./train_checkpoint&#x27;</span></span><br><span class="line">    checkpoint_prefix = os.path.join(checkpoint_dir, <span class="string">&#x27;ckpt&#x27;</span>)</span><br><span class="line">    checkpoint = tf.train.Checkpoint(optimizer=optimizer,</span><br><span class="line">                                     encoder=encoder,</span><br><span class="line">                                     decoder=decoder)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="comment"># 定义train_step</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">train_step</span>(<span class="params">inp, targ, enc_hidden</span>):</span><br><span class="line">        loss = <span class="number">0</span></span><br><span class="line">        <span class="keyword">with</span> tf.GradientTape() <span class="keyword">as</span> tape:</span><br><span class="line">            enc_output, enc_hidden = encoder((inp, enc_hidden))</span><br><span class="line">            dec_hidden = enc_hidden</span><br><span class="line">            dec_input = tf.expand_dims([targ_lang_tokenizer.word_index[<span class="string">&#x27;&lt;start&gt;&#x27;</span>]] * BATCH_SIZE, <span class="number">1</span>)</span><br><span class="line"></span><br><span class="line">            <span class="keyword">for</span> t <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">1</span>, targ.shape[<span class="number">1</span>]):</span><br><span class="line">                predictions, dec_hidden, _ = decoder((dec_input, dec_hidden, enc_output))</span><br><span class="line">                loss += loss_function(targ[:, t], predictions)</span><br><span class="line">                <span class="comment"># Teacher forcing</span></span><br><span class="line">                dec_input = tf.expand_dims(targ[:, t], <span class="number">1</span>)</span><br><span class="line"></span><br><span class="line">        batch_loss = (loss / <span class="built_in">int</span>(targ.shape[<span class="number">1</span>]))</span><br><span class="line">        variables = encoder.trainable_variables + decoder.trainable_variables</span><br><span class="line"></span><br><span class="line">        gradients = tape.gradient(loss, variables)</span><br><span class="line">        optimizer.apply_gradients(<span class="built_in">zip</span>(gradients, variables))</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> batch_loss</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="meta">    @tf.function</span></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">destribute_train_loss</span>(<span class="params">dataset_input</span>):</span><br><span class="line">        inp, targ, enc_hidden = dataset_input</span><br><span class="line">        per_replica_losses = strategy.experimental_run_v2(train_step, args=(inp, targ, enc_hidden))</span><br><span class="line">        <span class="keyword">return</span> strategy.reduce(tf.distribute.ReduceOp.SUM, per_replica_losses, axis=<span class="literal">None</span>)</span><br><span class="line">				<span class="comment"># strategy.reduce(tf.distribute.ReduceOp.SUM, per_replica_losses, axis=None) 将每个GPU的输出进行汇总sum。</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="comment"># 开始训练</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> epoch <span class="keyword">in</span> <span class="built_in">range</span>(EPOCHS):</span><br><span class="line">        start = time.time()</span><br><span class="line">        enc_hidden = encoder.initialize_hidden_state()</span><br><span class="line">        train_loss = <span class="number">0</span></span><br><span class="line">        gbatch = <span class="number">0</span></span><br><span class="line">        <span class="keyword">for</span> (inp, tar) <span class="keyword">in</span> tqdm(dataset_train):</span><br><span class="line"></span><br><span class="line">            train_loss +=  destribute_train_loss((inp, tar, enc_hidden))</span><br><span class="line">            gbatch+=<span class="number">1</span></span><br><span class="line"></span><br><span class="line">            <span class="keyword">if</span> gbatch % <span class="number">50</span> == <span class="number">0</span>:</span><br><span class="line">                template = <span class="string">&quot;Epoch &#123;&#125; Batch &#123;&#125; loss &#123;:.4f&#125; &quot;</span></span><br><span class="line">                tf.<span class="built_in">print</span>(template.<span class="built_in">format</span>(epoch + <span class="number">1</span>, gbatch, train_loss/(<span class="number">2.0</span>*gbatch)))</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">        tf.<span class="built_in">print</span>(<span class="string">&quot;Epoch &#123;&#125; loss &#123;:4f&#125;  &quot;</span>.<span class="built_in">format</span>(epoch + <span class="number">1</span>, train_loss/(<span class="number">2.0</span>*gbatch)))</span><br><span class="line">        tf.<span class="built_in">print</span>(<span class="string">&quot;Time take for 1 epoch &#123;&#125; sec\n&quot;</span>.<span class="built_in">format</span>(time.time() - start))</span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+
+
+
+<p>参考：</p>
+<p><a target="_blank" rel="noopener" href="https://www.tensorflow.org/tutorials/distribute/custom_training">https://www.tensorflow.org/tutorials/distribute/custom_training</a></p>
+<p><a target="_blank" rel="noopener" href="https://www.tensorflow.org/api_docs/python/tf/distribute/Strategy?version=stable">https://www.tensorflow.org/api_docs/python/tf/distribute/Strategy?version=stable</a></p>
+<p><a target="_blank" rel="noopener" href="https://tf.wiki/zh/appendix/distributed.html">https://tf.wiki/zh/appendix/distributed.html</a></p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/TensorFlow2-x/" rel="tag"># TensorFlow2.x</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2020/01/14/Create-TFRecord/" rel="prev" title="Create-TFRecord">
+                  <i class="fa fa-chevron-left"></i> Create-TFRecord
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2019/12/19/tensorflow-addons/" rel="next" title="tensorflow_addons">
+                  tensorflow_addons <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+    <div class="comments gitalk-container"></div>
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">SmileTM</span>
+</div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/schemes/muse.js"></script><script src="/js/next-boot.js"></script>
+
+  
+  <script class="next-config" data-name="pdf" type="application/json">{"object_url":{"url":"https://cdnjs.cloudflare.com/ajax/libs/pdfobject/2.2.11/pdfobject.min.js","integrity":"sha256-N6JtCNwaYm6kizuG92UtOOXamRHPwu+V1yF10g3bu/c="},"url":"/lib/pdf/web/viewer.html"}</script>
+  <script src="/js/third-party/tags/pdf.js"></script>
+
+
+
+
+
+
+  
+
+
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">false</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"tags":"all","js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.js","integrity":"sha256-MASABpB4tYktI2Oitl4t+78w/lyA+D7b/s9GEP0JOGI="}}</script>
+<script src="/js/third-party/math/mathjax.js"></script>
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/gitalk/1.8.0/gitalk.css" integrity="sha256-AJnUHL7dBv6PGaeyPQJcgQPDjt/Hn/PvYZde1iqfp8U=" crossorigin="anonymous">
+
+<script class="next-config" data-name="gitalk" type="application/json">{"enable":true,"github_id":"SmileTM","repo":"SmileTM.github.io","client_id":"ed531d5b5c361d2a4ee1","client_secret":"23d9318d301649f0513a37915b9466b68b44acd4","admin_user":"SmileTM","distraction_free_mode":true,"proxy":"https://cors-anywhere.azm.workers.dev/https://github.com/login/oauth/access_token","language":null,"js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/gitalk/1.8.0/gitalk.min.js","integrity":"sha256-MVK9MGD/XJaGyIghSVrONSnoXoGh3IFxLw0zfvzpxR4="},"path_md5":"bfd3663eba936fc60b2da6c54678f78c"}</script>
+<script src="/js/third-party/comments/gitalk.js"></script>
+
+</body>
+</html>

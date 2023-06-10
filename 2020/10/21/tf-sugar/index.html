@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 6.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha256-HtsXJanqjKTc8vVQjO4YMhiqFoXkfBsjBWcX91T1jr8=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"example.com","root":"/","images":"/images","scheme":"Muse","darkmode":false,"version":"8.17.0","exturl":false,"sidebar":{"position":"right","display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":"gitalk","storage":true,"lazyload":false,"nav":null,"activeClass":"gitalk"},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="tf.wheretf.where(condition, x&#x3D;None, y&#x3D;None, name&#x3D;None) 如果x，y均为空，则返回满足条件的索引indices 12a &#x3D; tf.Variable([[1,2,3,4],[3,4,2,1]])tf.where(a&gt;3) out: 1234&lt;tf.Tensor: shape&#x3D;(2, 2), dtype&#x3D;in">
+<meta property="og:type" content="article">
+<meta property="og:title" content="TensorFlow2.x 语法糖">
+<meta property="og:url" content="http://example.com/2020/10/21/tf-sugar/index.html">
+<meta property="og:site_name" content="SmileTM博客">
+<meta property="og:description" content="tf.wheretf.where(condition, x&#x3D;None, y&#x3D;None, name&#x3D;None) 如果x，y均为空，则返回满足条件的索引indices 12a &#x3D; tf.Variable([[1,2,3,4],[3,4,2,1]])tf.where(a&gt;3) out: 1234&lt;tf.Tensor: shape&#x3D;(2, 2), dtype&#x3D;in">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2020-10-21T13:32:32.000Z">
+<meta property="article:modified_time" content="2023-06-10T12:02:31.643Z">
+<meta property="article:author" content="SmileTM">
+<meta property="article:tag" content="TensorFlow2.x">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="http://example.com/2020/10/21/tf-sugar/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://example.com/2020/10/21/tf-sugar/","path":"2020/10/21/tf-sugar/","title":"TensorFlow2.x 语法糖"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>TensorFlow2.x 语法糖 | SmileTM博客</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+      <img class="custom-logo-image" src="/images/custom-logo.png" alt="SmileTM博客">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">SmileTM博客</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">_________Smile  To  Me</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li>
+  </ul>
+</nav>
+
+
+
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#tf-where"><span class="nav-number">1.</span> <span class="nav-text">tf.where</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#tf-stack"><span class="nav-number">2.</span> <span class="nav-text">tf.stack</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#tf-gather"><span class="nav-number">3.</span> <span class="nav-text">tf.gather</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#tf-gather-nd"><span class="nav-number">4.</span> <span class="nav-text">tf.gather_nd</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#tf-slice"><span class="nav-number">5.</span> <span class="nav-text">tf.slice</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#tf-cond"><span class="nav-number">6.</span> <span class="nav-text">tf.cond</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#tf-cumsum"><span class="nav-number">7.</span> <span class="nav-text">tf.cumsum</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#tf-clip-by-value"><span class="nav-number">8.</span> <span class="nav-text">tf.clip_by_value</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">SmileTM</p>
+  <div class="site-description" itemprop="description">________Talk is cheap，show me the code！！！</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">36</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">19</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/smiletm" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;smiletm" rel="noopener me" target="_blank">GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://twitter.com/SmileTM96" title="Twitter → https:&#x2F;&#x2F;twitter.com&#x2F;SmileTM96" rel="noopener me" target="_blank">Twitter</a>
+      </span>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2020/10/21/tf-sugar/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="SmileTM">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="SmileTM博客">
+      <meta itemprop="description" content="________Talk is cheap，show me the code！！！">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="TensorFlow2.x 语法糖 | SmileTM博客">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          TensorFlow2.x 语法糖
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2020-10-21 21:32:32" itemprop="dateCreated datePublished" datetime="2020-10-21T21:32:32+08:00">2020-10-21</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2023-06-10 20:02:31" itemprop="dateModified" datetime="2023-06-10T20:02:31+08:00">2023-06-10</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><h1 id="tf-where"><a href="#tf-where" class="headerlink" title="tf.where"></a>tf.where</h1><p>tf.where(condition, x&#x3D;None, y&#x3D;None, name&#x3D;None)</p>
+<p>如果x，y均为空，则返回满足条件的索引indices</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">a = tf.Variable([[<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>],[<span class="number">3</span>,<span class="number">4</span>,<span class="number">2</span>,<span class="number">1</span>]])</span><br><span class="line">tf.where(a&gt;<span class="number">3</span>)</span><br></pre></td></tr></table></figure>
+<p><strong>out:</strong></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&lt;tf.Tensor: shape=(<span class="number">2</span>, <span class="number">2</span>), dtype=int64, numpy=</span><br><span class="line">array([[<span class="number">0</span>, <span class="number">3</span>],</span><br><span class="line">       [<span class="number">1</span>, <span class="number">1</span>]])&gt;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>如果x，y均不为空，则 满足条件位置的值为x相应位置的值，其余为y相应位置的值。(非常实用)</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">a = tf.Variable([[<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>],[<span class="number">3</span>,<span class="number">4</span>,<span class="number">2</span>,<span class="number">1</span>]])</span><br><span class="line">b = tf.zeros_like(a)</span><br><span class="line">tf.where(a&gt;<span class="number">3</span>, b, a)</span><br></pre></td></tr></table></figure>
+<p><strong>out:</strong></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&lt;tf.Tensor: shape=(<span class="number">2</span>, <span class="number">4</span>), dtype=int32, numpy=</span><br><span class="line">array([[<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">0</span>],</span><br><span class="line">       [<span class="number">3</span>, <span class="number">0</span>, <span class="number">2</span>, <span class="number">1</span>]], dtype=int32)&gt;</span><br></pre></td></tr></table></figure>
+
+<span id="more"></span>
+
+<h1 id="tf-stack"><a href="#tf-stack" class="headerlink" title="tf.stack"></a>tf.stack</h1><p>tf.stack(values, axis&#x3D;0, name&#x3D;”stack”)</p>
+<p>向量堆叠函数</p>
+<p>values.shape &#x3D; (A, B, C)</p>
+<p>if <code>axis == 0</code> then the <code>output</code> tensor will have the shape <code>(N, A, B, C)</code>.<br>if <code>axis == 1</code> then the <code>output</code> tensor will have the shape <code>(A, N, B, C)</code>.</p>
+<p><strong>example:</strong></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">a = tf.Variable([[<span class="number">1</span>,<span class="number">2</span>,<span class="number">0</span>],[<span class="number">1</span>,<span class="number">2</span>,<span class="number">1</span>]])   <span class="comment"># shape = (2,3)</span></span><br><span class="line">b = tf.Variable([[<span class="number">4</span>,<span class="number">5</span>,<span class="number">0</span>],[<span class="number">4</span>,<span class="number">5</span>,<span class="number">1</span>]])   <span class="comment"># shape = (2,3)</span></span><br><span class="line">c = tf.Variable([[<span class="number">7</span>,<span class="number">8</span>,<span class="number">0</span>],[<span class="number">7</span>,<span class="number">8</span>,<span class="number">1</span>]])   <span class="comment"># shape = (2,3)</span></span><br><span class="line">d = tf.Variable([[<span class="number">10</span>,<span class="number">11</span>,<span class="number">0</span>],[<span class="number">10</span>,<span class="number">11</span>,<span class="number">1</span>]])   <span class="comment"># shape = (2,3)</span></span><br><span class="line">stack_tensors_0 = tf.stack([a,b,c,d],axis=<span class="number">0</span>)  <span class="comment"># shape = (4,2,3)</span></span><br><span class="line">stack_tensors_1 = tf.stack([a,b,c,d],axis=<span class="number">1</span>)   <span class="comment"># shape = (2,4,3)</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p><strong>out:</strong></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">stack_tensors_0</span><br><span class="line">&lt;tf.Tensor: shape=(<span class="number">4</span>, <span class="number">2</span>, <span class="number">3</span>), dtype=int32, numpy=</span><br><span class="line">array([[[ <span class="number">1</span>,  <span class="number">2</span>,  <span class="number">0</span>],</span><br><span class="line">        [ <span class="number">1</span>,  <span class="number">2</span>,  <span class="number">1</span>]],</span><br><span class="line">       [[ <span class="number">4</span>,  <span class="number">5</span>,  <span class="number">0</span>],</span><br><span class="line">        [ <span class="number">4</span>,  <span class="number">5</span>,  <span class="number">1</span>]],</span><br><span class="line">       [[ <span class="number">7</span>,  <span class="number">8</span>,  <span class="number">0</span>],</span><br><span class="line">        [ <span class="number">7</span>,  <span class="number">8</span>,  <span class="number">1</span>]],</span><br><span class="line">       [[<span class="number">10</span>, <span class="number">11</span>,  <span class="number">0</span>],</span><br><span class="line">        [<span class="number">10</span>, <span class="number">11</span>,  <span class="number">1</span>]]], dtype=int32)&gt;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">stack_tensors_1</span><br><span class="line">&lt;tf.Tensor: shape=(<span class="number">2</span>, <span class="number">4</span>, <span class="number">3</span>), dtype=int32, numpy=</span><br><span class="line">array([[[ <span class="number">1</span>,  <span class="number">2</span>,  <span class="number">0</span>],</span><br><span class="line">        [ <span class="number">4</span>,  <span class="number">5</span>,  <span class="number">0</span>],</span><br><span class="line">        [ <span class="number">7</span>,  <span class="number">8</span>,  <span class="number">0</span>],</span><br><span class="line">        [<span class="number">10</span>, <span class="number">11</span>,  <span class="number">0</span>]],</span><br><span class="line">       [[ <span class="number">1</span>,  <span class="number">2</span>,  <span class="number">1</span>],</span><br><span class="line">        [ <span class="number">4</span>,  <span class="number">5</span>,  <span class="number">1</span>],</span><br><span class="line">        [ <span class="number">7</span>,  <span class="number">8</span>,  <span class="number">1</span>],</span><br><span class="line">        [<span class="number">10</span>, <span class="number">11</span>,  <span class="number">1</span>]]], dtype=int32)&gt;</span><br></pre></td></tr></table></figure>
+
+<h1 id="tf-gather"><a href="#tf-gather" class="headerlink" title="tf.gather"></a>tf.gather</h1><p>gather_v2(params,indices,validate_indices&#x3D;None,axis&#x3D;None,batch_dims&#x3D;0,name&#x3D;None)</p>
+<p>根据索引，根据axis进行向量提取。只能根据一维度进行提取。</p>
+<p><strong>example:</strong></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">a = tf.Variable([[<span class="number">1</span>,<span class="number">1</span>,<span class="number">1</span>],[<span class="number">2</span>,<span class="number">2</span>,<span class="number">2</span>],[<span class="number">3</span>,<span class="number">3</span>,<span class="number">3</span>]])</span><br><span class="line">gather_tensor = tf.gather(a,[<span class="number">2</span>,<span class="number">1</span>,<span class="number">1</span>,<span class="number">0</span>])</span><br></pre></td></tr></table></figure>
+
+<p><strong>out:</strong></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&lt;tf.Tensor: shape=(<span class="number">4</span>, <span class="number">3</span>), dtype=int32, numpy=</span><br><span class="line">array([[<span class="number">3</span>, <span class="number">3</span>, <span class="number">3</span>],</span><br><span class="line">       [<span class="number">2</span>, <span class="number">2</span>, <span class="number">2</span>],</span><br><span class="line">       [<span class="number">2</span>, <span class="number">2</span>, <span class="number">2</span>],</span><br><span class="line">       [<span class="number">1</span>, <span class="number">1</span>, <span class="number">1</span>]], dtype=int32)&gt;</span><br></pre></td></tr></table></figure>
+
+<h1 id="tf-gather-nd"><a href="#tf-gather-nd" class="headerlink" title="tf.gather_nd"></a>tf.gather_nd</h1><p>gather_nd_v2(params, indices, batch_dims&#x3D;0, name&#x3D;None)</p>
+<p>根据多维度进行提取</p>
+<p><strong>example:</strong></p>
+<p>假设text 有2个sequence，每个sequence有2个单词，经过Embedding 后的维度为4维。<br>根据每个sequence的序列进行抽取。</p>
+<p>第0个sequence抽取序列为[1,1,0,0] </p>
+<p>第1个sequence抽取序列为[0,1,0,1] </p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">text = tf.Variable([[[<span class="number">1</span>,<span class="number">1</span>,<span class="number">1</span>,<span class="number">1</span>],[<span class="number">2</span>,<span class="number">2</span>,<span class="number">2</span>,<span class="number">2</span>]],[[<span class="number">3</span>,<span class="number">3</span>,<span class="number">3</span>,<span class="number">3</span>],[<span class="number">4</span>,<span class="number">4</span>,<span class="number">4</span>,<span class="number">4</span>]]])  <span class="comment">#shape (2,2,4)</span></span><br><span class="line">index=tf.Variable([[[<span class="number">0</span>,<span class="number">1</span>],[<span class="number">0</span>,<span class="number">1</span>],[<span class="number">0</span>,<span class="number">0</span>],[<span class="number">0</span>,<span class="number">0</span>]],[[<span class="number">1</span>,<span class="number">0</span>],[<span class="number">1</span>,<span class="number">1</span>],[<span class="number">1</span>,<span class="number">0</span>],[<span class="number">1</span>,<span class="number">1</span>]]])</span><br><span class="line">gather_nd_tensor = tf.gather_nd(text,index)</span><br></pre></td></tr></table></figure>
+
+<p><strong>out:</strong></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">gather_nd_tensor  <span class="comment">#shape (2,4,4)</span></span><br><span class="line">&lt;tf.Tensor: shape=(<span class="number">2</span>, <span class="number">4</span>, <span class="number">4</span>), dtype=int32, numpy=</span><br><span class="line">array([[[<span class="number">2</span>, <span class="number">2</span>, <span class="number">2</span>, <span class="number">2</span>],</span><br><span class="line">        [<span class="number">2</span>, <span class="number">2</span>, <span class="number">2</span>, <span class="number">2</span>],</span><br><span class="line">        [<span class="number">1</span>, <span class="number">1</span>, <span class="number">1</span>, <span class="number">1</span>],</span><br><span class="line">        [<span class="number">1</span>, <span class="number">1</span>, <span class="number">1</span>, <span class="number">1</span>]],</span><br><span class="line">       [[<span class="number">3</span>, <span class="number">3</span>, <span class="number">3</span>, <span class="number">3</span>],</span><br><span class="line">        [<span class="number">4</span>, <span class="number">4</span>, <span class="number">4</span>, <span class="number">4</span>],</span><br><span class="line">        [<span class="number">3</span>, <span class="number">3</span>, <span class="number">3</span>, <span class="number">3</span>],</span><br><span class="line">        [<span class="number">4</span>, <span class="number">4</span>, <span class="number">4</span>, <span class="number">4</span>]]], dtype=int32)&gt;</span><br></pre></td></tr></table></figure>
+
+<h1 id="tf-slice"><a href="#tf-slice" class="headerlink" title="tf.slice"></a>tf.slice</h1><p>slice(input_, begin, size, name&#x3D;None)</p>
+<p>tf切片函数</p>
+<p><strong>example:</strong></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">t = tf.constant([[[<span class="number">1</span>, <span class="number">1</span>, <span class="number">1</span>], [<span class="number">2</span>, <span class="number">2</span>, <span class="number">2</span>]],</span><br><span class="line">                 [[<span class="number">3</span>, <span class="number">3</span>, <span class="number">3</span>], [<span class="number">4</span>, <span class="number">4</span>, <span class="number">4</span>]],</span><br><span class="line">                 [[<span class="number">5</span>, <span class="number">5</span>, <span class="number">5</span>], [<span class="number">6</span>, <span class="number">6</span>, <span class="number">6</span>]]])</span><br><span class="line">tf.<span class="built_in">slice</span>(t, [<span class="number">1</span>, <span class="number">0</span>, <span class="number">0</span>], [<span class="number">1</span>, <span class="number">1</span>, <span class="number">3</span>])  <span class="comment">#抽取 axis0=1，0&lt;=axis1&lt;1, 0&lt;=axis2&lt;3 的部分</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>out:</strong></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;tf.Tensor: shape=(<span class="number">1</span>, <span class="number">1</span>, <span class="number">3</span>), dtype=int32, numpy=array([[[<span class="number">3</span>, <span class="number">3</span>, <span class="number">3</span>]]], dtype=int32)&gt;</span><br></pre></td></tr></table></figure>
+
+<h1 id="tf-cond"><a href="#tf-cond" class="headerlink" title="tf.cond"></a>tf.cond</h1><p>tf.cond(pred, true_fn&#x3D;None, false_fn&#x3D;None, name&#x3D;None)</p>
+<p>tf条件函数</p>
+<p>可以利用tf.cond来动态选择层。在TF2.x中 可以直接用if条件进行替代。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">a=<span class="number">10</span></span><br><span class="line">b=<span class="number">20</span></span><br><span class="line">cond_layer = tf.cond(a&gt;b,<span class="keyword">lambda</span> :tf.keras.layers.Dense(a),<span class="keyword">lambda</span> :tf.keras.layers.Dense(b))</span><br></pre></td></tr></table></figure>
+
+<h1 id="tf-cumsum"><a href="#tf-cumsum" class="headerlink" title="tf.cumsum"></a>tf.cumsum</h1><p>tf.cumsum(x, axis&#x3D;0, exclusive&#x3D;False, reverse&#x3D;False, name&#x3D;None)</p>
+<p>按轴累加器</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">tf.cumsum([a,b,c]) = [a,a+b,a+b+c]</span><br><span class="line">tf.cumsum([a,b,c],reverse=<span class="literal">False</span>) = [a+b+c,a+b,a]</span><br><span class="line">tf.cumsum([a,b,c],exclusive=<span class="literal">True</span>) = [<span class="number">0</span>,a,a+b] </span><br></pre></td></tr></table></figure>
+
+<p><strong>example:</strong></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">a = tf.ones((<span class="number">4</span>,<span class="number">3</span>))</span><br><span class="line">cumsum_1 = tf.cumsum(a)   </span><br><span class="line">cumsum_2 = tf.cumsum(a, axis=<span class="number">1</span>)</span><br><span class="line">cumsum_3 = tf.cumsum(a,exclusive=<span class="literal">True</span>)</span><br></pre></td></tr></table></figure>
+
+<p><strong>out:</strong></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">cumsum_1</span><br><span class="line">&lt;tf.Tensor: shape=(<span class="number">4</span>, <span class="number">3</span>), dtype=float32, numpy=</span><br><span class="line">array([[<span class="number">1.</span>, <span class="number">1.</span>, <span class="number">1.</span>],</span><br><span class="line">       [<span class="number">2.</span>, <span class="number">2.</span>, <span class="number">2.</span>],</span><br><span class="line">       [<span class="number">3.</span>, <span class="number">3.</span>, <span class="number">3.</span>],</span><br><span class="line">       [<span class="number">4.</span>, <span class="number">4.</span>, <span class="number">4.</span>]], dtype=float32)&gt;</span><br><span class="line"></span><br><span class="line">cumsum_2</span><br><span class="line">&lt;tf.Tensor: shape=(<span class="number">4</span>, <span class="number">3</span>), dtype=float32, numpy=</span><br><span class="line">array([[<span class="number">1.</span>, <span class="number">2.</span>, <span class="number">3.</span>],</span><br><span class="line">       [<span class="number">1.</span>, <span class="number">2.</span>, <span class="number">3.</span>],</span><br><span class="line">       [<span class="number">1.</span>, <span class="number">2.</span>, <span class="number">3.</span>],</span><br><span class="line">       [<span class="number">1.</span>, <span class="number">2.</span>, <span class="number">3.</span>]], dtype=float32)&gt;</span><br><span class="line"></span><br><span class="line">cumsum_3</span><br><span class="line">&lt;tf.Tensor: shape=(<span class="number">4</span>, <span class="number">3</span>), dtype=float32, numpy=</span><br><span class="line">array([[<span class="number">0.</span>, <span class="number">0.</span>, <span class="number">0.</span>],</span><br><span class="line">       [<span class="number">1.</span>, <span class="number">1.</span>, <span class="number">1.</span>],</span><br><span class="line">       [<span class="number">2.</span>, <span class="number">2.</span>, <span class="number">2.</span>],</span><br><span class="line">       [<span class="number">3.</span>, <span class="number">3.</span>, <span class="number">3.</span>]], dtype=float32)&gt;</span><br></pre></td></tr></table></figure>
+
+<h1 id="tf-clip-by-value"><a href="#tf-clip-by-value" class="headerlink" title="tf.clip_by_value"></a>tf.clip_by_value</h1><p>clip_by_value(t, clip_value_min, clip_value_max,name&#x3D;None)</p>
+<p>tf剪支函数</p>
+<p>将t中 小于clip_value_min的替换成clip_value_min，大于 clip_value_max 替换成 clip_value_max</p>
+<p><strong>example：</strong></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">t = tf.Variable([[<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>],[<span class="number">5</span>,<span class="number">6</span>,<span class="number">7</span>,<span class="number">8</span>]])</span><br><span class="line">clip_tensor= tf.clip_by_value(t,<span class="number">3</span>,<span class="number">5</span>)</span><br></pre></td></tr></table></figure>
+
+<p><strong>out：</strong></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">clip_tensor</span><br><span class="line">&lt;tf.Tensor: shape=(<span class="number">2</span>, <span class="number">4</span>), dtype=int32, numpy=</span><br><span class="line">array([[<span class="number">3</span>, <span class="number">3</span>, <span class="number">3</span>, <span class="number">4</span>],</span><br><span class="line">       [<span class="number">5</span>, <span class="number">5</span>, <span class="number">5</span>, <span class="number">5</span>]], dtype=int32)&gt;</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+
+
+
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/TensorFlow2-x/" rel="tag"># TensorFlow2.x</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2020/10/28/TensorFlow2.x%E6%89%93%E5%8D%B0%E5%AD%A6%E4%B9%A0%E7%8E%87/" rel="prev" title="TensorFlow2.x 实时打印学习率">
+                  <i class="fa fa-chevron-left"></i> TensorFlow2.x 实时打印学习率
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2020/08/22/TensorFlow2.x%E6%A8%A1%E5%9E%8B%E9%83%A8%E7%BD%B2/" rel="next" title="TensorFlow2.x 模型部署">
+                  TensorFlow2.x 模型部署 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+    <div class="comments gitalk-container"></div>
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">SmileTM</span>
+</div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/schemes/muse.js"></script><script src="/js/next-boot.js"></script>
+
+  
+  <script class="next-config" data-name="pdf" type="application/json">{"object_url":{"url":"https://cdnjs.cloudflare.com/ajax/libs/pdfobject/2.2.11/pdfobject.min.js","integrity":"sha256-N6JtCNwaYm6kizuG92UtOOXamRHPwu+V1yF10g3bu/c="},"url":"/lib/pdf/web/viewer.html"}</script>
+  <script src="/js/third-party/tags/pdf.js"></script>
+
+
+
+
+
+
+  
+
+
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">false</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"tags":"all","js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.js","integrity":"sha256-MASABpB4tYktI2Oitl4t+78w/lyA+D7b/s9GEP0JOGI="}}</script>
+<script src="/js/third-party/math/mathjax.js"></script>
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/gitalk/1.8.0/gitalk.css" integrity="sha256-AJnUHL7dBv6PGaeyPQJcgQPDjt/Hn/PvYZde1iqfp8U=" crossorigin="anonymous">
+
+<script class="next-config" data-name="gitalk" type="application/json">{"enable":true,"github_id":"SmileTM","repo":"SmileTM.github.io","client_id":"ed531d5b5c361d2a4ee1","client_secret":"23d9318d301649f0513a37915b9466b68b44acd4","admin_user":"SmileTM","distraction_free_mode":true,"proxy":"https://cors-anywhere.azm.workers.dev/https://github.com/login/oauth/access_token","language":null,"js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/gitalk/1.8.0/gitalk.min.js","integrity":"sha256-MVK9MGD/XJaGyIghSVrONSnoXoGh3IFxLw0zfvzpxR4="},"path_md5":"b023c96c8bf11b2f72087f40417afb0e"}</script>
+<script src="/js/third-party/comments/gitalk.js"></script>
+
+</body>
+</html>

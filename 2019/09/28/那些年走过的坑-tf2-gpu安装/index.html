@@ -1,0 +1,496 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 6.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha256-HtsXJanqjKTc8vVQjO4YMhiqFoXkfBsjBWcX91T1jr8=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"example.com","root":"/","images":"/images","scheme":"Muse","darkmode":false,"version":"8.17.0","exturl":false,"sidebar":{"position":"right","display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":"gitalk","storage":true,"lazyload":false,"nav":null,"activeClass":"gitalk"},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="Tensorflow2.0-gpu 的安装的复杂早有耳闻，以前一直用的都是cpu版，一直通过conda一键安装，过于安逸。 哎，欠的账始终是要还的。 最近，接触到实验室服务器后，开始捣鼓Tensoflow2.0-GPU，才发现各种神坑。首先因为学校服务器都是共享的无法获取root权限，导致无法更新显卡驱动，使得cuda10 ，无法安装。于是只能安装cuda9 。然后问题来了，google只提供了T">
+<meta property="og:type" content="article">
+<meta property="og:title" content="那些年走过的坑TF2.0-GPU安装">
+<meta property="og:url" content="http://example.com/2019/09/28/%E9%82%A3%E4%BA%9B%E5%B9%B4%E8%B5%B0%E8%BF%87%E7%9A%84%E5%9D%91-tf2-gpu%E5%AE%89%E8%A3%85/index.html">
+<meta property="og:site_name" content="SmileTM博客">
+<meta property="og:description" content="Tensorflow2.0-gpu 的安装的复杂早有耳闻，以前一直用的都是cpu版，一直通过conda一键安装，过于安逸。 哎，欠的账始终是要还的。 最近，接触到实验室服务器后，开始捣鼓Tensoflow2.0-GPU，才发现各种神坑。首先因为学校服务器都是共享的无法获取root权限，导致无法更新显卡驱动，使得cuda10 ，无法安装。于是只能安装cuda9 。然后问题来了，google只提供了T">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/images/%E9%82%A3%E4%BA%9B%E5%B9%B4%E8%B5%B0%E8%BF%87%E7%9A%84%E5%9D%91/tf2_gpu%E5%AE%89%E8%A3%851.png">
+<meta property="og:image" content="http://example.com/images/%E9%82%A3%E4%BA%9B%E5%B9%B4%E8%B5%B0%E8%BF%87%E7%9A%84%E5%9D%91/tf2_gpu%E5%AE%89%E8%A3%853.png">
+<meta property="og:image" content="http://example.com/images/%E9%82%A3%E4%BA%9B%E5%B9%B4%E8%B5%B0%E8%BF%87%E7%9A%84%E5%9D%91/tf2_gpu%E5%AE%89%E8%A3%852.png">
+<meta property="article:published_time" content="2019-09-28T02:20:02.000Z">
+<meta property="article:modified_time" content="2023-06-10T12:02:31.634Z">
+<meta property="article:author" content="SmileTM">
+<meta property="article:tag" content="TensorFlow2.x">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/images/%E9%82%A3%E4%BA%9B%E5%B9%B4%E8%B5%B0%E8%BF%87%E7%9A%84%E5%9D%91/tf2_gpu%E5%AE%89%E8%A3%851.png">
+
+
+<link rel="canonical" href="http://example.com/2019/09/28/%E9%82%A3%E4%BA%9B%E5%B9%B4%E8%B5%B0%E8%BF%87%E7%9A%84%E5%9D%91-tf2-gpu%E5%AE%89%E8%A3%85/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://example.com/2019/09/28/%E9%82%A3%E4%BA%9B%E5%B9%B4%E8%B5%B0%E8%BF%87%E7%9A%84%E5%9D%91-tf2-gpu%E5%AE%89%E8%A3%85/","path":"2019/09/28/那些年走过的坑-tf2-gpu安装/","title":"那些年走过的坑TF2.0-GPU安装"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>那些年走过的坑TF2.0-GPU安装 | SmileTM博客</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+      <img class="custom-logo-image" src="/images/custom-logo.png" alt="SmileTM博客">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">SmileTM博客</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">_________Smile  To  Me</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li>
+  </ul>
+</nav>
+
+
+
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E9%85%8D%E7%BD%AE"><span class="nav-number">1.</span> <span class="nav-text">配置</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%89%8D%E6%9C%9F%E5%87%86%E5%A4%87"><span class="nav-number">2.</span> <span class="nav-text">前期准备</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#CUDA%E3%80%81CUDNN%E5%AE%89%E8%A3%85"><span class="nav-number">2.1.</span> <span class="nav-text">CUDA、CUDNN安装</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Conda%E7%BC%96%E8%AF%91%E7%8E%AF%E5%A2%83%E5%AE%89%E8%A3%85"><span class="nav-number">2.2.</span> <span class="nav-text">Conda编译环境安装</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Bazel%E7%8E%AF%E5%A2%83%E5%AE%89%E8%A3%85"><span class="nav-number">2.3.</span> <span class="nav-text">Bazel环境安装</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%9F%A5%E7%9C%8B%E7%B3%BB%E7%BB%9F%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE"><span class="nav-number">3.</span> <span class="nav-text">查看系统环境配置</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%85%8B%E9%9A%86TensorFlow%E4%BB%A3%E7%A0%81%E5%BA%93"><span class="nav-number">4.</span> <span class="nav-text">克隆TensorFlow代码库</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E9%85%8D%E7%BD%AE%E7%BC%96%E8%AF%91%E7%9B%B8%E5%85%B3%E5%8F%82%E6%95%B0"><span class="nav-number">5.</span> <span class="nav-text">配置编译相关参数</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Bazel-build"><span class="nav-number">6.</span> <span class="nav-text">Bazel build</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BB%85%E6%94%AF%E6%8C%81-CPU"><span class="nav-number">6.1.</span> <span class="nav-text">仅支持 CPU</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#GPU-%E6%94%AF%E6%8C%81"><span class="nav-number">6.2.</span> <span class="nav-text">GPU 支持</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#pip-%E5%AE%89%E8%A3%85"><span class="nav-number">7.</span> <span class="nav-text">pip 安装</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#python%E7%8E%AF%E5%A2%83%E6%B5%8B%E8%AF%95"><span class="nav-number">8.</span> <span class="nav-text">python环境测试</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%BD%A9%E8%9B%8B"><span class="nav-number">9.</span> <span class="nav-text">彩蛋</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">SmileTM</p>
+  <div class="site-description" itemprop="description">________Talk is cheap，show me the code！！！</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">36</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">19</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/smiletm" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;smiletm" rel="noopener me" target="_blank">GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://twitter.com/SmileTM96" title="Twitter → https:&#x2F;&#x2F;twitter.com&#x2F;SmileTM96" rel="noopener me" target="_blank">Twitter</a>
+      </span>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2019/09/28/%E9%82%A3%E4%BA%9B%E5%B9%B4%E8%B5%B0%E8%BF%87%E7%9A%84%E5%9D%91-tf2-gpu%E5%AE%89%E8%A3%85/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="SmileTM">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="SmileTM博客">
+      <meta itemprop="description" content="________Talk is cheap，show me the code！！！">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="那些年走过的坑TF2.0-GPU安装 | SmileTM博客">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          那些年走过的坑TF2.0-GPU安装
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2019-09-28 10:20:02" itemprop="dateCreated datePublished" datetime="2019-09-28T10:20:02+08:00">2019-09-28</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2023-06-10 20:02:31" itemprop="dateModified" datetime="2023-06-10T20:02:31+08:00">2023-06-10</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><p>Tensorflow2.0-gpu 的安装的复杂早有耳闻，以前一直用的都是cpu版，一直通过conda一键安装，过于安逸。</p>
+<p>哎，欠的账始终是要还的。</p>
+<p>最近，接触到实验室服务器后，开始捣鼓Tensoflow2.0-GPU，才发现各种神坑。<br>首先因为学校服务器都是共享的无法获取root权限，导致无法更新显卡驱动，使得cuda10 ，无法安装。于是只能安装cuda9 。然后问题来了，google只提供了Tensorflow2.0-GPU cuda10的版本。通过Google发现有人也提了这个问题<a target="_blank" rel="noopener" href="https://github.com/tensorflow/tensorflow/issues/26418">How to install tensorflow2.0 in cuda9?</a> 。问题中的解决方案是 通过Tensoflow2.0的源码 在cuda9上重新编译就行了。因为Google提供的是基于cuda10编译的，并不能找到cuda9。</p>
+<p>好了，有了解决方案本以为会很容易，结果又碰见权限问题。因为没有root权限，开始安装bazel编译工具时碰见了麻烦。记得以前看conda list时看见过bazel，于是Google了发现conda确实可绕过 root权限 进行bazel的安装 而且conda还会自动的帮你把bazel所需的 jdk一起安装，真的安逸。本以为会很顺利，结果编译了30分钟后，开始报错，提示该环境下没有找到keras-preprocessing ,keras-applications,numpy。（通过conda专门搭建的编译环境一时疏忽，只安装了bazel，别的都忘了安。）QAQ 白瞎了30分钟。</p>
+<p>所有依赖的包安装好后，重新开始编译，32线程开工，花了大约1个小时。</p>
+<span id="more"></span>
+
+<h1 id="配置"><a href="#配置" class="headerlink" title="配置"></a>配置</h1><ul>
+<li>Ubuntu 16.04</li>
+<li>GPU：Tesla M40（驱动387.26）</li>
+<li>cuda 9.0</li>
+<li>cudnn 7.6.0</li>
+<li>conda</li>
+</ul>
+<h1 id="前期准备"><a href="#前期准备" class="headerlink" title="前期准备"></a>前期准备</h1><h2 id="CUDA、CUDNN安装"><a href="#CUDA、CUDNN安装" class="headerlink" title="CUDA、CUDNN安装"></a>CUDA、CUDNN安装</h2><p>刚开始开始拿到服务器，居然连conda都没安，然后给服务器安上了conda。（conda一定要安， 后面可以通过conda绕过root权限）。</p>
+<p>接下来就是根据GPU的驱动安装cuna和cudnn。 由于没有root权限 无法升级显卡驱动，只能安装对应驱动版本的cuda和cudnn。</p>
+<p>显卡驱动版本可以通过nvidia-smi进行查看。</p>
+<p><img src="/images/%E9%82%A3%E4%BA%9B%E5%B9%B4%E8%B5%B0%E8%BF%87%E7%9A%84%E5%9D%91/tf2_gpu%E5%AE%89%E8%A3%851.png" alt="tf2_gpu安装1"></p>
+<p>至于cuda，cudnn怎么装，请自行参考google 或 baidu</p>
+<p><strong>特别强调 由于没有root权限 服务器&#x2F;usr&#x2F;local 路径下 一般用户无权修改 所以安装CUDA，CUDNN时请选择 当前用户的根目录进行安装。</strong></p>
+<p><strong>有root权限的直接升级显卡驱动安装cuda10，从Tensorflow官方包进行安装。</strong></p>
+<p>根据显卡驱动 安装指定的 <a target="_blank" rel="noopener" href="https://developer.nvidia.com/cuda-toolkit-archive">CUDA</a> 版本   这里我用的是<a target="_blank" rel="noopener" href="https://developer.nvidia.com/cuda-90-download-archive?target_os=Linux&target_arch=x86_64&target_distro=Ubuntu&target_version=1604&target_type=clusterlocal">CUDA9.0</a>版本。</p>
+<p>安装<a target="_blank" rel="noopener" href="https://developer.nvidia.com/rdp/form/cudnn-download-survey">CUDNN</a>,需要英伟达账号，自己注册就行。 根据CUDA和显卡驱动 选择相应版本的CUDNN。</p>
+<p>这里 建议CUDA9.0 的下载 CUDNN7.6.0版本，其余版本的CUDNN会有bug。</p>
+<p><a target="_blank" rel="noopener" href="https://developer.nvidia.com/rdp/cudnn-archive#a-collapse760-90">Download cuDNN v7.6.0 (May 20, 2019), for CUDA 9.0</a></p>
+<p>CUDNN下载后 将其解压到CUDA目录下 即可。</p>
+<p>解压后查看 path&#x2F;cuda&#x2F;lib64 路径下lib64文件是否完整。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># path 为你cuda的路径</span></span><br><span class="line">cd path/cuda/lib64</span><br><span class="line">ls -a</span><br></pre></td></tr></table></figure>
+
+<p><img src="/images/%E9%82%A3%E4%BA%9B%E5%B9%B4%E8%B5%B0%E8%BF%87%E7%9A%84%E5%9D%91/tf2_gpu%E5%AE%89%E8%A3%853.png" alt="tf2_gpu安装3"></p>
+<p>安装后， 通过下方命令，查看是否安装成功。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_"># </span><span class="language-bash">path 为你cuda的路径</span></span><br><span class="line">cat path/cuda/include/cudnn.h | grep CUDNN_MAJOR -A 2</span><br></pre></td></tr></table></figure>
+
+<p>这里我安装在&#x2F;disk1&#x2F;lx 下所以 命令修改为：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cat /disk1/lx/cuda/include/cudnn.h | grep CUDNN_MAJOR -A 2</span><br></pre></td></tr></table></figure>
+
+<p>若显示下面信息，则代表成功安装CUDA和CUDNN。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">(mk) wxy@sait:/disk1/lx/cuda$ cat /disk1/lx/cuda/include/cudnn.h | grep CUDNN_MAJOR -A 2</span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">define CUDNN_MAJOR 7</span></span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">define CUDNN_MINOR 6</span></span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">define CUDNN_PATCHLEVEL 0</span></span><br><span class="line">--</span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">define CUDNN_VERSION (CUDNN_MAJOR * 1000 + CUDNN_MINOR * 100 + CUDNN_PATCHLEVEL)</span></span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">include <span class="string">&quot;driver_types.h&quot;</span></span></span><br><span class="line">(mk) wxy@sait:/disk1/lx/cuda$ </span><br></pre></td></tr></table></figure>
+
+
+
+<p>cuda，cudnn安装好后，就可以利用conda来创建 编译环境了。</p>
+<h2 id="Conda编译环境安装"><a href="#Conda编译环境安装" class="headerlink" title="Conda编译环境安装"></a>Conda编译环境安装</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">conda create -n mk python=<span class="number">3.7</span></span><br></pre></td></tr></table></figure>
+
+<p>创建编译环境mk。</p>
+<p>切换编译环境。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">conda activate mk</span><br></pre></td></tr></table></figure>
+
+<p>在mk环境中，安装</p>
+<ul>
+<li>pip</li>
+<li>six</li>
+<li>openjdk (Ubuntu16.x openjdk&#x3D;8.X ; Ubuntu18.x openjdk&#x3D;10.x )</li>
+<li>numpy</li>
+<li>wheel</li>
+<li>setuptools</li>
+<li>mock </li>
+<li>future&gt;&#x3D;0.17.1</li>
+<li>keras_applications&#x3D;&#x3D;1.0.6</li>
+<li>keras_preprocessing&#x3D;&#x3D;1.0.5</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">conda install pip six openjdk numpy wheel setuptools mock future&gt;=0.17.1</span><br><span class="line">pip install keras_applications==1.0.6</span><br><span class="line">pip install keras_preprocessing==1.0.5 </span><br></pre></td></tr></table></figure>
+
+<p>可能keras_applications和keras_preprocessing 在conda中并没有，这时我们可以通过pip &#x2F; conda进行安装。</p>
+<p>开始就是这两个忘记安装了，导致白花30分钟QAQ。</p>
+<h2 id="Bazel环境安装"><a href="#Bazel环境安装" class="headerlink" title="Bazel环境安装"></a>Bazel环境安装</h2><p>由于conda中提供的Bazel为0.26.1版本，而最新的TensorFlow2.1 则需求Bazel 0.29.1 ，所以我们需要安装相应的Bazel版本。</p>
+<p>在<a target="_blank" rel="noopener" href="https://github.com/bazelbuild/bazel/releases/tag/0.29.1">Bazel 0.29.1</a>该链接中找到相应的安装包进行下载，这里我服务器安装的是Linux，所以下载对应的<a target="_blank" rel="noopener" href="https://github.com/bazelbuild/bazel/releases/download/0.29.1/bazel-0.29.1-installer-linux-x86_64.sh">bazel-0.29.1-installer-linux-x86_64.sh</a>。</p>
+<p>下载成功后，先给该.sh文件加上可执行权限。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">chmod +x bazel-0.29.1-installer-linux-x86_64.sh</span><br></pre></td></tr></table></figure>
+
+<p>由于，我没有root权限,无法安装到系统usr文件夹中，所以要通过prefix改变安装路径。通过以下命令进行安装,将Bazel 安装到当前用户目录下的Bazel文件夹中。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./bazel-&lt;version&gt;-installer-linux-x86_64.sh --prefix=~/Bazel</span><br></pre></td></tr></table></figure>
+
+<p>安装后，在~&#x2F;.bashrc中添加Bazel路径。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">export PATH=$PATH:&quot;~/Bazel/bin&quot;</span><br></pre></td></tr></table></figure>
+
+<p>再对.bashrc 进行更新。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">source ~/.bashrc</span><br></pre></td></tr></table></figure>
+
+<p>最后，我们通过，查看bazel 版本命令，判断是否安装成功。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">bazel --version</span><br></pre></td></tr></table></figure>
+
+<p>若正确显示bazel 版本，则代表安装成功。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">bazel 0.29.1</span><br></pre></td></tr></table></figure>
+
+
+
+<h1 id="查看系统环境配置"><a href="#查看系统环境配置" class="headerlink" title="查看系统环境配置"></a>查看系统环境配置</h1><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cat ~/.bashrc</span><br></pre></td></tr></table></figure>
+<p>查看.bashrc 中是否有添加相关cuda 路径依赖。 这里的，所有路径参数，需要根据你安装的cuda路径进行修改。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">export CUDA_HOME=/usr/local/cuda</span><br><span class="line">export PATH=/usr/local/cuda/bin$&#123;PATH:+:$&#123;PATH&#125;&#125; </span><br><span class="line">export LD_LIBRARY_PATH=/usr/local/cuda/lib64</span><br><span class="line">export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/local/cuda</span><br><span class="line">export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/local/cuda/extras/CUPTI/lib64 </span><br></pre></td></tr></table></figure>
+
+
+
+<h1 id="克隆TensorFlow代码库"><a href="#克隆TensorFlow代码库" class="headerlink" title="克隆TensorFlow代码库"></a>克隆TensorFlow代码库</h1><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">git <span class="built_in">clone</span> https://github.com/tensorflow/tensorflow.git</span><br><span class="line"><span class="built_in">cd</span> tensorflow</span><br></pre></td></tr></table></figure>
+
+<p>由于代码库默认的分支为<strong>master</strong>。通过，下面代码进行分支切换。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git checkout r2.0   <span class="comment">#要编译的是tf2.0 所以切换到r2.0 版本</span></span><br></pre></td></tr></table></figure>
+
+<h1 id="配置编译相关参数"><a href="#配置编译相关参数" class="headerlink" title="配置编译相关参数"></a>配置编译相关参数</h1><p>启动编译配置，输入accept后，开始进行配置，根据需求输入y&#x2F;n 就行，一般只有CUDA那输入y，其余默认回车就行</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./configure</span><br></pre></td></tr></table></figure>
+
+
+
+<p>在configure中，会得到下方显示，重要的就只有cuda 那里输入Y</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br></pre></td><td class="code"><pre><span class="line">(mk) wxy@sait:/disk1/lx/tf2/tensorflow$ ./configure </span><br><span class="line">WARNING: --batch mode is deprecated. Please instead explicitly shut down your Bazel server using the command &quot;bazel shutdown&quot;.</span><br><span class="line">You have bazel 0.24.1- (@non-git) installed.</span><br><span class="line">Please specify the location of python. [Default is /disk1/lx/conda/envs/mk/bin/python]: </span><br><span class="line"></span><br><span class="line"></span><br><span class="line">Found possible Python library paths:</span><br><span class="line">  /disk1/lx/conda/envs/mk/lib/python3.7/site-packages</span><br><span class="line">Please input the desired Python library path to use.  Default is [/disk1/lx/conda/envs/mk/lib/python3.7/site-packages]</span><br><span class="line"></span><br><span class="line">Do you wish to build TensorFlow with XLA JIT support? [Y/n]: n</span><br><span class="line">No XLA JIT support will be enabled for TensorFlow.</span><br><span class="line"></span><br><span class="line">Do you wish to build TensorFlow with OpenCL SYCL support? [y/N]: n</span><br><span class="line">No OpenCL SYCL support will be enabled for TensorFlow.</span><br><span class="line"></span><br><span class="line">Do you wish to build TensorFlow with ROCm support? [y/N]: n</span><br><span class="line">No ROCm support will be enabled for TensorFlow.</span><br><span class="line"></span><br><span class="line">Do you wish to build TensorFlow with CUDA support? [y/N]: y</span><br><span class="line">CUDA support will be enabled for TensorFlow.</span><br><span class="line"></span><br><span class="line">Do you wish to build TensorFlow with TensorRT support? [y/N]: n</span><br><span class="line">No TensorRT support will be enabled for TensorFlow.</span><br><span class="line"></span><br><span class="line">Found CUDA 9.0 in:</span><br><span class="line">    /usr/local/cuda/lib64</span><br><span class="line">    /usr/local/cuda/include</span><br><span class="line">Found cuDNN 7 in:</span><br><span class="line">    /usr/local/cuda/lib64</span><br><span class="line">    /usr/local/cuda/include</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">Please specify a list of comma-separated CUDA compute capabilities you want to build with.</span><br><span class="line">You can find the compute capability of your device at: https://developer.nvidia.com/cuda-gpus.</span><br><span class="line">Please note that each additional compute capability significantly increases your build time and binary size, and that TensorFlow only supports compute capabilities &gt;= 3.5 [Default is: 5.2,5.2]: </span><br><span class="line"></span><br><span class="line"></span><br><span class="line">Do you want to use clang as CUDA compiler? [y/N]: n</span><br><span class="line">nvcc will be used as CUDA compiler.</span><br><span class="line"></span><br><span class="line">Please specify which gcc should be used by nvcc as the host compiler. [Default is /usr/bin/gcc]: </span><br><span class="line"></span><br><span class="line"></span><br><span class="line">Do you wish to build TensorFlow with MPI support? [y/N]: n</span><br><span class="line">No MPI support will be enabled for TensorFlow.</span><br><span class="line"></span><br><span class="line">Please specify optimization flags to use during compilation when bazel option &quot;--config=opt&quot; is specified [Default is -march=native -Wno-sign-compare]: </span><br><span class="line"></span><br><span class="line"></span><br><span class="line">Would you like to interactively configure ./WORKSPACE for Android builds? [y/N]: n</span><br><span class="line">Not configuring the WORKSPACE for Android builds.</span><br><span class="line"></span><br><span class="line">Preconfigured Bazel build configs. You can use any of the below by adding &quot;--config=&lt;&gt;&quot; to your build command. See .bazelrc for more details.</span><br><span class="line">	--config=mkl         	# Build with MKL support.</span><br><span class="line">	--config=monolithic  	# Config for mostly static monolithic build.</span><br><span class="line">	--config=gdr         	# Build with GDR support.</span><br><span class="line">	--config=verbs       	# Build with libverbs support.</span><br><span class="line">	--config=ngraph      	# Build with Intel nGraph support.</span><br><span class="line">	--config=numa        	# Build with NUMA support.</span><br><span class="line">	--config=dynamic_kernels	# (Experimental) Build kernels into separate shared objects.</span><br><span class="line">	--config=v2          	# Build TensorFlow 2.x instead of 1.x.</span><br><span class="line">Preconfigured Bazel build configs to DISABLE default on features:</span><br><span class="line">	--config=noaws       	# Disable AWS S3 filesystem support.</span><br><span class="line">	--config=nogcp       	# Disable GCP support.</span><br><span class="line">	--config=nohdfs      	# Disable HDFS support.</span><br><span class="line">	--config=noignite    	# Disable Apache Ignite support.</span><br><span class="line">	--config=nokafka     	# Disable Apache Kafka support.</span><br><span class="line">	--config=nonccl      	# Disable NVIDIA NCCL support.</span><br><span class="line">Configuration finished</span><br><span class="line">(mk) wxy@sait:/disk1/lx/tf2/tensorflow$ </span><br></pre></td></tr></table></figure>
+
+
+
+
+
+<p>由于实验室服务器是共享，有别的用户开始在usr&#x2F;local 下安装过cuda 导致编译程序会自动优先默认识别usr&#x2F;local目录下的cuda。但由于每个用户安装的cuda版本不同，并且又没有权限去修改usr&#x2F;local下cuda的指向，我们可以在配置好configure后，在tensorflow目录下会产生 <strong>.tf_configure.bazelrc</strong>。</p>
+<p>通过下面命令 查看 .tf_configure.bazelrc 中生成的cuda 路径是否正确，若不正确，就对其进行修改。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vim .tf_configure.bazelrc</span><br></pre></td></tr></table></figure>
+
+
+
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">wxy@sait:/disk1/lx/tf2/tensorflow$ cat .tf_configure.bazelrc </span><br><span class="line">build --action_env PYTHON_BIN_PATH=&quot;/disk1/lx/conda/envs/mk/bin/python&quot;</span><br><span class="line">build --action_env PYTHON_LIB_PATH=&quot;/disk1/lx/conda/envs/mk/lib/python3.7/site-packages&quot;</span><br><span class="line">build --python_path=&quot;/disk1/lx/conda/envs/mk/bin/python&quot;</span><br><span class="line">build:xla --define with_xla_support=true</span><br><span class="line">build --action_env CUDA_TOOLKIT_PATH=&quot;/usr/local/cuda&quot;</span><br><span class="line">build --action_env TF_CUDA_COMPUTE_CAPABILITIES=&quot;5.2,5.2&quot;</span><br><span class="line">build --action_env LD_LIBRARY_PATH=&quot;:/usr/local/cuda/lib64&quot;</span><br><span class="line">build --action_env GCC_HOST_COMPILER_PATH=&quot;/usr/bin/gcc&quot;</span><br><span class="line">build --config=cuda</span><br><span class="line">build:opt --copt=-march=native</span><br><span class="line">build:opt --copt=-Wno-sign-compare</span><br><span class="line">build:opt --host_copt=-march=native</span><br><span class="line">build:opt --define with_default_optimizations=true</span><br><span class="line">test --flaky_test_attempts=3</span><br><span class="line">test --test_size_filters=small,medium</span><br><span class="line">test --test_tag_filters=-benchmark-test,-no_oss,-oss_serial</span><br><span class="line">test --build_tag_filters=-benchmark-test,-no_oss</span><br><span class="line">test --test_tag_filters=-gpu</span><br><span class="line">test --build_tag_filters=-gpu</span><br><span class="line">build --action_env TF_CONFIGURE_IOS=&quot;0&quot;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>重点关注下面两行，判断路径是否正确，如不正确，可以自己修改到指定位置。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">build --action_env CUDA_TOOLKIT_PATH=&quot;/usr/local/cuda&quot;</span><br><span class="line">build --action_env LD_LIBRARY_PATH=&quot;/usr/local/cuda/lib64&quot;</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+<p>如果你的cuda安装在默认位置 则跳过修改该文件。否则,对  <strong>.tf_configure.bazelrc</strong> 文件进行修改。</p>
+<p>将 <strong>.tf_configure.bazelrc</strong> 文件中的cuda指定到  特定cuda版本的位置即可</p>
+<p>比如我，需要配置指定位置的cuda，就可以如下修改。 </p>
+<p>值得注意的是 LD_LIBRARY_PATH 是根据你 .bashrc 中的路径自动生成的。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">build --action_env CUDA_TOOLKIT_PATH=&quot;/disk1/lx/cuda&quot;</span><br><span class="line">build --action_env LD_LIBRARY_PATH=&quot;/disk1/lx/cuda/lib64:/disk1/lx/cuda/lib64:/disk1/lx/cuda/lib64:/disk1/lx/cuda/lib64:/disk1/lx/cuda:/disk1/lx/cuda/extras/CUPTI/lib64&quot;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h1 id="Bazel-build"><a href="#Bazel-build" class="headerlink" title="Bazel build"></a>Bazel build</h1><p>编译前，最好执行下面的 bazel清空命令，清除下bazel的缓存，以免报错</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">bazel clean --expunge</span><br></pre></td></tr></table></figure>
+
+
+
+<p>一切准备就绪，就可以开始编译了。编译有两种，一种是仅支持cpu，另一种是支持gpu，需要哪个就用那个命令。</p>
+<h2 id="仅支持-CPU"><a href="#仅支持-CPU" class="headerlink" title="仅支持 CPU"></a>仅支持 CPU</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">bazel build --config=opt //tensorflow/tools/pip_package:build_pip_package</span><br></pre></td></tr></table></figure>
+
+<h2 id="GPU-支持"><a href="#GPU-支持" class="headerlink" title="GPU 支持"></a>GPU 支持</h2><p>这里我们要用的是GPU，所以输入下面 命令就可以开始编译了。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">bazel build --config=opt --config=cuda //tensorflow/tools/pip_package:build_pip_package</span><br></pre></td></tr></table></figure>
+
+
+
+<p><strong>编译前一定要通过conda list，pip list 来查看 前期准备 中 提到的依赖包是否全部安装。</strong></p>
+<p>在<strong>服务器32线程</strong>全开，经过漫长<strong>一个小时</strong>等待，终于编译完成了QAQ。</p>
+<p><strong>编译完成后</strong><code>会创建一个名为 </code><strong>build_pip_package</strong> 的可执行文件</p>
+<p>再通过下面命令进行编译，编译后会在&#x2F;disk1&#x2F;lx下产生一个.whl的软件包。</p>
+<p>该命令后面可以指定.whl文件存放的位置。 这里默认保存在当前文件夹中。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./bazel-bin/tensorflow/tools/pip_package/build_pip_package ./   </span><br></pre></td></tr></table></figure>
+
+<p>比如我要将.whl存放到路径&#x2F;disk1&#x2F;lx下, 就可以如下进行修改：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./bazel-bin/tensorflow/tools/pip_package/build_pip_package /disk1/lx</span><br></pre></td></tr></table></figure>
+
+
+
+<h1 id="pip-安装"><a href="#pip-安装" class="headerlink" title="pip 安装"></a>pip 安装</h1><p>得到了.whl文件后</p>
+<p>通过pip执行安装</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pip install tensorflow-2.0.0-cp37-cp37m-linux_x86_64.whl </span><br></pre></td></tr></table></figure>
+
+<h1 id="python环境测试"><a href="#python环境测试" class="headerlink" title="python环境测试"></a>python环境测试</h1><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> tensorflow <span class="keyword">as</span> tf</span><br><span class="line"><span class="built_in">print</span>(tf.__versiong__)</span><br><span class="line"><span class="built_in">print</span>(tf.test.is_gpu_available())</span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p><img src="/images/%E9%82%A3%E4%BA%9B%E5%B9%B4%E8%B5%B0%E8%BF%87%E7%9A%84%E5%9D%91/tf2_gpu%E5%AE%89%E8%A3%852.png" alt="tf2_gpu安装2"></p>
+<p>看见True 就代表成功了。</p>
+<p>然后，通过pycharm远程连接操作，真的方便。</p>
+<p>看见True，当时感动哭了，花了两天终于把这环境在服务器上配置好了。</p>
+<p>两天前，还傻到去找老师要root账号，去升级显卡驱动。结果，被老师回绝了，QAQ。</p>
+<p>凡事还是只能靠自己。</p>
+<h1 id="彩蛋"><a href="#彩蛋" class="headerlink" title="彩蛋"></a>彩蛋</h1><p>编译好的Tensorflow2.X-GPU-CUDA9.0 可以配合conda安装的CUDA 使用。</p>
+<p><a target="_blank" rel="noopener" href="https://github.com/SmileTM/Tensorflow2.X-GPU-CUDA9.0">Tensorflow2.X-GPU-CUDA9.0</a> </p>
+<p>如果需要帮助，请在下方留言。</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/TensorFlow2-x/" rel="tag"># TensorFlow2.x</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2019/10/11/TF2%E6%A8%A1%E5%9E%8B%E4%BF%9D%E5%AD%98%E5%8A%A0%E8%BD%BD/" rel="prev" title="TF2模型保存加载">
+                  <i class="fa fa-chevron-left"></i> TF2模型保存加载
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2019/09/22/Custom-layers/" rel="next" title="Custom layers">
+                  Custom layers <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+    <div class="comments gitalk-container"></div>
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">SmileTM</span>
+</div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/schemes/muse.js"></script><script src="/js/next-boot.js"></script>
+
+  
+  <script class="next-config" data-name="pdf" type="application/json">{"object_url":{"url":"https://cdnjs.cloudflare.com/ajax/libs/pdfobject/2.2.11/pdfobject.min.js","integrity":"sha256-N6JtCNwaYm6kizuG92UtOOXamRHPwu+V1yF10g3bu/c="},"url":"/lib/pdf/web/viewer.html"}</script>
+  <script src="/js/third-party/tags/pdf.js"></script>
+
+
+
+
+
+
+  
+
+
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">false</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"tags":"all","js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.js","integrity":"sha256-MASABpB4tYktI2Oitl4t+78w/lyA+D7b/s9GEP0JOGI="}}</script>
+<script src="/js/third-party/math/mathjax.js"></script>
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/gitalk/1.8.0/gitalk.css" integrity="sha256-AJnUHL7dBv6PGaeyPQJcgQPDjt/Hn/PvYZde1iqfp8U=" crossorigin="anonymous">
+
+<script class="next-config" data-name="gitalk" type="application/json">{"enable":true,"github_id":"SmileTM","repo":"SmileTM.github.io","client_id":"ed531d5b5c361d2a4ee1","client_secret":"23d9318d301649f0513a37915b9466b68b44acd4","admin_user":"SmileTM","distraction_free_mode":true,"proxy":"https://cors-anywhere.azm.workers.dev/https://github.com/login/oauth/access_token","language":null,"js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/gitalk/1.8.0/gitalk.min.js","integrity":"sha256-MVK9MGD/XJaGyIghSVrONSnoXoGh3IFxLw0zfvzpxR4="},"path_md5":"694ab3d603294d7826a245d83cf6a9c9"}</script>
+<script src="/js/third-party/comments/gitalk.js"></script>
+
+</body>
+</html>

@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 6.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha256-HtsXJanqjKTc8vVQjO4YMhiqFoXkfBsjBWcX91T1jr8=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"example.com","root":"/","images":"/images","scheme":"Muse","darkmode":false,"version":"8.17.0","exturl":false,"sidebar":{"position":"right","display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":"gitalk","storage":true,"lazyload":false,"nav":null,"activeClass":"gitalk"},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="混淆矩阵、准确率、精确率、召回率、F值、ROC曲线、AUC、PR曲线-Sklearn.metrics评估方法混淆矩阵 TN ：真实为0，预测为0 FP ：真实为0，预测为1 FN ：真实为1，预测为0 TP ：真实为1，预测为1          混淆矩阵     预测           0     1               真实     0     TN     FP">
+<meta property="og:type" content="article">
+<meta property="og:title" content="评估方法">
+<meta property="og:url" content="http://example.com/2019/11/27/%E8%AF%84%E4%BC%B0%E6%96%B9%E6%B3%95/index.html">
+<meta property="og:site_name" content="SmileTM博客">
+<meta property="og:description" content="混淆矩阵、准确率、精确率、召回率、F值、ROC曲线、AUC、PR曲线-Sklearn.metrics评估方法混淆矩阵 TN ：真实为0，预测为0 FP ：真实为0，预测为1 FN ：真实为1，预测为0 TP ：真实为1，预测为1          混淆矩阵     预测           0     1               真实     0     TN     FP">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/images/ROC.png">
+<meta property="og:image" content="http://example.com/images/PR.png">
+<meta property="article:published_time" content="2019-11-26T16:19:02.000Z">
+<meta property="article:modified_time" content="2023-06-10T12:02:31.646Z">
+<meta property="article:author" content="SmileTM">
+<meta property="article:tag" content="NLP">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/images/ROC.png">
+
+
+<link rel="canonical" href="http://example.com/2019/11/27/%E8%AF%84%E4%BC%B0%E6%96%B9%E6%B3%95/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://example.com/2019/11/27/%E8%AF%84%E4%BC%B0%E6%96%B9%E6%B3%95/","path":"2019/11/27/评估方法/","title":"评估方法"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>评估方法 | SmileTM博客</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+      <img class="custom-logo-image" src="/images/custom-logo.png" alt="SmileTM博客">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">SmileTM博客</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">_________Smile  To  Me</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li>
+  </ul>
+</nav>
+
+
+
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%B7%B7%E6%B7%86%E7%9F%A9%E9%98%B5%E3%80%81%E5%87%86%E7%A1%AE%E7%8E%87%E3%80%81%E7%B2%BE%E7%A1%AE%E7%8E%87%E3%80%81%E5%8F%AC%E5%9B%9E%E7%8E%87%E3%80%81F%E5%80%BC%E3%80%81ROC%E6%9B%B2%E7%BA%BF%E3%80%81AUC%E3%80%81PR%E6%9B%B2%E7%BA%BF-Sklearn-metrics%E8%AF%84%E4%BC%B0%E6%96%B9%E6%B3%95"><span class="nav-number">1.</span> <span class="nav-text">混淆矩阵、准确率、精确率、召回率、F值、ROC曲线、AUC、PR曲线-Sklearn.metrics评估方法</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%B7%B7%E6%B7%86%E7%9F%A9%E9%98%B5"><span class="nav-number">1.1.</span> <span class="nav-text">混淆矩阵</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%88%86%E7%B1%BB%E5%87%86%E7%A1%AE%E7%8E%87-Accuracy"><span class="nav-number">1.2.</span> <span class="nav-text">分类准确率 Accuracy</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%B2%BE%E7%A1%AE%E7%8E%87-Precision"><span class="nav-number">1.3.</span> <span class="nav-text">精确率 Precision</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8F%AC%E5%9B%9E%E7%8E%87-Recall"><span class="nav-number">1.4.</span> <span class="nav-text">召回率 Recall</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#F1%E5%80%BC"><span class="nav-number">1.5.</span> <span class="nav-text">F1值</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ROC%E6%9B%B2%E7%BA%BF"><span class="nav-number">1.6.</span> <span class="nav-text">ROC曲线</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#AUC"><span class="nav-number">1.7.</span> <span class="nav-text">AUC</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#PRC%E6%9B%B2%E7%BA%BF"><span class="nav-number">1.8.</span> <span class="nav-text">PRC曲线</span></a></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">SmileTM</p>
+  <div class="site-description" itemprop="description">________Talk is cheap，show me the code！！！</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">36</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">19</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/smiletm" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;smiletm" rel="noopener me" target="_blank">GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://twitter.com/SmileTM96" title="Twitter → https:&#x2F;&#x2F;twitter.com&#x2F;SmileTM96" rel="noopener me" target="_blank">Twitter</a>
+      </span>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2019/11/27/%E8%AF%84%E4%BC%B0%E6%96%B9%E6%B3%95/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="SmileTM">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="SmileTM博客">
+      <meta itemprop="description" content="________Talk is cheap，show me the code！！！">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="评估方法 | SmileTM博客">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          评估方法
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2019-11-27 00:19:02" itemprop="dateCreated datePublished" datetime="2019-11-27T00:19:02+08:00">2019-11-27</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2023-06-10 20:02:31" itemprop="dateModified" datetime="2023-06-10T20:02:31+08:00">2023-06-10</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><h1 id="混淆矩阵、准确率、精确率、召回率、F值、ROC曲线、AUC、PR曲线-Sklearn-metrics评估方法"><a href="#混淆矩阵、准确率、精确率、召回率、F值、ROC曲线、AUC、PR曲线-Sklearn-metrics评估方法" class="headerlink" title="混淆矩阵、准确率、精确率、召回率、F值、ROC曲线、AUC、PR曲线-Sklearn.metrics评估方法"></a>混淆矩阵、准确率、精确率、召回率、F值、ROC曲线、AUC、PR曲线-Sklearn.metrics评估方法</h1><h2 id="混淆矩阵"><a href="#混淆矩阵" class="headerlink" title="混淆矩阵"></a>混淆矩阵</h2><ul>
+<li>TN ：真实为0，预测为0</li>
+<li>FP ：真实为0，预测为1</li>
+<li>FN ：真实为1，预测为0</li>
+<li>TP ：真实为1，预测为1</li>
+</ul>
+<table>
+  <tr>
+    <td rowspan="2" colspan="2">混淆矩阵</td>
+    <td colspan="2">预测</td>
+  </tr>
+  <tr>
+    <td>0</td>
+    <td>1</td>    
+  </tr>
+  <tr>
+    <td rowspan="2">真实</td>
+    <td>0</td>
+    <td>TN</td>
+    <td>FP</td>
+  </tr>
+  <tr>
+    <td>1</td>
+    <td>FN</td>
+    <td>TP</td>
+  </tr>
+</table>
+
+<span id="more"></span>
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> sklearn.metrics <span class="keyword">import</span> confusion_matrix</span><br><span class="line">yp = [<span class="number">1</span>,<span class="number">1</span>,<span class="number">0</span>,<span class="number">1</span>,<span class="number">1</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">1</span>]</span><br><span class="line">yr = [<span class="number">1</span>,<span class="number">1</span>,<span class="number">1</span>,<span class="number">1</span>,<span class="number">1</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">1</span>,<span class="number">0</span>,<span class="number">0</span>]</span><br><span class="line">confusion_matrix=confusion_matrix(yr,yp)</span><br></pre></td></tr></table></figure>
+
+<p>output:</p>
+<p>[[3 1]<br> [2 4]]</p>
+<h2 id="分类准确率-Accuracy"><a href="#分类准确率-Accuracy" class="headerlink" title="分类准确率 Accuracy"></a>分类准确率 Accuracy</h2><p>Accuracy是最常见的evaluation metric。但在binary classification中，如果遇见正反例不平衡的情况下，尤其是我们对少数类别感兴趣的情况下，Accuracy将不再具有参考价值。</p>
+<p>比如，100个样本中有99个正例，那么我们全部预测为1，则准确率将达到99%。若将该model放在新样本环境中，却一个负例都无法分辨，使得该model毫无意义。</p>
+<ul>
+<li>所有样本中预测正确的比率</li>
+</ul>
+<p>$$<br>Accuracy &#x3D; \frac{TP+TN}{TN+FP+FN+TP}<br>$$</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> sklearn.metrics <span class="keyword">import</span> accuracy_score</span><br><span class="line">yp = [<span class="number">1</span>,<span class="number">1</span>,<span class="number">0</span>,<span class="number">1</span>,<span class="number">1</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">1</span>]</span><br><span class="line">yr = [<span class="number">1</span>,<span class="number">1</span>,<span class="number">1</span>,<span class="number">1</span>,<span class="number">1</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">1</span>,<span class="number">0</span>,<span class="number">0</span>]</span><br><span class="line">accuracy_score=accuracy_score(yr,yp)</span><br></pre></td></tr></table></figure>
+
+<p>accuracy_score &#x3D; 0.7</p>
+<h2 id="精确率-Precision"><a href="#精确率-Precision" class="headerlink" title="精确率 Precision"></a>精确率 Precision</h2><p>在所有预测为1的样本中，真实为1的概率。</p>
+<p>你有一个model，期间预测了100个正样本，其中有90个为真的正样本，10个为假的正样本（预测错误）。精确度就是90%。<br>所以，精确度就是衡量一个model的可信度。</p>
+<p>$$<br>Precision &#x3D; \frac{TP}{TP+FP}<br>$$</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> sklearn.metrics <span class="keyword">import</span> precison_score</span><br><span class="line">precison_score=precison_score(yr,yp)</span><br></pre></td></tr></table></figure>
+
+<p>precison_score &#x3D; 0.8</p>
+<h2 id="召回率-Recall"><a href="#召回率-Recall" class="headerlink" title="召回率 Recall"></a>召回率 Recall</h2><p>在所有真实正样本中，正确预测出正样本的比率。<br>有一model，有100个真实正样本，model预测出80个正样本，20个负样本。因此召回率为80%</p>
+<p>也就是说，召回率是表示model识别正样本的能力<br>$$<br>Recall &#x3D; \frac{TP}{TP+FN}<br>$$</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> sklearn.metrics <span class="keyword">import</span> recall_score</span><br><span class="line">recall_score=recall_score(yr,yp)</span><br></pre></td></tr></table></figure>
+
+<p>recall_score &#x3D; 0.6666666666666666</p>
+<p>其中Recall是相对真实答案而言的， Precision是相对model而言。</p>
+<p>一般来说Precision与Recall是一种博弈的关系。</p>
+<p>Recall高的，一般Precision就会低，因为model要考虑到更多的样本，就代表出错的可能性就越高。</p>
+<p>反之，Precision高的，Recall一般会低，因为model只对它自己肯定的样本进行预测，这样一来model的泛华能力比较弱。<br>因此，就有了下面的F1 score，对这两个指数进行综合考察。</p>
+<h2 id="F1值"><a href="#F1值" class="headerlink" title="F1值"></a>F1值</h2><p>用来衡量二分类模型精确度的一种指标。它同时兼顾了分类模型的准确率和召回率。F1分数可以看作是模型准确率和召回率的一种加权平均，它的最大值是1，最小值是0。</p>
+<p>其中F1 score是一个综合考虑Precision和Recall的metric。<br>$$<br>F1 &#x3D; 2<em>\frac{Precison</em>Recall}{Precision+Recall}<br>$$</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> sklearn.metrics <span class="keyword">import</span> f1_score</span><br><span class="line">f1_score=f1_score(yr,yp)</span><br></pre></td></tr></table></figure>
+
+<p>f1_score &#x3D; 0.7272727272727272</p>
+<h2 id="ROC曲线"><a href="#ROC曲线" class="headerlink" title="ROC曲线"></a>ROC曲线</h2><p>计算ROC前 我们需要了解两个变量FPR（横轴）和TPR（纵轴）。</p>
+<p>FPR (False Positive Rate)假阳性率：真实的反例中，被预测为正例的比率</p>
+<p>TN+FP 为样本中所有负例的个数<br>$$<br>FPR &#x3D; \frac{FP}{TN+FP}<br>$$<br>TPR (True Positive Rate)真阳性率: 真实的正例中，被预测为正例的比率</p>
+<p>TP+FN 为样本中所有正例的个数<br>$$<br>TPR &#x3D; \frac{TP}{TP+FN}<br>$$<br>理想分类器下 FPR&#x3D;0，TPR&#x3D;1。</p>
+<p>其中，ROC曲线越接近左上角越好。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">fpr, tpr, thresholds = metrics.roc_curve(yr,yp)</span><br><span class="line">roc_auc = auc(fpr, tpr)  <span class="comment">#auc为Roc曲线下的面积，计算auc</span></span><br><span class="line"><span class="comment">#开始画ROC曲线</span></span><br><span class="line">plt.plot(fpr, tpr, <span class="string">&#x27;b&#x27;</span>,label=<span class="string">&#x27;AUC = %0.2f&#x27;</span>% roc_auc)</span><br><span class="line">plt.legend(loc=<span class="string">&#x27;lower right&#x27;</span>)</span><br><span class="line">plt.plot([<span class="number">0</span>,<span class="number">1</span>],[<span class="number">0</span>,<span class="number">1</span>],<span class="string">&#x27;r--&#x27;</span>)</span><br><span class="line">plt.xlim([-<span class="number">0.1</span>,<span class="number">1.1</span>])</span><br><span class="line">plt.ylim([-<span class="number">0.1</span>,<span class="number">1.1</span>])</span><br><span class="line">plt.xlabel(<span class="string">&#x27;False Positive Rate&#x27;</span>) <span class="comment">#横坐标是fpr</span></span><br><span class="line">plt.ylabel(<span class="string">&#x27;True Positive Rate&#x27;</span>)  <span class="comment">#纵坐标是tpr</span></span><br><span class="line">plt.title(<span class="string">&#x27;Receiver operating characteristic example&#x27;</span>)</span><br><span class="line">plt.show()</span><br></pre></td></tr></table></figure>
+
+<img src="/images/ROC.png" alt="ROC" style="zoom:70%;" />
+
+<h2 id="AUC"><a href="#AUC" class="headerlink" title="AUC"></a>AUC</h2><p>AUC指的是ROC曲线下方的面积。也是通过ROC曲线衡量模型好坏的一个重要指标，AUC的值越大越好。</p>
+<p>在进行学习器的比较时，若一个学习器的ROC曲线被另一个学习器的曲线完全“包住”，则可断言后者的性能优于前者；若两个学习器的ROC曲线发生交叉，则难以一般性的断言两者孰优孰劣。此时如果一定要进行比较，则比较合理的判断依据是比较<strong>ROC曲线下的面积</strong>，即<strong>AUC</strong>(Area Under Curve)。</p>
+<h2 id="PRC曲线"><a href="#PRC曲线" class="headerlink" title="PRC曲线"></a>PRC曲线</h2><p>就是Precison和Recall分别为纵、横轴，根据不同的阈值画出的曲线，类似ROC。但与ROC不同的是，PRC曲线越接近右上角越好。同样，AUC越大越好。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">p, r, thresholds = metrics.precision_recall_curve(yr,yp)</span><br><span class="line">roc_auc = auc(r, p)  <span class="comment">#auc为Roc曲线下的面积</span></span><br><span class="line"><span class="comment">#开始画ROC曲线</span></span><br><span class="line">plt.plot(r, p, <span class="string">&#x27;b&#x27;</span>,label=<span class="string">&#x27;AUC = %0.2f&#x27;</span>% roc_auc)</span><br><span class="line">plt.legend(loc=<span class="string">&#x27;lower right&#x27;</span>)</span><br><span class="line">plt.xlim([-<span class="number">0.1</span>,<span class="number">1.1</span>])</span><br><span class="line">plt.ylim([-<span class="number">0.1</span>,<span class="number">1.1</span>])</span><br><span class="line">plt.xlabel(<span class="string">&#x27;Recall&#x27;</span>) <span class="comment">#横坐标是Recall</span></span><br><span class="line">plt.ylabel(<span class="string">&#x27;Precision&#x27;</span>)  <span class="comment">#纵坐标是Precision</span></span><br><span class="line">plt.title(<span class="string">&#x27;PR example&#x27;</span>)</span><br><span class="line">plt.show()</span><br></pre></td></tr></table></figure>
+
+<img src="/images/PR.png" alt="PR" style="zoom:70%;" />
+
+
+
+<p>以上几个metric中ROC和PRC主要可以解决样本不平衡导致metric不可信的问题。<br>具体需要使用哪个metric具体模型具体分析。<br>但通过大量的实验表明：</p>
+<p><strong>在negative instances的数量远远大于positive instances的data set里， PRC更能有效衡量检测器的好坏。</strong></p>
+<p>参考：</p>
+<p><a target="_blank" rel="noopener" href="https://www.zhihu.com/question/30643044/answer/48955833">https://www.zhihu.com/question/30643044/answer/48955833</a></p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/NLP/" rel="tag"># NLP</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2019/12/01/docker+tensorflow:serving/" rel="prev" title="docker+tensorflow/serving">
+                  <i class="fa fa-chevron-left"></i> docker+tensorflow/serving
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2019/10/11/TF2%E6%A8%A1%E5%9E%8B%E4%BF%9D%E5%AD%98%E5%8A%A0%E8%BD%BD/" rel="next" title="TF2模型保存加载">
+                  TF2模型保存加载 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+    <div class="comments gitalk-container"></div>
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">SmileTM</span>
+</div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/schemes/muse.js"></script><script src="/js/next-boot.js"></script>
+
+  
+  <script class="next-config" data-name="pdf" type="application/json">{"object_url":{"url":"https://cdnjs.cloudflare.com/ajax/libs/pdfobject/2.2.11/pdfobject.min.js","integrity":"sha256-N6JtCNwaYm6kizuG92UtOOXamRHPwu+V1yF10g3bu/c="},"url":"/lib/pdf/web/viewer.html"}</script>
+  <script src="/js/third-party/tags/pdf.js"></script>
+
+
+
+
+
+
+  
+
+
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">false</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"tags":"all","js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.js","integrity":"sha256-MASABpB4tYktI2Oitl4t+78w/lyA+D7b/s9GEP0JOGI="}}</script>
+<script src="/js/third-party/math/mathjax.js"></script>
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/gitalk/1.8.0/gitalk.css" integrity="sha256-AJnUHL7dBv6PGaeyPQJcgQPDjt/Hn/PvYZde1iqfp8U=" crossorigin="anonymous">
+
+<script class="next-config" data-name="gitalk" type="application/json">{"enable":true,"github_id":"SmileTM","repo":"SmileTM.github.io","client_id":"ed531d5b5c361d2a4ee1","client_secret":"23d9318d301649f0513a37915b9466b68b44acd4","admin_user":"SmileTM","distraction_free_mode":true,"proxy":"https://cors-anywhere.azm.workers.dev/https://github.com/login/oauth/access_token","language":null,"js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/gitalk/1.8.0/gitalk.min.js","integrity":"sha256-MVK9MGD/XJaGyIghSVrONSnoXoGh3IFxLw0zfvzpxR4="},"path_md5":"d00c5042678c31ba3626b8d81e4acc72"}</script>
+<script src="/js/third-party/comments/gitalk.js"></script>
+
+</body>
+</html>
