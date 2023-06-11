@@ -2369,6 +2369,9 @@ ul.breadcrumb li:last-child {
     background-color: var(--card-bg-color) !important;
   }
 }
+.utterances {
+  max-width: unset;
+}
 .search-active {
   overflow: hidden;
 }
@@ -2673,7 +2676,7 @@ header.header {
   vertical-align: middle;
 }
 .links-of-author a::before {
-  background: #d24fff;
+  background: #cf01cd;
   display: inline-block;
   margin-right: 3px;
   transform: translateY(-2px);
