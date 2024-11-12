@@ -192,105 +192,6 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://s-tm.cn/2020/01/14/Create-TFRecord/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.png">
-      <meta itemprop="name" content="SmileTM">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="SmileTM博客">
-      <meta itemprop="description" content="________Talk is cheap，show me the code！！！">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | SmileTM博客">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2020/01/14/Create-TFRecord/" class="post-title-link" itemprop="url">Create-TFRecord</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2020-01-14 16:59:01" itemprop="dateCreated datePublished" datetime="2020-01-14T16:59:01+08:00">2020-01-14</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2023-06-10 20:02:31" itemprop="dateModified" datetime="2023-06-10T20:02:31+08:00">2023-06-10</time>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p>TFRecord是一种高效的数据存储格式，尤其是在处理大数据集时，我们无法对数据进行一次读取，这时我们就可以将文件存储为TFRecord，然后再进行读取。这样可以可以提高数据移动、读取、处理等速度。<br>在对小数据集进行读取时，可以直接使用<code>tf.data</code> API来进行处理。</p>
-<p>在TFRecord中是将每个样本example 以字典的方式进行存储。</p>
-<p>主要的数据类型如下：</p>
-<ul>
-<li>int64：<code>tf.train.Feature(int64_list = tf.train.Int64List(value=输入))</code></li>
-<li>float32：<code>tf.train.Feature(float_list = tf.train.FloatList(value=输入))</code></li>
-<li>string：<code>tf.train.Feature(bytes_list=tf.train.BytesList(value=输入))</code></li>
-<li>注：输入必须是list(向量)</li>
-</ul>
-<p>这里我们举一个NLP中常见例子。</p>
-<ul>
-<li>这里有10个句子<code>sentence</code>，每个句子有128个<code>token_id</code>。</li>
-<li>每个句子对应的10个标签<code>label</code>。</li>
-<li>每个句子中对应的<code>token weight (mask)</code></li>
-<li>每个句子经过<code>Embedding</code>后的 句子<code>matrix</code>，<code>tensor </code>(两者是同一个东西，只是为了后面介绍两种不同的存储方式。)</li>
-</ul>
-<p>那么我们怎样将这些转换为<code>TFRecord</code>呢？</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2020/01/14/Create-TFRecord/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
     <link itemprop="mainEntityOfPage" href="http://s-tm.cn/2019/12/29/TensorFlow2.x-distribute/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1076,6 +977,89 @@
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">举例</span><br><span class="line">sentences = [<span class="string">&#x27;i love you&#x27;</span>,<span class="string">&#x27;do you have money&#x27;</span>, <span class="string">&#x27;i like running&#x27;</span>]</span><br><span class="line"></span><br><span class="line">word_index</span><br><span class="line">&#123;<span class="string">&#x27;i&#x27;</span>: <span class="number">1</span>, <span class="string">&#x27;you&#x27;</span>: <span class="number">2</span>, <span class="string">&#x27;love&#x27;</span>: <span class="number">3</span>, <span class="string">&#x27;do&#x27;</span>: <span class="number">4</span>, <span class="string">&#x27;have&#x27;</span>: <span class="number">5</span>, <span class="string">&#x27;money&#x27;</span>: <span class="number">6</span>, <span class="string">&#x27;like&#x27;</span>: <span class="number">7</span>, <span class="string">&#x27;running&#x27;</span>: <span class="number">8</span>&#125;</span><br><span class="line"></span><br><span class="line">sequences</span><br><span class="line">[[<span class="number">1</span>, <span class="number">3</span>, <span class="number">2</span>], [<span class="number">4</span>, <span class="number">2</span>, <span class="number">5</span>, <span class="number">6</span>], [<span class="number">1</span>, <span class="number">7</span>, <span class="number">8</span>]]</span><br><span class="line"></span><br><span class="line">padded    默认以最长句子为Maxlen  ，在序列前面填充</span><br><span class="line">[[<span class="number">0</span> <span class="number">1</span> <span class="number">3</span> <span class="number">2</span>]</span><br><span class="line"> [<span class="number">4</span> <span class="number">2</span> <span class="number">5</span> <span class="number">6</span>]</span><br><span class="line"> [<span class="number">0</span> <span class="number">1</span> <span class="number">7</span> <span class="number">8</span>]]</span><br><span class="line"></span><br></pre></td></tr></table></figure>
 
 
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://s-tm.cn/2019/09/19/tf-ImageDataGenerator/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="SmileTM">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="SmileTM博客">
+      <meta itemprop="description" content="________Talk is cheap，show me the code！！！">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | SmileTM博客">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2019/09/19/tf-ImageDataGenerator/" class="post-title-link" itemprop="url">tf_ImageDataGenerator</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2019-09-19 21:19:54" itemprop="dateCreated datePublished" datetime="2019-09-19T21:19:54+08:00">2019-09-19</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2023-06-10 20:02:31" itemprop="dateModified" datetime="2023-06-10T20:02:31+08:00">2023-06-10</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h1 id="ImageDataGenerator"><a href="#ImageDataGenerator" class="headerlink" title="ImageDataGenerator"></a>ImageDataGenerator</h1><p>本文章介绍了，直接通过Tensorflow 的ImageDataGenerator 来直接根据相应文件所在的标签目录 进行加载数据，并自动根据文件夹名字 进行自动分类，避免了人工进行标注。</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2019/09/19/tf-ImageDataGenerator/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
       
     </div>
 
